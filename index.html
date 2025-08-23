@@ -11,17 +11,22 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header Section -->
-        <div class="text-center mb-5 pt-4">
-            <h1 class="display-5 fw-bold text-dark mb-2">Build Your Custom Skincare</h1>
-            <p class="text-muted">Simple steps to create your perfect formula</p>
+    <!-- Banner Section -->
+    <div class="banner-section">
+        <div class="banner-image">
+            <img src="attached_assets/generated_images/Skincare_formulation_banner_image_5caf7cf1.png" alt="Skincare Formulation Banner" class="banner-img">
+            <div class="banner-overlay">
+                <div class="banner-content">
+                    <h1 class="banner-title">Build Your Custom Skincare</h1>
+                    <p class="banner-subtitle">Simple steps to create your perfect formula</p>
+                </div>
+            </div>
         </div>
+    </div>
 
+    <div class="container">
         <!-- Main Form -->
-        <div class="form-container">
-            <!-- Left Side - Form Content -->
-            <div class="form-content">
+        <div class="form-wrapper">
                 <form id="formulationForm" class="sleek-form" novalidate>
                 <!-- Step 1: Skin Type -->
                 <div class="form-section" id="skinTypeSection">
@@ -212,9 +217,12 @@
                     <div class="status-message" id="submissionStatus"></div>
                 </div>
                 </form>
-            </div>
-            
-            <!-- Right Sidebar - Selected Ingredients -->
+        </div>
+    </div>
+
+    <!-- Sidebar Section -->
+    <div class="sidebar-section">
+        <div class="container">
             <div class="ingredients-sidebar">
                 <div class="sidebar-header">
                     <h3><i class="fas fa-flask"></i> Your Formula</h3>
@@ -265,6 +273,9 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container">
 
         <!-- Footer -->
         <footer class="text-center py-4 mt-5">

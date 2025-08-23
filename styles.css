@@ -27,34 +27,94 @@ body {
     padding: 0;
 }
 
+/* Banner Section */
+.banner-section {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.banner-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.6) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-content {
+    text-align: center;
+    color: white;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.banner-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    line-height: 1.2;
+}
+
+.banner-subtitle {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin: 0;
+    opacity: 0.95;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
 /* Container */
 .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Form Wrapper */
+.form-wrapper {
     background: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-md);
     padding: 3rem 2.5rem;
-    margin: 2rem auto;
-    max-width: 1200px;
+    margin: 2rem 0;
 }
 
-/* Form Container - Two Column Layout */
-.form-container {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 2rem;
-    margin-top: 1.5rem;
+/* Sidebar Section */
+.sidebar-section {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+    padding: 3rem 0;
+    border-top: 1px solid var(--border-color);
 }
 
-/* Left Sidebar - Ingredients Preview */
 .ingredients-sidebar {
-    background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+    background: white;
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius);
-    padding: 1.5rem;
-    height: fit-content;
-    position: sticky;
-    top: 20px;
-    box-shadow: var(--shadow-sm);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .sidebar-header {
@@ -233,22 +293,11 @@ body {
     background: white;
 }
 
-/* Header */
-.display-5 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 0.5rem;
+.sleek-form {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.text-muted {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    margin-bottom: 0;
-}
 
 /* Form Styling */
 .sleek-form {
@@ -926,40 +975,52 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .form-container {
-        grid-template-columns: 1fr 260px;
-        gap: 1.5rem;
+    .banner-title {
+        font-size: 2.5rem;
+    }
+    
+    .banner-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .form-wrapper {
+        padding: 2rem 1.5rem;
     }
     
     .ingredients-sidebar {
-        padding: 1rem;
+        padding: 1.5rem;
     }
 }
 
 @media (max-width: 768px) {
-    .container {
-        margin: 1rem;
+    .banner-section {
+        height: 250px;
+    }
+    
+    .banner-title {
+        font-size: 2rem;
+    }
+    
+    .banner-subtitle {
+        font-size: 1rem;
+    }
+    
+    .banner-content {
+        padding: 1rem;
+    }
+    
+    .form-wrapper {
+        margin: 1rem 0;
         padding: 1.5rem 1rem;
     }
     
-    .display-5 {
-        font-size: 1.75rem;
-    }
-    
-    .form-container {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+    .sidebar-section {
+        padding: 2rem 0;
     }
     
     .ingredients-sidebar {
-        position: static;
-        order: 1;
-        margin-top: 0;
-        margin-bottom: 1.5rem;
-    }
-    
-    .form-content {
-        order: 2;
+        padding: 1.5rem;
+        margin: 0 1rem;
     }
     
     .checkbox-grid,
@@ -1006,17 +1067,24 @@ footer {
 }
 
 @media (max-width: 480px) {
-    .container {
-        margin: 0.5rem;
-        padding: 1.5rem 1rem;
+    .banner-section {
+        height: 200px;
     }
     
-    .display-5 {
+    .banner-title {
         font-size: 1.75rem;
     }
     
-    .text-muted {
-        font-size: 1rem;
+    .banner-subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .form-wrapper {
+        padding: 1rem;
+    }
+    
+    .ingredients-sidebar {
+        padding: 1rem;
     }
     
     .checkbox-item,
