@@ -34,3 +34,8 @@
     • Data stored as JSON in memory during session only
     • Clean JSON structure passed to backend on submission
     • No data persistence between browser sessions
+[x] 22. Fixed visual glitch on page reload:
+    • Form sections now hidden by CSS immediately on load
+    • Eliminated flash of all sections appearing then disappearing  
+    • Only first section visible by default for professional appearance
+    • Smooth loading experience without content jumping

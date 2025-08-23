@@ -364,6 +364,12 @@ body {
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     transition: all 0.2s ease;
+    display: none; /* Hide all sections by default */
+}
+
+/* Show only the first section initially */
+#skinTypeSection {
+    display: block;
 }
 
 .form-section-card:hover {

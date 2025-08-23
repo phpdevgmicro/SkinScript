@@ -40,24 +40,7 @@ class SkincareApp {
         this.bindEvents();
         this.updateUI();
         this.updateAllSidebarSections(); // Initialize sidebar with current data
-        this.hideAllSections(); // Hide all sections initially for step navigation
         console.log('Skincare Formulation App initialized');
-    }
-
-    hideAllSections() {
-        // Hide all form sections initially - they'll be shown by navigation
-        const sections = [
-            'baseFormatSection', 
-            'keyActivesSection',
-            'extractsSection',
-            'boostersSection',
-            'contactSection'
-        ];
-        
-        sections.forEach(sectionId => {
-            const section = document.getElementById(sectionId);
-            if (section) section.style.display = 'none';
-        });
     }
 
     // Event Binding
