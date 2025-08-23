@@ -64,6 +64,33 @@ body {
     border-bottom: 2px solid var(--border-color);
 }
 
+.sidebar-tips {
+    background: rgba(102, 126, 234, 0.05);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.sidebar-tips h5 {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+}
+
+.sidebar-tips ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    line-height: 1.4;
+}
+
+.sidebar-tips li {
+    margin-bottom: 0.25rem;
+}
+
 .sidebar-header h3 {
     color: var(--primary-color);
     font-size: 1.25rem;
@@ -126,9 +153,36 @@ body {
     border-radius: 15px;
     font-size: 0.8rem;
     font-weight: 500;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     margin: 0.25rem 0.25rem 0.25rem 0;
     animation: slideInScale 0.3s ease;
+    position: relative;
+    cursor: default;
+}
+
+.remove-ingredient {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-left: 0.25rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.remove-ingredient:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
 }
 
 @keyframes slideInScale {

@@ -225,10 +225,35 @@ class SkincareApp {
         if (items.length === 0) {
             container.innerHTML = `<span class="placeholder">${placeholder}</span>`;
         } else {
-            const tags = items.map(item => 
-                `<span class="ingredient-tag">${this.formatDisplayName(item)}</span>`
-            ).join('');
+            const tags = items.map(item => {
+                const displayName = this.formatDisplayName(item);
+                return `<span class="ingredient-tag" data-ingredient="${item}" title="Remove ${displayName}">
+                    ${displayName}
+                    <button class="remove-ingredient" onclick="skincareApp.removeIngredient('${containerId}', '${item}')">&times;</button>
+                </span>`;
+            }).join('');
             container.innerHTML = tags;
+        }
+    }
+
+    removeIngredient(containerId, ingredient) {
+        // Determine which form section this belongs to
+        const sectionMap = {
+            'skinTypeItems': 'skinType',
+            'keyActivesItems': 'keyActives', 
+            'extractsItems': 'extracts',
+            'boostersItems': 'boosters'
+        };
+        
+        const sectionName = sectionMap[containerId];
+        if (!sectionName) return;
+        
+        // Uncheck the corresponding form element
+        const checkbox = document.getElementById(ingredient);
+        if (checkbox) {
+            checkbox.checked = false;
+            // Trigger the appropriate handler
+            checkbox.dispatchEvent(new Event('change', { bubbles: true }));
         }
     }
 
@@ -519,9 +544,32 @@ class SkincareApp {
         this.state.formData = { ...this.state.formData, ...data };
         this.state.selectedKeyActives = data.keyActives?.length || 0;
 
+        // Update sidebar to reflect restored data
+        this.updateAllSidebarSections();
+        
         // Update UI
         this.updateUI();
         this.updateKeyActivesUI();
+        
+        // Check compatibility for restored actives
+        this.checkCompatibility();
+    }
+
+    updateAllSidebarSections() {
+        // Update all sidebar sections with current form data
+        this.updateSidebar('skinTypeItems', this.state.formData.skinType, 'Select your skin type');
+        
+        const formatArray = this.state.formData.baseFormat ? [this.state.formData.baseFormat] : [];
+        this.updateSidebar('baseFormatItems', formatArray, 'Choose format');
+        
+        this.updateSidebar('keyActivesItems', this.state.formData.keyActives, 'Select up to 3 actives');
+        this.updateSidebar('extractsItems', this.state.formData.extracts, 'Add botanical extracts');
+        this.updateSidebar('boostersItems', this.state.formData.boosters, 'Add hydrating boosters');
+        
+        // Update counters
+        const count = `${this.state.selectedKeyActives}/${this.config.maxKeyActives}`;
+        const sidebarCounter = document.getElementById('activesCounterSidebar');
+        if (sidebarCounter) sidebarCounter.textContent = count;
     }
 
     restoreSelections(name, values) {
@@ -634,5 +682,5 @@ class SkincareApp {
 
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new SkincareApp();
+    window.skincareApp = new SkincareApp();
 });
