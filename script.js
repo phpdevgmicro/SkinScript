@@ -41,6 +41,7 @@ class SkincareApp {
         this.bindEvents();
         this.loadSavedData();
         this.updateUI();
+        this.updateAllSidebarSections(); // Initialize sidebar with current data
         this.hideAllSections(); // Hide all sections initially for step navigation
         console.log('Skincare Formulation App initialized');
     }
@@ -131,7 +132,20 @@ class SkincareApp {
 
     bindInputEvents() {
         // Global form change listener
-        document.addEventListener('change', () => {
+        document.addEventListener('change', (e) => {
+            // Handle specific form element changes
+            if (e.target.name === 'skinType') {
+                this.handleSkinTypeChange();
+            } else if (e.target.name === 'baseFormat') {
+                this.handleBaseFormatChange();
+            } else if (e.target.name === 'keyActives') {
+                this.handleKeyActivesChange();
+            } else if (e.target.name === 'extracts') {
+                this.handleExtractsChange();
+            } else if (e.target.name === 'boosters') {
+                this.handleBoostersChange();
+            }
+            
             this.updateUI();
             this.saveFormData();
         });
@@ -141,15 +155,7 @@ class SkincareApp {
     }
 
     bindClickableItems() {
-        // Improved checkbox/radio item handling for smooth interaction
-        const allItems = document.querySelectorAll('.checkbox-item, .radio-item');
-        
-        allItems.forEach(item => {
-            // Remove any existing event listeners first
-            item.replaceWith(item.cloneNode(true));
-        });
-
-        // Re-select items after cloning (to remove old listeners)
+        // Simplified clickable items handling
         document.querySelectorAll('.checkbox-item, .radio-item').forEach(item => {
             item.addEventListener('click', (e) => {
                 // Only handle clicks on the container, not on the input or label directly
@@ -160,36 +166,22 @@ class SkincareApp {
                 
                 const input = item.querySelector('input[type="checkbox"], input[type="radio"]');
                 if (input && !input.disabled) {
-                    // Prevent any conflicts
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Use setTimeout to ensure smooth visual transition
-                    setTimeout(() => {
-                        if (input.type === 'checkbox') {
-                            input.checked = !input.checked;
-                        } else if (input.type === 'radio') {
-                            input.checked = true;
-                        }
-                        
-                        // Trigger change event
-                        input.dispatchEvent(new Event('change', { bubbles: true }));
-                    }, 0);
+                    if (input.type === 'checkbox') {
+                        input.checked = !input.checked;
+                    } else if (input.type === 'radio') {
+                        input.checked = true;
+                    }
+                    
+                    // Trigger change event immediately
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
                 }
             });
 
             // Ensure proper cursor style
             item.style.cursor = 'pointer';
-        });
-
-        // Add specific input handling for better responsiveness
-        document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
-            input.addEventListener('click', (e) => {
-                // Let the default behavior happen but ensure change event fires
-                setTimeout(() => {
-                    input.dispatchEvent(new Event('change', { bubbles: true }));
-                }, 0);
-            });
         });
     }
 
@@ -810,6 +802,7 @@ class ProgressNavigation {
         this.showCurrentStep();
         this.updateProgressBar();
         this.updateNavigationButtons();
+        this.app.updateAllSidebarSections(); // Ensure sidebar stays updated
         this.scrollToTop();
     }
 
