@@ -103,6 +103,15 @@ body {
 .sidebar-wrapper {
     position: sticky;
     top: 2rem;
+    height: fit-content;
+}
+
+/* Ensure Bootstrap grid works properly */
+@media (min-width: 992px) {
+    .sidebar-wrapper {
+        position: sticky;
+        top: 2rem;
+    }
 }
 
 .ingredients-sidebar {
@@ -911,11 +920,6 @@ footer {
         font-size: 1.1rem;
     }
     
-    .main-layout {
-        grid-template-columns: 1fr 300px;
-        gap: 1.5rem;
-    }
-    
     .form-wrapper {
         padding: 2rem 1.5rem;
     }
@@ -942,17 +946,13 @@ footer {
         padding: 1rem;
     }
     
-    .main-layout {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
     .form-wrapper {
         padding: 1.5rem 1rem;
     }
     
     .sidebar-wrapper {
         order: -1;
+        position: static !important;
     }
     
     .ingredients-sidebar {
