@@ -118,6 +118,55 @@ class SkincareApp {
             this.updateUI();
             this.saveFormData();
         });
+
+        // Make checkbox and radio items clickable
+        this.bindClickableItems();
+    }
+
+    bindClickableItems() {
+        // Make entire checkbox-item clickable
+        const checkboxItems = document.querySelectorAll('.checkbox-item');
+        checkboxItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Don't double-trigger if clicking directly on input or label
+                if (e.target.type === 'checkbox' || e.target.type === 'radio' || e.target.tagName === 'LABEL') {
+                    return;
+                }
+                
+                const input = item.querySelector('input[type="checkbox"], input[type="radio"]');
+                if (input && !input.disabled) {
+                    if (input.type === 'checkbox') {
+                        input.checked = !input.checked;
+                    } else if (input.type === 'radio') {
+                        input.checked = true;
+                    }
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+
+            // Add visual feedback on hover
+            item.style.cursor = 'pointer';
+        });
+
+        // Make entire radio-item clickable  
+        const radioItems = document.querySelectorAll('.radio-item');
+        radioItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Don't double-trigger if clicking directly on input or label
+                if (e.target.type === 'checkbox' || e.target.type === 'radio' || e.target.tagName === 'LABEL') {
+                    return;
+                }
+                
+                const input = item.querySelector('input[type="radio"]');
+                if (input && !input.disabled) {
+                    input.checked = true;
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+
+            // Add visual feedback on hover
+            item.style.cursor = 'pointer';
+        });
     }
 
     // Event Handlers

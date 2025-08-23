@@ -405,6 +405,8 @@ body {
     position: relative;
     overflow: hidden;
     min-height: 48px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .checkbox-item::before,
