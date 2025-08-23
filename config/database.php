@@ -31,8 +31,8 @@ class Database {
             
             $this->pdo = new PDO($dsn, $this->username, $this->password, $options);
             
-            // Create table if it doesn't exist
-            $this->createFormulationTable();
+            // Create basic table if it doesn't exist (use setup.php for full schema)
+            $this->createBasicTable();
             
         } catch (PDOException $e) {
             error_log("Primary database connection failed: " . $e->getMessage());
@@ -41,7 +41,7 @@ class Database {
             try {
                 $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}";
                 $this->pdo = new PDO($dsn, $this->username, $this->password, $options);
-                $this->createFormulationTable();
+                $this->createBasicTable();
                 error_log("Connected to database without SSL");
             } catch (PDOException $e2) {
                 error_log("Fallback database connection also failed: " . $e2->getMessage());
@@ -51,7 +51,9 @@ class Database {
         }
     }
     
-    private function createFormulationTable() {
+    private function createBasicTable() {
+        // Create only the basic table for form submissions
+        // For full schema with ingredients and compatibility, use database/setup.php
         $sql = "CREATE TABLE IF NOT EXISTS skincare_formulations (
             id SERIAL PRIMARY KEY,
             full_name VARCHAR(255) NOT NULL,
@@ -63,12 +65,34 @@ class Database {
             extracts TEXT[],
             boosters TEXT[],
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             user_agent TEXT,
             screen_resolution VARCHAR(50),
             form_version VARCHAR(10)
         )";
         
         $this->pdo->exec($sql);
+    }
+    
+    public function setupFullSchema() {
+        // Run the full database schema setup
+        $schemaFile = __DIR__ . '/../database/schema.sql';
+        if (file_exists($schemaFile)) {
+            $schema = file_get_contents($schemaFile);
+            $statements = array_filter(array_map('trim', explode(';', $schema)));
+            
+            foreach ($statements as $statement) {
+                if (!empty($statement) && !preg_match('/^\s*--/', $statement)) {
+                    try {
+                        $this->pdo->exec($statement);
+                    } catch (PDOException $e) {
+                        error_log("Schema execution error: " . $e->getMessage());
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
     
     public function getConnection() {
