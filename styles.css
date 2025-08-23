@@ -347,15 +347,16 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 1rem;
 }
 
 .counter-badge {
-    background: var(--primary-gradient);
+    background: var(--primary-color);
     color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
 /* Grid Layouts */
