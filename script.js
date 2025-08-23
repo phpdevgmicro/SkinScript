@@ -158,16 +158,20 @@ class SkincareFormulationApp {
 
     toggleKeyActivesAvailability() {
         const keyActiveInputs = document.querySelectorAll('input[name="keyActives"]');
-        const keyActiveCards = document.querySelectorAll('[data-type="key-active"]');
+        const keyActiveCards = document.querySelectorAll('.form-check-card');
         
         keyActiveInputs.forEach((input, index) => {
             const card = keyActiveCards[index];
             
             if (!input.checked && this.selectedKeyActives >= this.maxKeyActives) {
-                card.classList.add('disabled');
+                if (card) {
+                    card.classList.add('disabled');
+                }
                 input.disabled = true;
             } else {
-                card.classList.remove('disabled');
+                if (card) {
+                    card.classList.remove('disabled');
+                }
                 input.disabled = false;
             }
         });
@@ -250,6 +254,7 @@ class SkincareFormulationApp {
         if (errorElement) {
             errorElement.textContent = message;
             errorElement.classList.toggle('show', show);
+            errorElement.classList.toggle('d-block', show);
         }
     }
 
@@ -287,6 +292,7 @@ class SkincareFormulationApp {
         if (errorElement) {
             errorElement.textContent = message;
             errorElement.classList.add('show');
+            errorElement.classList.add('d-block');
         }
     }
 
@@ -294,6 +300,7 @@ class SkincareFormulationApp {
         const errorElement = document.getElementById(elementId);
         if (errorElement) {
             errorElement.classList.remove('show');
+            errorElement.classList.remove('d-block');
             errorElement.textContent = '';
         }
     }
@@ -305,7 +312,7 @@ class SkincareFormulationApp {
             const previewHTML = this.generatePreviewHTML();
             previewContent.innerHTML = previewHTML;
         } else {
-            previewContent.innerHTML = '<p class="empty-state">Make your selections above to see your custom formulation preview</p>';
+            previewContent.innerHTML = '<p class="text-muted text-center fst-italic">Make your selections above to see your custom formulation preview</p>';
         }
     }
 
