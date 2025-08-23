@@ -58,18 +58,19 @@ body {
 }
 
 .ingredients-sidebar {
-    background: #f8fafc;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.75rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     height: fit-content;
 }
 
 .sidebar-header {
     margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid #f1f5f9;
+    text-align: center;
 }
 
 .sidebar-tips {
@@ -100,41 +101,50 @@ body {
 
 .sidebar-header h3 {
     color: var(--primary-color);
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: 700;
     margin: 0 0 0.5rem 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
 }
 
 .sidebar-subtitle {
     color: var(--text-secondary);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     margin: 0;
+    font-weight: 400;
 }
 
 .selected-ingredients {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .ingredient-category {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
 }
 
 .ingredient-category h4 {
     color: var(--text-primary);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
     margin: 0 0 0.75rem 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .ingredient-category h4 i {
     color: var(--primary-color);
     margin-right: 0.5rem;
+    font-size: 0.85rem;
 }
 
 .counter {
@@ -151,23 +161,29 @@ body {
 }
 
 .placeholder {
-    color: var(--text-secondary);
+    color: #9ca3af;
     font-style: italic;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 6px;
+    border: 1px dashed #d1d5db;
 }
 
 .ingredient-tag {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, #5a6fd8 100%);
     color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 500;
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    margin: 0.25rem 0.25rem 0.25rem 0;
+    gap: 0.35rem;
+    margin: 0.3rem 0.3rem 0.3rem 0;
     cursor: default;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
 .remove-ingredient {
@@ -204,25 +220,29 @@ body {
 
 .sidebar-footer {
     text-align: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+    border-top: 2px solid #f1f5f9;
+    margin-top: 1.5rem;
 }
 
 .preview-btn {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, #5a6fd8 100%);
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    padding: 0.875rem 2rem;
+    border-radius: 25px;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
     width: 100%;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .preview-btn:hover:not(:disabled) {
-    background: #5a6fd8;
+    background: linear-gradient(135deg, #5a6fd8 0%, #4f63d2 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .preview-btn:disabled {

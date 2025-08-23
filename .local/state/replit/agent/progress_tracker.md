@@ -13,3 +13,5 @@
 [x] 13. Fixed Bootstrap grid layout for formula section sidebar display
 [x] 14. Replaced missing banner image with clean Bootstrap header
 [x] 15. Made form layout compact and sleek with proper Bootstrap typography
+[x] 16. Added separate card containers for clear form section visual separation
+[x] 17. Improved sidebar visual design with cleaner layout and better styling
