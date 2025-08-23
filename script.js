@@ -245,7 +245,6 @@ class SkincareFormulationApp {
         if (errorElement) {
             errorElement.textContent = message;
             errorElement.classList.toggle('show', show);
-            errorElement.classList.toggle('d-block', show);
         }
     }
 
@@ -283,7 +282,6 @@ class SkincareFormulationApp {
         if (errorElement) {
             errorElement.textContent = message;
             errorElement.classList.add('show');
-            errorElement.classList.add('d-block');
         }
     }
 
@@ -291,7 +289,6 @@ class SkincareFormulationApp {
         const errorElement = document.getElementById(elementId);
         if (errorElement) {
             errorElement.classList.remove('show');
-            errorElement.classList.remove('d-block');
             errorElement.textContent = '';
         }
     }
@@ -515,7 +512,7 @@ class SkincareFormulationApp {
             await this.simulateFormSubmission(submissionData);
             
             // Show success message
-            statusDiv.className = 'submission-status success';
+            statusDiv.className = 'status-message success';
             statusDiv.innerHTML = `
                 <i class="fas fa-check-circle"></i>
                 <strong>Request Submitted Successfully!</strong><br>
@@ -530,7 +527,7 @@ class SkincareFormulationApp {
             
         } catch (error) {
             console.error('Form submission error:', error);
-            statusDiv.className = 'submission-status error';
+            statusDiv.className = 'status-message error';
             statusDiv.innerHTML = `
                 <i class="fas fa-exclamation-circle"></i>
                 <strong>Submission Failed</strong><br>

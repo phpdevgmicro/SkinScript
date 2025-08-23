@@ -13,233 +13,179 @@
 <body>
     <div class="container">
         <!-- Header Section -->
-        <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold mb-4">Build Your Own Energizing Mist</h1>
+        <div class="text-center mb-5 pt-4">
+            <h1 class="display-5 fw-bold text-dark mb-2">Build Your Own Energizing Mist</h1>
+            <p class="text-muted">Create a personalized skincare formula</p>
         </div>
 
         <!-- Main Form -->
         <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <form id="formulationForm" class="needs-validation" novalidate>
+            <div class="col-lg-7">
+                <form id="formulationForm" class="sleek-form" novalidate>
                 <!-- Skin Type Section -->
-                <div class="mb-4" id="skinTypeSection">
-                    <h3 class="h5 mb-3">Choose Skin Type:</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="skinType" value="oily" id="oily">
-                                <label class="form-check-label" for="oily">Oily</label>
-                            </div>
+                <div class="form-section" id="skinTypeSection">
+                    <h3 class="section-title">Choose Skin Type</h3>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="skinType" value="oily" id="oily">
+                            <label class="checkbox-label" for="oily">Oily</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="skinType" value="dry" id="dry">
-                                <label class="form-check-label" for="dry">Dry</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="skinType" value="dry" id="dry">
+                            <label class="checkbox-label" for="dry">Dry</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="skinType" value="sensitive" id="sensitive">
-                                <label class="form-check-label" for="sensitive">Sensitive</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="skinType" value="sensitive" id="sensitive">
+                            <label class="checkbox-label" for="sensitive">Sensitive</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="skinType" value="combination" id="combination">
-                                <label class="form-check-label" for="combination">Combination</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="skinType" value="combination" id="combination">
+                            <label class="checkbox-label" for="combination">Combination</label>
                         </div>
                     </div>
-                    <div class="invalid-feedback d-block" id="skinTypeError"></div>
+                    <div class="error-message" id="skinTypeError"></div>
                 </div>
 
                 <!-- Base Format Section -->
-                <div class="mb-4" id="baseFormatSection">
-                    <h3 class="h5 mb-3">Select Base Format:</h3>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="baseFormat" value="mist" id="mist" checked>
-                                <label class="form-check-label" for="mist">Mist</label>
-                            </div>
+                <div class="form-section" id="baseFormatSection">
+                    <h3 class="section-title">Select Base Format</h3>
+                    <div class="radio-grid">
+                        <div class="radio-item">
+                            <input class="form-check-input" type="radio" name="baseFormat" value="mist" id="mist" checked>
+                            <label class="radio-label" for="mist">Mist</label>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="baseFormat" value="serum" id="serum">
-                                <label class="form-check-label" for="serum">Serum</label>
-                            </div>
+                        <div class="radio-item">
+                            <input class="form-check-input" type="radio" name="baseFormat" value="serum" id="serum">
+                            <label class="radio-label" for="serum">Serum</label>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="baseFormat" value="cream" id="cream">
-                                <label class="form-check-label" for="cream">Cream</label>
-                            </div>
+                        <div class="radio-item">
+                            <input class="form-check-input" type="radio" name="baseFormat" value="cream" id="cream">
+                            <label class="radio-label" for="cream">Cream</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Key Actives Section -->
-                <div class="mb-4" id="keyActivesSection">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3 class="h5 mb-0">Pick Your Key Actives (up to 3):</h3>
-                        <span class="text-muted" id="activesCounter">(0/3 selected)</span>
+                <div class="form-section" id="keyActivesSection">
+                    <div class="section-header">
+                        <h3 class="section-title">Pick Your Key Actives (up to 3)</h3>
+                        <span class="counter-badge" id="activesCounter">0/3</span>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="keyActives" value="caffeine" id="caffeine">
-                                <label class="form-check-label" for="caffeine">Caffeine</label>
-                            </div>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="keyActives" value="caffeine" id="caffeine">
+                            <label class="checkbox-label" for="caffeine">Caffeine</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="keyActives" value="l-carnitine" id="l-carnitine">
-                                <label class="form-check-label" for="l-carnitine">L-Carnitine</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="keyActives" value="l-carnitine" id="l-carnitine">
+                            <label class="checkbox-label" for="l-carnitine">L-Carnitine</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="keyActives" value="retinol" id="retinol">
-                                <label class="form-check-label" for="retinol">Retinol</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="keyActives" value="retinol" id="retinol">
+                            <label class="checkbox-label" for="retinol">Retinol</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="keyActives" value="niacinamide" id="niacinamide">
-                                <label class="form-check-label" for="niacinamide">Niacinamide</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="keyActives" value="niacinamide" id="niacinamide">
+                            <label class="checkbox-label" for="niacinamide">Niacinamide</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="keyActives" value="vitamin-c" id="vitamin-c">
-                                <label class="form-check-label" for="vitamin-c">Vitamin C</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="keyActives" value="vitamin-c" id="vitamin-c">
+                            <label class="checkbox-label" for="vitamin-c">Vitamin C</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="keyActives" value="hyaluronic-acid" id="hyaluronic-acid">
-                                <label class="form-check-label" for="hyaluronic-acid">Hyaluronic Acid</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="keyActives" value="hyaluronic-acid" id="hyaluronic-acid">
+                            <label class="checkbox-label" for="hyaluronic-acid">Hyaluronic Acid</label>
                         </div>
                     </div>
-                    <div class="invalid-feedback d-block" id="keyActivesError"></div>
+                    <div class="error-message" id="keyActivesError"></div>
                 </div>
 
                 <!-- Functional Extracts Section -->
-                <div class="mb-4" id="extractsSection">
-                    <h3 class="h5 mb-3">Add Functional Extracts:</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="extracts" value="beta-vulgaris" id="beta-vulgaris">
-                                <label class="form-check-label" for="beta-vulgaris">Beta Vulgaris (Beet)</label>
-                            </div>
+                <div class="form-section" id="extractsSection">
+                    <h3 class="section-title">Add Functional Extracts</h3>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="extracts" value="beta-vulgaris" id="beta-vulgaris">
+                            <label class="checkbox-label" for="beta-vulgaris">Beta Vulgaris (Beet)</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="extracts" value="avena-sativa" id="avena-sativa">
-                                <label class="form-check-label" for="avena-sativa">Avena Sativa (Oat)</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="extracts" value="avena-sativa" id="avena-sativa">
+                            <label class="checkbox-label" for="avena-sativa">Avena Sativa (Oat)</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="extracts" value="neem" id="neem">
-                                <label class="form-check-label" for="neem">Neem</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="extracts" value="neem" id="neem">
+                            <label class="checkbox-label" for="neem">Neem</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="extracts" value="bilberry" id="bilberry">
-                                <label class="form-check-label" for="bilberry">Bilberry</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="extracts" value="bilberry" id="bilberry">
+                            <label class="checkbox-label" for="bilberry">Bilberry</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="extracts" value="green-tea" id="green-tea">
-                                <label class="form-check-label" for="green-tea">Green Tea</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="extracts" value="green-tea" id="green-tea">
+                            <label class="checkbox-label" for="green-tea">Green Tea</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="extracts" value="chamomile" id="chamomile">
-                                <label class="form-check-label" for="chamomile">Chamomile</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="extracts" value="chamomile" id="chamomile">
+                            <label class="checkbox-label" for="chamomile">Chamomile</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Boosters/Hydrators Section -->
-                <div class="mb-4" id="boostersSection">
-                    <h3 class="h5 mb-3">Add Boosters / Hydrators:</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="boosters" value="glycerin" id="glycerin">
-                                <label class="form-check-label" for="glycerin">Glycerin</label>
-                            </div>
+                <div class="form-section" id="boostersSection">
+                    <h3 class="section-title">Add Boosters / Hydrators</h3>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="boosters" value="glycerin" id="glycerin">
+                            <label class="checkbox-label" for="glycerin">Glycerin</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="boosters" value="sodium-pca" id="sodium-pca">
-                                <label class="form-check-label" for="sodium-pca">Sodium PCA</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="boosters" value="sodium-pca" id="sodium-pca">
+                            <label class="checkbox-label" for="sodium-pca">Sodium PCA</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="boosters" value="copper-peptides" id="copper-peptides">
-                                <label class="form-check-label" for="copper-peptides">Copper Peptides</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="boosters" value="copper-peptides" id="copper-peptides">
+                            <label class="checkbox-label" for="copper-peptides">Copper Peptides</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="boosters" value="ceramides" id="ceramides">
-                                <label class="form-check-label" for="ceramides">Ceramides</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="boosters" value="ceramides" id="ceramides">
+                            <label class="checkbox-label" for="ceramides">Ceramides</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="boosters" value="squalane" id="squalane">
-                                <label class="form-check-label" for="squalane">Squalane</label>
-                            </div>
+                        <div class="checkbox-item">
+                            <input class="form-check-input" type="checkbox" name="boosters" value="squalane" id="squalane">
+                            <label class="checkbox-label" for="squalane">Squalane</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Contact Information Section -->
-                <div class="mb-4" id="contactSection">
-                    <h3 class="h5 mb-3">Contact Information:</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="fullName" class="form-label">Full Name *</label>
-                                <input type="text" class="form-control" id="fullName" name="fullName" required>
-                                <div class="invalid-feedback" id="fullNameError"></div>
-                            </div>
+                <div class="form-section" id="contactSection">
+                    <h3 class="section-title">Contact Information</h3>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="fullName" class="input-label">Full Name *</label>
+                            <input type="text" class="sleek-input" id="fullName" name="fullName" required>
+                            <div class="error-message" id="fullNameError"></div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email Address *</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                                <div class="invalid-feedback" id="emailError"></div>
-                            </div>
+                        <div class="input-group">
+                            <label for="email" class="input-label">Email Address *</label>
+                            <input type="email" class="sleek-input" id="email" name="email" required>
+                            <div class="error-message" id="emailError"></div>
                         </div>
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="skinConcerns" class="form-label">Additional Skin Concerns (Optional)</label>
-                                <textarea class="form-control" id="skinConcerns" name="skinConcerns" rows="3" placeholder="Tell us about any specific skin concerns or goals..."></textarea>
-                            </div>
+                        <div class="input-group full-width">
+                            <label for="skinConcerns" class="input-label">Additional Skin Concerns (Optional)</label>
+                            <textarea class="sleek-input" id="skinConcerns" name="skinConcerns" rows="3" placeholder="Tell us about any specific skin concerns or goals..."></textarea>
                         </div>
                     </div>
                 </div>
 
                 <!-- Submit Section -->
-                <div class="text-center mt-5">
-                    <button type="submit" class="btn btn-primary btn-lg px-5" id="submitBtn" disabled>
+                <div class="submit-section">
+                    <button type="submit" class="sleek-button" id="submitBtn" disabled>
                         Submit Request
                     </button>
+                    <div class="status-message" id="submissionStatus"></div>
                 </div>
-                
-                <div id="submissionStatus"></div>
                 </form>
             </div>
         </div>
