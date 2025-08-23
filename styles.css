@@ -27,77 +27,20 @@ body {
     padding: 0;
 }
 
-/* Banner Section */
-.banner-section {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-    margin-bottom: 2rem;
+/* Header Section */
+.bg-gradient-primary {
+    background: var(--primary-gradient) !important;
 }
 
-.banner-image {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.banner-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
-.banner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.6) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.banner-content {
-    text-align: center;
-    color: white;
-    max-width: 600px;
-    padding: 2rem;
-}
-
-.banner-title {
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 0 0 1rem 0;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    line-height: 1.2;
-}
-
-.banner-subtitle {
-    font-size: 1.25rem;
-    font-weight: 300;
-    margin: 0;
-    opacity: 0.95;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-}
-
-/* Container */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
 
 /* Form Wrapper - Compact & Sleek */
 .form-wrapper {
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--border-color);
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    height: fit-content;
 }
 
 .sidebar-wrapper {
@@ -115,11 +58,12 @@ body {
 }
 
 .ingredients-sidebar {
-    background: #f9fafb;
+    background: #f8fafc;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    height: fit-content;
 }
 
 .sidebar-header {
@@ -156,14 +100,17 @@ body {
 
 .sidebar-header h3 {
     color: var(--primary-color);
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 600;
     margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .sidebar-subtitle {
     color: var(--text-secondary);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     margin: 0;
 }
 
@@ -300,9 +247,9 @@ body {
 }
 
 .form-section {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #f1f3f4;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e9ecef;
 }
 
 .form-section:last-of-type {
@@ -312,43 +259,45 @@ body {
 }
 
 .submit-section {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     padding-top: 1rem;
-    border-top: 1px solid #f1f3f4;
+    border-top: 1px solid #e9ecef;
 }
 
-/* Step Headers - Compact */
+/* Step Headers - Compact Bootstrap Style */
 .step-header {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .step-number {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: var(--primary-color);
     color: white;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 3px;
-    text-align: center;
-    line-height: 1.25rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
     font-weight: 600;
     font-size: 0.75rem;
-    margin-right: 0.5rem;
+    flex-shrink: 0;
 }
 
 .section-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
-    display: inline;
 }
 
 .step-description {
     color: var(--text-secondary);
-    font-size: 0.85rem;
-    margin: 0.25rem 0 0.75rem 1.75rem;
-    line-height: 1.3;
+    font-size: 0.8rem;
+    margin: 0.25rem 0 0.6rem 0;
+    line-height: 1.4;
 }
 
 .section-header {
@@ -370,19 +319,20 @@ body {
 
 /* Bootstrap Grid Layout - No custom grid needed */
 
-/* Checkbox and Radio Items - Compact */
+/* Checkbox and Radio Items - Compact Bootstrap Style */
 .checkbox-item,
 .radio-item {
     display: flex;
     align-items: center;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.15s ease;
     background: white;
-    min-height: 40px;
+    min-height: 42px;
     cursor: pointer;
     user-select: none;
+    margin-bottom: 0.5rem;
 }
 
 .checkbox-item:hover,
@@ -912,16 +862,8 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .banner-title {
-        font-size: 2.5rem;
-    }
-    
-    .banner-subtitle {
-        font-size: 1.1rem;
-    }
-    
     .form-wrapper {
-        padding: 2rem 1.5rem;
+        padding: 1.75rem 1.25rem;
     }
     
     .ingredients-sidebar {
@@ -930,24 +872,8 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .banner-section {
-        height: 250px;
-    }
-    
-    .banner-title {
-        font-size: 2rem;
-    }
-    
-    .banner-subtitle {
-        font-size: 1rem;
-    }
-    
-    .banner-content {
-        padding: 1rem;
-    }
-    
     .form-wrapper {
-        padding: 1.5rem 1rem;
+        padding: 1.25rem;
     }
     
     .sidebar-wrapper {
@@ -957,18 +883,7 @@ footer {
     
     .ingredients-sidebar {
         position: static;
-        padding: 1.5rem;
-    }
-    
-    .checkbox-grid,
-    .radio-grid {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-    }
-    
-    .input-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        padding: 1.25rem;
     }
     
     .sleek-button {
@@ -982,40 +897,22 @@ footer {
         gap: 0.5rem;
     }
     
-    .step-header {
-        gap: 0.75rem;
-    }
-    
     .step-number {
-        width: 1.75rem;
-        height: 1.75rem;
-        font-size: 0.85rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 0.75rem;
     }
     
     .section-title {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     
     .step-description {
-        font-size: 0.85rem;
-        margin-left: 2.5rem;
-        margin-top: -0.5rem;
+        font-size: 0.8rem;
     }
 }
 
 @media (max-width: 480px) {
-    .banner-section {
-        height: 200px;
-    }
-    
-    .banner-title {
-        font-size: 1.75rem;
-    }
-    
-    .banner-subtitle {
-        font-size: 0.95rem;
-    }
-    
     .form-wrapper {
         padding: 1rem;
     }
@@ -1026,11 +923,11 @@ footer {
     
     .checkbox-item,
     .radio-item {
-        padding: 0.75rem;
+        padding: 0.6rem;
     }
     
     .form-section {
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
 }
 

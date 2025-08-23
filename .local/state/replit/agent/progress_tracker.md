@@ -10,3 +10,6 @@
 [x] 10. Inform user the import is completed and mark as completed
 [x] 11. Simplify form page and make it more user-friendly
 [x] 12. Restructure JavaScript code for better organization
+[x] 13. Fixed Bootstrap grid layout for formula section sidebar display
+[x] 14. Replaced missing banner image with clean Bootstrap header
+[x] 15. Made form layout compact and sleek with proper Bootstrap typography
