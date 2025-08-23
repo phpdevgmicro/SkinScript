@@ -88,7 +88,6 @@ class SkincareFormulationApp {
         
         this.formData.skinType = selectedTypes;
         this.clearError('skinTypeError');
-        this.updatePreview();
         
         // Add visual feedback
         this.addSelectionFeedback('skinTypeSection');
@@ -97,7 +96,6 @@ class SkincareFormulationApp {
     handleBaseFormatChange() {
         const selectedFormat = document.querySelector('input[name="baseFormat"]:checked');
         this.formData.baseFormat = selectedFormat ? selectedFormat.value : '';
-        this.updatePreview();
         
         this.addSelectionFeedback('baseFormatSection');
     }
@@ -109,9 +107,7 @@ class SkincareFormulationApp {
         this.selectedKeyActives = selectedActives.length;
         this.formData.keyActives = selectedActives;
         
-        // Update counter
-        const counter = document.getElementById('activesCounter');
-        counter.textContent = `(${this.selectedKeyActives}/${this.maxKeyActives} selected)`;
+        this.updateKeyActivesCounter();
         
         // Disable/enable checkboxes based on limit
         this.toggleKeyActivesAvailability();
@@ -120,7 +116,6 @@ class SkincareFormulationApp {
         this.checkIngredientCompatibility();
         
         this.clearError('keyActivesError');
-        this.updatePreview();
         this.addSelectionFeedback('keyActivesSection');
     }
 
@@ -129,7 +124,6 @@ class SkincareFormulationApp {
             .map(input => input.value);
         
         this.formData.extracts = selectedExtracts;
-        this.updatePreview();
         this.addSelectionFeedback('extractsSection');
     }
 
@@ -138,7 +132,6 @@ class SkincareFormulationApp {
             .map(input => input.value);
         
         this.formData.boosters = selectedBoosters;
-        this.updatePreview();
         this.addSelectionFeedback('boostersSection');
     }
 
@@ -154,6 +147,13 @@ class SkincareFormulationApp {
         };
         
         this.updateFormState();
+    }
+
+    updateKeyActivesCounter() {
+        const counter = document.getElementById('activesCounter');
+        if (counter) {
+            counter.textContent = `${this.selectedKeyActives}/${this.maxKeyActives}`;
+        }
     }
 
     toggleKeyActivesAvailability() {
@@ -293,18 +293,8 @@ class SkincareFormulationApp {
         }
     }
 
-    updatePreview() {
-        const previewContent = document.getElementById('previewContent');
-        
-        if (this.hasAnySelections()) {
-            const previewHTML = this.generatePreviewHTML();
-            previewContent.innerHTML = previewHTML;
-        } else {
-            previewContent.innerHTML = '<p class="text-muted text-center fst-italic">Make your selections above to see your custom formulation preview</p>';
-        }
-    }
-
-    hasAnySelections() {
+    // Form validation and state management methods
+    hasValidSelections() {
         return this.formData.skinType.length > 0 || 
                this.formData.baseFormat || 
                this.formData.keyActives.length > 0 || 
@@ -312,81 +302,14 @@ class SkincareFormulationApp {
                this.formData.boosters.length > 0;
     }
 
-    generatePreviewHTML() {
-        let html = '';
-        
-        if (this.formData.skinType.length > 0) {
-            html += `
-                <div class="preview-section">
-                    <h4>Skin Type:</h4>
-                    <div class="preview-list">
-                        ${this.formData.skinType.map(type => 
-                            `<span class="preview-item">${this.formatIngredientName(type)}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        if (this.formData.baseFormat) {
-            html += `
-                <div class="preview-section">
-                    <h4>Base Format:</h4>
-                    <div class="preview-list">
-                        <span class="preview-item">${this.formatIngredientName(this.formData.baseFormat)}</span>
-                    </div>
-                </div>
-            `;
-        }
-        
-        if (this.formData.keyActives.length > 0) {
-            html += `
-                <div class="preview-section">
-                    <h4>Key Active Ingredients:</h4>
-                    <div class="preview-list">
-                        ${this.formData.keyActives.map(active => 
-                            `<span class="preview-item">${this.formatIngredientName(active)}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        if (this.formData.extracts.length > 0) {
-            html += `
-                <div class="preview-section">
-                    <h4>Functional Extracts:</h4>
-                    <div class="preview-list">
-                        ${this.formData.extracts.map(extract => 
-                            `<span class="preview-item">${this.formatIngredientName(extract)}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        if (this.formData.boosters.length > 0) {
-            html += `
-                <div class="preview-section">
-                    <h4>Boosters & Hydrators:</h4>
-                    <div class="preview-list">
-                        ${this.formData.boosters.map(booster => 
-                            `<span class="preview-item">${this.formatIngredientName(booster)}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        return html;
-    }
-
     updateFormState() {
         const submitBtn = document.getElementById('submitBtn');
+        if (!submitBtn) return;
+        
         const hasMinimumSelections = this.formData.skinType.length > 0 && 
                                     this.formData.keyActives.length > 0 &&
-                                    this.formData.contact.fullName &&
-                                    this.formData.contact.email;
+                                    this.formData.contact?.fullName &&
+                                    this.formData.contact?.email;
         
         submitBtn.disabled = !hasMinimumSelections;
     }
@@ -481,12 +404,9 @@ class SkincareFormulationApp {
         }
         
         // Update UI state
-        this.updatePreview();
         this.updateFormState();
         
-        // Update actives counter
-        const counter = document.getElementById('activesCounter');
-        counter.textContent = `(${this.selectedKeyActives}/${this.maxKeyActives} selected)`;
+        this.updateKeyActivesCounter();
     }
 
     async handleFormSubmit(event) {
