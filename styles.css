@@ -1216,3 +1216,31 @@ html {
     cursor: not-allowed;
     pointer-events: none;
 }
+
+/* Preview Modal Styles */
+.preview-section {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.preview-section:last-child {
+    border-bottom: none;
+}
+
+.benefits-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.benefits-list li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.benefits-list li i {
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
+}

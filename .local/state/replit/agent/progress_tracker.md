@@ -22,3 +22,10 @@
     • Added help text and guidance throughout the form
     • Enhanced submit experience with clear messaging
     • Added tooltips for better user guidance
+[x] 19. Fixed sidebar real-time updates when form selections are made
+[x] 20. Implemented comprehensive preview functionality with modal popup showing:
+    • Custom formula title generation based on selections
+    • Complete summary of all user selections
+    • Estimated benefits based on chosen ingredients  
+    • Compatibility warnings for conflicting ingredients
+    • Option to continue to submission or close preview

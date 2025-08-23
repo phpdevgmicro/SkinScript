@@ -740,8 +740,157 @@ class SkincareApp {
 
     // Preview functionality
     previewFormulation() {
-        console.log('Preview formulation:', this.state.formData);
-        // This can be expanded later for preview functionality
+        const previewData = this.generatePreviewData();
+        this.showPreviewModal(previewData);
+    }
+
+    generatePreviewData() {
+        const benefits = this.calculateBenefits();
+        const compatibility = this.getCompatibilityWarnings();
+        
+        return {
+            skinType: this.state.formData.skinType,
+            baseFormat: this.state.formData.baseFormat,
+            keyActives: this.state.formData.keyActives,
+            extracts: this.state.formData.extracts,
+            boosters: this.state.formData.boosters,
+            estimatedBenefits: benefits,
+            warnings: compatibility,
+            formulaTitle: this.generateFormulaTitle()
+        };
+    }
+
+    calculateBenefits() {
+        const benefits = new Set();
+        
+        // Benefits from key actives
+        this.state.formData.keyActives.forEach(active => {
+            switch(active) {
+                case 'caffeine':
+                    benefits.add('Energizing and circulation boost');
+                    break;
+                case 'l-carnitine':
+                    benefits.add('Firming and toning');
+                    break;
+                case 'retinol':
+                    benefits.add('Anti-aging and skin renewal');
+                    break;
+                case 'niacinamide':
+                    benefits.add('Pore refining and oil control');
+                    break;
+                case 'vitamin-c':
+                    benefits.add('Brightening and antioxidant protection');
+                    break;
+                case 'hyaluronic-acid':
+                    benefits.add('Deep hydration and plumping');
+                    break;
+            }
+        });
+
+        // Benefits from extracts
+        if (this.state.formData.extracts.length > 0) {
+            benefits.add('Natural botanical nourishment');
+        }
+
+        // Benefits from boosters
+        if (this.state.formData.boosters.length > 0) {
+            benefits.add('Enhanced moisturization and skin barrier support');
+        }
+
+        return Array.from(benefits);
+    }
+
+    generateFormulaTitle() {
+        const format = this.state.formData.baseFormat || 'mist';
+        const skinTypes = this.state.formData.skinType;
+        const mainActive = this.state.formData.keyActives[0];
+        
+        let title = 'Custom ';
+        if (mainActive) {
+            title += `${this.formatDisplayName(mainActive)} `;
+        }
+        title += `${this.formatDisplayName(format)}`;
+        
+        if (skinTypes.length > 0) {
+            title += ` for ${skinTypes.map(type => this.formatDisplayName(type)).join(' & ')} Skin`;
+        }
+        
+        return title;
+    }
+
+    showPreviewModal(previewData) {
+        // Create modal HTML
+        const modalHTML = `
+            <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gradient-primary text-white">
+                            <h5 class="modal-title" id="previewModalLabel">
+                                <i class="fas fa-flask"></i> ${previewData.formulaTitle}
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6><i class="fas fa-list-ul"></i> Your Selections</h6>
+                                    <div class="preview-section">
+                                        <strong>Skin Type:</strong> ${previewData.skinType.map(type => this.formatDisplayName(type)).join(', ') || 'Not selected'}
+                                    </div>
+                                    <div class="preview-section">
+                                        <strong>Format:</strong> ${this.formatDisplayName(previewData.baseFormat)}
+                                    </div>
+                                    <div class="preview-section">
+                                        <strong>Key Actives:</strong> ${previewData.keyActives.map(active => this.formatDisplayName(active)).join(', ') || 'None selected'}
+                                    </div>
+                                    ${previewData.extracts.length > 0 ? `<div class="preview-section"><strong>Extracts:</strong> ${previewData.extracts.map(extract => this.formatDisplayName(extract)).join(', ')}</div>` : ''}
+                                    ${previewData.boosters.length > 0 ? `<div class="preview-section"><strong>Boosters:</strong> ${previewData.boosters.map(booster => this.formatDisplayName(booster)).join(', ')}</div>` : ''}
+                                </div>
+                                <div class="col-md-6">
+                                    <h6><i class="fas fa-star"></i> Estimated Benefits</h6>
+                                    ${previewData.estimatedBenefits.length > 0 ? 
+                                        `<ul class="benefits-list">${previewData.estimatedBenefits.map(benefit => `<li><i class="fas fa-check-circle text-success"></i> ${benefit}</li>`).join('')}</ul>` :
+                                        '<p class="text-muted">Select key actives to see benefits</p>'
+                                    }
+                                    ${previewData.warnings.length > 0 ? 
+                                        `<div class="alert alert-warning mt-3">
+                                            <strong><i class="fas fa-exclamation-triangle"></i> Compatibility Notes:</strong>
+                                            <ul class="mt-2 mb-0">${previewData.warnings.map(warning => `<li>${warning}</li>`).join('')}</ul>
+                                        </div>` : ''
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="skincareApp.proceedToSubmission()" data-bs-dismiss="modal">
+                                <i class="fas fa-arrow-right"></i> Continue to Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Remove existing modal if it exists
+        const existingModal = document.getElementById('previewModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        // Add modal to DOM
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+        modal.show();
+    }
+
+    proceedToSubmission() {
+        // Navigate to the last step (contact section)
+        if (window.progressNav) {
+            window.progressNav.goToStep(6);
+        }
     }
 }
 
