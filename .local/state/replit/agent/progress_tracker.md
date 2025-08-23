@@ -29,3 +29,8 @@
     • Estimated benefits based on chosen ingredients  
     • Compatibility warnings for conflicting ingredients
     • Option to continue to submission or close preview
+[x] 21. Removed localStorage functionality as requested:
+    • Form now resets completely on page reload  
+    • Data stored as JSON in memory during session only
+    • Clean JSON structure passed to backend on submission
+    • No data persistence between browser sessions

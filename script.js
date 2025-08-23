@@ -8,8 +8,7 @@ class SkincareApp {
         // App configuration
         this.config = {
             maxKeyActives: 3,
-            apiEndpoint: '/api/submit_formulation.php',
-            storageKey: 'skincareFormData'
+            apiEndpoint: '/api/submit_formulation.php'
         };
 
         // App state
@@ -39,7 +38,6 @@ class SkincareApp {
     // Initialization
     init() {
         this.bindEvents();
-        this.loadSavedData();
         this.updateUI();
         this.updateAllSidebarSections(); // Initialize sidebar with current data
         this.hideAllSections(); // Hide all sections initially for step navigation
@@ -147,7 +145,6 @@ class SkincareApp {
             }
             
             this.updateUI();
-            this.saveFormData();
         });
 
         // Make checkbox and radio items clickable
@@ -435,8 +432,6 @@ class SkincareApp {
             } else {
                 this.displaySuccessMessage();
             }
-            
-            this.clearSavedData();
             this.scrollToStatus();
             
         } catch (error) {
@@ -462,20 +457,7 @@ class SkincareApp {
     }
 
     prepareSubmissionData() {
-        return {
-            timestamp: new Date().toISOString(),
-            formulation: {
-                skinType: this.state.formData.skinType,
-                baseFormat: this.state.formData.baseFormat,
-                keyActives: this.state.formData.keyActives,
-                extracts: this.state.formData.extracts,
-                boosters: this.state.formData.boosters
-            },
-            contact: this.state.formData.contact,
-            userAgent: navigator.userAgent,
-            screenResolution: `${screen.width}x${screen.height}`,
-            formVersion: '2.0'
-        };
+        return this.getFormDataAsJSON();
     }
 
     async submitToBackend(data) {
@@ -575,49 +557,22 @@ class SkincareApp {
         `;
     }
 
-    // Data Management
-    saveFormData() {
-        try {
-            localStorage.setItem(this.config.storageKey, JSON.stringify(this.state.formData));
-        } catch (error) {
-            console.warn('Failed to save form data:', error);
-        }
-    }
-
-    loadSavedData() {
-        try {
-            const saved = localStorage.getItem(this.config.storageKey);
-            if (saved) {
-                const data = JSON.parse(saved);
-                this.restoreFormState(data);
-            }
-        } catch (error) {
-            console.warn('Failed to load saved data:', error);
-        }
-    }
-
-    restoreFormState(data) {
-        // Restore form selections
-        this.restoreSelections('skinType', data.skinType);
-        this.restoreRadioSelection('baseFormat', data.baseFormat);
-        this.restoreSelections('keyActives', data.keyActives);
-        this.restoreSelections('extracts', data.extracts);
-        this.restoreSelections('boosters', data.boosters);
-        this.restoreContactInfo(data.contact);
-
-        // Update state
-        this.state.formData = { ...this.state.formData, ...data };
-        this.state.selectedKeyActives = data.keyActives?.length || 0;
-
-        // Update sidebar to reflect restored data
-        this.updateAllSidebarSections();
-        
-        // Update UI
-        this.updateUI();
-        this.updateKeyActivesUI();
-        
-        // Check compatibility for restored actives
-        this.checkCompatibility();
+    // Data Management - Keep data in JSON format for backend submission
+    getFormDataAsJSON() {
+        return {
+            timestamp: new Date().toISOString(),
+            formulation: {
+                skinType: this.state.formData.skinType,
+                baseFormat: this.state.formData.baseFormat,
+                keyActives: this.state.formData.keyActives,
+                extracts: this.state.formData.extracts,
+                boosters: this.state.formData.boosters
+            },
+            contact: this.state.formData.contact,
+            userAgent: navigator.userAgent,
+            screenResolution: `${screen.width}x${screen.height}`,
+            formVersion: '2.0'
+        };
     }
 
     updateAllSidebarSections() {
@@ -637,35 +592,6 @@ class SkincareApp {
         if (sidebarCounter) sidebarCounter.textContent = count;
     }
 
-    restoreSelections(name, values) {
-        if (!Array.isArray(values)) return;
-        values.forEach(value => {
-            const checkbox = document.getElementById(value);
-            if (checkbox) checkbox.checked = true;
-        });
-    }
-
-    restoreRadioSelection(name, value) {
-        if (!value) return;
-        const radio = document.getElementById(value);
-        if (radio) radio.checked = true;
-    }
-
-    restoreContactInfo(contact) {
-        if (!contact) return;
-        Object.entries(contact).forEach(([field, value]) => {
-            const input = document.getElementById(field);
-            if (input) input.value = value;
-        });
-    }
-
-    clearSavedData() {
-        try {
-            localStorage.removeItem(this.config.storageKey);
-        } catch (error) {
-            console.warn('Failed to clear saved data:', error);
-        }
-    }
 
     // Utility Functions
     getSelectedValues(name) {
