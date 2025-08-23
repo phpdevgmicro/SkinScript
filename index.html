@@ -14,8 +14,8 @@
     <div class="container">
         <!-- Header Section -->
         <div class="text-center mb-5 pt-4">
-            <h1 class="display-5 fw-bold text-dark mb-2">Build Your Own Energizing Mist</h1>
-            <p class="text-muted">Create a personalized skincare formula</p>
+            <h1 class="display-5 fw-bold text-dark mb-2">Build Your Custom Skincare</h1>
+            <p class="text-muted">Simple steps to create your perfect formula</p>
         </div>
 
         <!-- Main Form -->
@@ -23,9 +23,13 @@
             <!-- Left Side - Form Content -->
             <div class="form-content">
                 <form id="formulationForm" class="sleek-form" novalidate>
-                <!-- Skin Type Section -->
+                <!-- Step 1: Skin Type -->
                 <div class="form-section" id="skinTypeSection">
-                    <h3 class="section-title">Choose Skin Type</h3>
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3 class="section-title">What's your skin type?</h3>
+                    </div>
+                    <p class="step-description">Select all that apply to your skin</p>
                     <div class="checkbox-grid">
                         <div class="checkbox-item">
                             <input class="form-check-input" type="checkbox" name="skinType" value="oily" id="oily">
@@ -47,31 +51,39 @@
                     <div class="error-message" id="skinTypeError"></div>
                 </div>
 
-                <!-- Base Format Section -->
+                <!-- Step 2: Base Format -->
                 <div class="form-section" id="baseFormatSection">
-                    <h3 class="section-title">Select Base Format</h3>
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3 class="section-title">Choose your preferred format</h3>
+                    </div>
+                    <p class="step-description">How would you like to apply your skincare?</p>
                     <div class="radio-grid">
                         <div class="radio-item">
                             <input class="form-check-input" type="radio" name="baseFormat" value="mist" id="mist" checked>
-                            <label class="radio-label" for="mist">Mist</label>
+                            <label class="radio-label" for="mist">Mist<span class="option-hint">Easy spray application</span></label>
                         </div>
                         <div class="radio-item">
                             <input class="form-check-input" type="radio" name="baseFormat" value="serum" id="serum">
-                            <label class="radio-label" for="serum">Serum</label>
+                            <label class="radio-label" for="serum">Serum<span class="option-hint">Lightweight liquid</span></label>
                         </div>
                         <div class="radio-item">
                             <input class="form-check-input" type="radio" name="baseFormat" value="cream" id="cream">
-                            <label class="radio-label" for="cream">Cream</label>
+                            <label class="radio-label" for="cream">Cream<span class="option-hint">Rich moisturizer</span></label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Key Actives Section -->
+                <!-- Step 3: Key Ingredients -->
                 <div class="form-section" id="keyActivesSection">
-                    <div class="section-header">
-                        <h3 class="section-title">Pick Your Key Actives (up to 3)</h3>
-                        <span class="counter-badge" id="activesCounter">0/3</span>
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <div class="section-header">
+                            <h3 class="section-title">Pick your main ingredients</h3>
+                            <span class="counter-badge" id="activesCounter">0/3</span>
+                        </div>
                     </div>
+                    <p class="step-description">Choose up to 3 key ingredients for your skin concerns</p>
                     <div class="checkbox-grid">
                         <div class="checkbox-item">
                             <input class="form-check-input" type="checkbox" name="keyActives" value="caffeine" id="caffeine">
@@ -101,9 +113,13 @@
                     <div class="error-message" id="keyActivesError"></div>
                 </div>
 
-                <!-- Functional Extracts Section -->
+                <!-- Step 4: Natural Extracts -->
                 <div class="form-section" id="extractsSection">
-                    <h3 class="section-title">Add Functional Extracts</h3>
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3 class="section-title">Add natural extracts (optional)</h3>
+                    </div>
+                    <p class="step-description">Enhance your formula with botanical ingredients</p>
                     <div class="checkbox-grid">
                         <div class="checkbox-item">
                             <input class="form-check-input" type="checkbox" name="extracts" value="beta-vulgaris" id="beta-vulgaris">
@@ -132,9 +148,13 @@
                     </div>
                 </div>
 
-                <!-- Boosters/Hydrators Section -->
+                <!-- Step 5: Hydrators -->
                 <div class="form-section" id="boostersSection">
-                    <h3 class="section-title">Add Boosters / Hydrators</h3>
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h3 class="section-title">Add hydrators (optional)</h3>
+                    </div>
+                    <p class="step-description">Boost moisture and skin health</p>
                     <div class="checkbox-grid">
                         <div class="checkbox-item">
                             <input class="form-check-input" type="checkbox" name="boosters" value="glycerin" id="glycerin">
@@ -159,9 +179,13 @@
                     </div>
                 </div>
 
-                <!-- Contact Information Section -->
+                <!-- Step 6: Your Details -->
                 <div class="form-section" id="contactSection">
-                    <h3 class="section-title">Contact Information</h3>
+                    <div class="step-header">
+                        <span class="step-number">6</span>
+                        <h3 class="section-title">Your details</h3>
+                    </div>
+                    <p class="step-description">We'll send your custom formula to this email</p>
                     <div class="input-grid">
                         <div class="input-group">
                             <label for="fullName" class="input-label">Full Name *</label>
@@ -174,8 +198,8 @@
                             <div class="error-message" id="emailError"></div>
                         </div>
                         <div class="input-group full-width">
-                            <label for="skinConcerns" class="input-label">Additional Skin Concerns (Optional)</label>
-                            <textarea class="sleek-input" id="skinConcerns" name="skinConcerns" rows="3" placeholder="Tell us about any specific skin concerns or goals..."></textarea>
+                            <label for="skinConcerns" class="input-label">Special Requests (Optional)</label>
+                            <textarea class="sleek-input" id="skinConcerns" name="skinConcerns" rows="2" placeholder="Any special skin concerns or goals?"></textarea>
                         </div>
                     </div>
                 </div>

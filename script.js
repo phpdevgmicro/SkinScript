@@ -1,439 +1,330 @@
 /**
- * Skincare Formulation App - Main JavaScript File
- * Handles form validation, ingredient compatibility, and user interactions
+ * Skincare Formulation App - Modern JavaScript Implementation
+ * Clean, modular architecture for better maintainability
  */
 
-class SkincareFormulationApp {
+class SkincareApp {
     constructor() {
-        this.maxKeyActives = 3;
-        this.selectedKeyActives = 0;
-        this.formData = {
-            skinType: [],
-            baseFormat: '',
-            keyActives: [],
-            extracts: [],
-            boosters: [],
-            contact: {}
+        // App configuration
+        this.config = {
+            maxKeyActives: 3,
+            apiEndpoint: '/api/submit_formulation.php',
+            storageKey: 'skincareFormData'
         };
-        
+
+        // App state
+        this.state = {
+            formData: {
+                skinType: [],
+                baseFormat: 'mist',
+                keyActives: [],
+                extracts: [],
+                boosters: [],
+                contact: {}
+            },
+            selectedKeyActives: 0,
+            isSubmitting: false
+        };
+
         // Ingredient compatibility rules
         this.incompatibleCombinations = [
             ['retinol', 'vitamin-c'],
             ['retinol', 'niacinamide'],
             ['vitamin-c', 'niacinamide']
         ];
-        
+
         this.init();
     }
 
+    // Initialization
     init() {
-        this.bindEventListeners();
+        this.bindEvents();
         this.loadSavedData();
-        this.updateFormState();
+        this.updateUI();
         console.log('Skincare Formulation App initialized');
     }
 
-    bindEventListeners() {
-        // Form submission
-        const form = document.getElementById('formulationForm');
-        form.addEventListener('submit', (e) => this.handleFormSubmit(e));
+    // Event Binding
+    bindEvents() {
+        this.bindFormEvents();
+        this.bindSectionEvents();
+        this.bindInputEvents();
+    }
 
-        // Skin type checkboxes (multiple selection allowed)
-        const skinTypeInputs = document.querySelectorAll('input[name="skinType"]');
-        skinTypeInputs.forEach(input => {
+    bindFormEvents() {
+        const form = document.getElementById('formulationForm');
+        form?.addEventListener('submit', (e) => this.handleFormSubmit(e));
+
+        const previewBtn = document.getElementById('previewBtn');
+        previewBtn?.addEventListener('click', () => this.previewFormulation());
+    }
+
+    bindSectionEvents() {
+        // Bind events for each form section
+        this.bindSkinTypeEvents();
+        this.bindBaseFormatEvents();
+        this.bindKeyActivesEvents();
+        this.bindExtractsEvents();
+        this.bindBoostersEvents();
+        this.bindContactEvents();
+    }
+
+    bindSkinTypeEvents() {
+        const inputs = document.querySelectorAll('input[name="skinType"]');
+        inputs.forEach(input => {
             input.addEventListener('change', () => this.handleSkinTypeChange());
         });
+    }
 
-        // Base format radio buttons
-        const baseFormatInputs = document.querySelectorAll('input[name="baseFormat"]');
-        baseFormatInputs.forEach(input => {
+    bindBaseFormatEvents() {
+        const inputs = document.querySelectorAll('input[name="baseFormat"]');
+        inputs.forEach(input => {
             input.addEventListener('change', () => this.handleBaseFormatChange());
         });
+    }
 
-        // Key actives checkboxes with limit
-        const keyActiveInputs = document.querySelectorAll('input[name="keyActives"]');
-        keyActiveInputs.forEach(input => {
+    bindKeyActivesEvents() {
+        const inputs = document.querySelectorAll('input[name="keyActives"]');
+        inputs.forEach(input => {
             input.addEventListener('change', () => this.handleKeyActivesChange());
         });
+    }
 
-        // Extract checkboxes
-        const extractInputs = document.querySelectorAll('input[name="extracts"]');
-        extractInputs.forEach(input => {
+    bindExtractsEvents() {
+        const inputs = document.querySelectorAll('input[name="extracts"]');
+        inputs.forEach(input => {
             input.addEventListener('change', () => this.handleExtractsChange());
         });
+    }
 
-        // Booster checkboxes
-        const boosterInputs = document.querySelectorAll('input[name="boosters"]');
-        boosterInputs.forEach(input => {
+    bindBoostersEvents() {
+        const inputs = document.querySelectorAll('input[name="boosters"]');
+        inputs.forEach(input => {
             input.addEventListener('change', () => this.handleBoostersChange());
         });
+    }
 
-        // Contact form inputs
-        const contactInputs = document.querySelectorAll('#contactSection input, #contactSection textarea');
-        contactInputs.forEach(input => {
+    bindContactEvents() {
+        const inputs = document.querySelectorAll('#contactSection input, #contactSection textarea');
+        inputs.forEach(input => {
             input.addEventListener('blur', () => this.validateContactField(input));
             input.addEventListener('input', () => this.handleContactChange());
         });
-
-        // Real-time form validation
-        document.addEventListener('change', () => {
-            this.updateFormState();
-            this.saveFormData();
-        });
-
-        // Preview button functionality
-        const previewBtn = document.getElementById('previewBtn');
-        if (previewBtn) {
-            previewBtn.addEventListener('click', () => this.previewFormulation());
-        }
     }
 
+    bindInputEvents() {
+        // Global form change listener
+        document.addEventListener('change', () => {
+            this.updateUI();
+            this.saveFormData();
+        });
+    }
+
+    // Event Handlers
     handleSkinTypeChange() {
-        const selectedTypes = Array.from(document.querySelectorAll('input[name="skinType"]:checked'))
-            .map(input => input.value);
+        const selectedTypes = this.getSelectedValues('skinType');
+        this.state.formData.skinType = selectedTypes;
         
-        this.formData.skinType = selectedTypes;
+        this.updateSidebar('skinTypeItems', selectedTypes, 'Select your skin type');
         this.clearError('skinTypeError');
-        
-        // Update sidebar
-        this.updateSidebarSection('skinTypeItems', selectedTypes, 'Select your skin type');
-        
-        // Add visual feedback
-        this.addSelectionFeedback('skinTypeSection');
+        this.addVisualFeedback('skinTypeSection');
     }
 
     handleBaseFormatChange() {
-        const selectedFormat = document.querySelector('input[name="baseFormat"]:checked');
-        this.formData.baseFormat = selectedFormat ? selectedFormat.value : '';
+        const selected = document.querySelector('input[name="baseFormat"]:checked');
+        this.state.formData.baseFormat = selected ? selected.value : '';
         
-        // Update sidebar
-        const formatArray = selectedFormat ? [selectedFormat.value] : [];
-        this.updateSidebarSection('baseFormatItems', formatArray, 'Choose format');
-        
-        this.addSelectionFeedback('baseFormatSection');
+        const formatArray = selected ? [selected.value] : [];
+        this.updateSidebar('baseFormatItems', formatArray, 'Choose format');
+        this.addVisualFeedback('baseFormatSection');
     }
 
     handleKeyActivesChange() {
-        const selectedActives = Array.from(document.querySelectorAll('input[name="keyActives"]:checked'))
-            .map(input => input.value);
+        const selectedActives = this.getSelectedValues('keyActives');
+        this.state.formData.keyActives = selectedActives;
+        this.state.selectedKeyActives = selectedActives.length;
         
-        this.selectedKeyActives = selectedActives.length;
-        this.formData.keyActives = selectedActives;
-        
-        this.updateKeyActivesCounter();
-        
-        // Update sidebar
-        this.updateSidebarSection('keyActivesItems', selectedActives, 'Select up to 3 actives');
-        document.getElementById('activesCounterSidebar').textContent = `${this.selectedKeyActives}/3`;
-        
-        // Disable/enable checkboxes based on limit
-        this.toggleKeyActivesAvailability();
-        
-        // Check for incompatible combinations
-        this.checkIngredientCompatibility();
-        
+        this.updateKeyActivesUI();
+        this.updateSidebar('keyActivesItems', selectedActives, 'Select up to 3 actives');
+        this.checkCompatibility();
         this.clearError('keyActivesError');
-        this.addSelectionFeedback('keyActivesSection');
+        this.addVisualFeedback('keyActivesSection');
     }
 
     handleExtractsChange() {
-        const selectedExtracts = Array.from(document.querySelectorAll('input[name="extracts"]:checked'))
-            .map(input => input.value);
+        const selectedExtracts = this.getSelectedValues('extracts');
+        this.state.formData.extracts = selectedExtracts;
         
-        this.formData.extracts = selectedExtracts;
-        
-        // Update sidebar
-        this.updateSidebarSection('extractsItems', selectedExtracts, 'Add botanical extracts');
-        
-        this.addSelectionFeedback('extractsSection');
+        this.updateSidebar('extractsItems', selectedExtracts, 'Add botanical extracts');
+        this.addVisualFeedback('extractsSection');
     }
 
     handleBoostersChange() {
-        const selectedBoosters = Array.from(document.querySelectorAll('input[name="boosters"]:checked'))
-            .map(input => input.value);
+        const selectedBoosters = this.getSelectedValues('boosters');
+        this.state.formData.boosters = selectedBoosters;
         
-        this.formData.boosters = selectedBoosters;
-        
-        // Update sidebar
-        this.updateSidebarSection('boostersItems', selectedBoosters, 'Add hydrating boosters');
-        
-        this.addSelectionFeedback('boostersSection');
+        this.updateSidebar('boostersItems', selectedBoosters, 'Add hydrating boosters');
+        this.addVisualFeedback('boostersSection');
     }
 
     handleContactChange() {
-        const fullName = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-        const skinConcerns = document.getElementById('skinConcerns').value;
-        
-        this.formData.contact = {
-            fullName,
-            email,
-            skinConcerns
+        this.state.formData.contact = {
+            fullName: document.getElementById('fullName')?.value || '',
+            email: document.getElementById('email')?.value || '',
+            skinConcerns: document.getElementById('skinConcerns')?.value || ''
         };
-        
-        this.updateFormState();
+        this.updateUI();
     }
 
-    updateKeyActivesCounter() {
+    // UI Updates
+    updateUI() {
+        this.updateSubmitButton();
+        this.updatePreviewButton();
+    }
+
+    updateKeyActivesUI() {
+        this.updateActivesCounter();
+        this.toggleActivesAvailability();
+    }
+
+    updateActivesCounter() {
         const counter = document.getElementById('activesCounter');
-        if (counter) {
-            counter.textContent = `${this.selectedKeyActives}/${this.maxKeyActives}`;
+        const sidebarCounter = document.getElementById('activesCounterSidebar');
+        const count = `${this.state.selectedKeyActives}/${this.config.maxKeyActives}`;
+        
+        if (counter) counter.textContent = count;
+        if (sidebarCounter) sidebarCounter.textContent = count;
+    }
+
+    toggleActivesAvailability() {
+        const inputs = document.querySelectorAll('input[name="keyActives"]');
+        inputs.forEach(input => {
+            input.disabled = !input.checked && this.state.selectedKeyActives >= this.config.maxKeyActives;
+        });
+    }
+
+    updateSubmitButton() {
+        const submitBtn = document.getElementById('submitBtn');
+        if (!submitBtn) return;
+        
+        const hasRequired = this.hasRequiredSelections();
+        submitBtn.disabled = !hasRequired || this.state.isSubmitting;
+    }
+
+    updatePreviewButton() {
+        const previewBtn = document.getElementById('previewBtn');
+        if (!previewBtn) return;
+        
+        previewBtn.disabled = !this.hasValidSelections();
+    }
+
+    updateSidebar(containerId, items, placeholder) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        if (items.length === 0) {
+            container.innerHTML = `<span class="placeholder">${placeholder}</span>`;
+        } else {
+            const tags = items.map(item => 
+                `<span class="ingredient-tag">${this.formatDisplayName(item)}</span>`
+            ).join('');
+            container.innerHTML = tags;
         }
     }
 
-    toggleKeyActivesAvailability() {
-        const keyActiveInputs = document.querySelectorAll('input[name="keyActives"]');
+    addVisualFeedback(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
         
-        keyActiveInputs.forEach((input) => {
-            if (!input.checked && this.selectedKeyActives >= this.maxKeyActives) {
-                input.disabled = true;
-            } else {
-                input.disabled = false;
-            }
-        });
+        section.classList.add('fade-in');
+        setTimeout(() => section.classList.remove('fade-in'), 500);
     }
 
-    checkIngredientCompatibility() {
-        const selectedActives = this.formData.keyActives;
-        const warnings = [];
+    // Validation
+    validateForm() {
+        let isValid = true;
+        const errors = [];
+
+        // Validate required selections
+        if (this.state.formData.skinType.length === 0) {
+            this.showError('skinTypeError', 'Please select at least one skin type');
+            isValid = false;
+        }
+
+        if (this.state.formData.keyActives.length === 0) {
+            this.showError('keyActivesError', 'Please select at least one key ingredient');
+            isValid = false;
+        }
+
+        // Validate contact fields
+        const nameField = document.getElementById('fullName');
+        const emailField = document.getElementById('email');
         
-        this.incompatibleCombinations.forEach(combination => {
-            if (combination.every(ingredient => selectedActives.includes(ingredient))) {
-                warnings.push(`${this.formatIngredientName(combination[0])} and ${this.formatIngredientName(combination[1])} may not be compatible when used together.`);
-            }
-        });
+        if (!this.validateContactField(nameField) || !this.validateContactField(emailField)) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    validateContactField(field) {
+        if (!field) return false;
         
+        const value = field.value.trim();
+        const validators = {
+            fullName: (val) => ({
+                valid: val.length >= 2,
+                message: val.length === 0 ? 'Full name is required' : 'Name must be at least 2 characters'
+            }),
+            email: (val) => ({
+                valid: val.length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+                message: val.length === 0 ? 'Email address is required' : 'Please enter a valid email address'
+            })
+        };
+
+        const validator = validators[field.name];
+        if (!validator) return true;
+
+        const result = validator(value);
+        this.displayFieldError(field.name, result.message, !result.valid);
+        return result.valid;
+    }
+
+    // Compatibility Checking
+    checkCompatibility() {
+        const warnings = this.getCompatibilityWarnings();
         this.displayCompatibilityWarnings(warnings);
+    }
+
+    getCompatibilityWarnings() {
+        const selectedActives = this.state.formData.keyActives;
+        return this.incompatibleCombinations
+            .filter(combo => combo.every(ingredient => selectedActives.includes(ingredient)))
+            .map(combo => `${this.formatDisplayName(combo[0])} and ${this.formatDisplayName(combo[1])} may not be compatible when used together.`);
     }
 
     displayCompatibilityWarnings(warnings) {
         // Remove existing warnings
-        const existingWarnings = document.querySelectorAll('.compatibility-warning');
-        existingWarnings.forEach(warning => warning.remove());
+        document.querySelectorAll('.compatibility-warning').forEach(el => el.remove());
         
-        if (warnings.length > 0) {
-            const keyActivesSection = document.getElementById('keyActivesSection');
-            const warningDiv = document.createElement('div');
-            warningDiv.className = 'compatibility-warning show';
-            warningDiv.innerHTML = `
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>Compatibility Notice:</strong>
-                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
-                    ${warnings.map(warning => `<li>${warning}</li>`).join('')}
-                </ul>
-            `;
-            keyActivesSection.appendChild(warningDiv);
-        }
+        if (warnings.length === 0) return;
+
+        const section = document.getElementById('keyActivesSection');
+        if (!section) return;
+
+        const warningDiv = document.createElement('div');
+        warningDiv.className = 'compatibility-warning show';
+        warningDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Compatibility Notice:</strong>
+            <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                ${warnings.map(warning => `<li>${warning}</li>`).join('')}
+            </ul>
+        `;
+        section.appendChild(warningDiv);
     }
 
-    formatIngredientName(ingredient) {
-        return ingredient.split('-').map(word => 
-            word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(' ');
-    }
-
-    validateContactField(field) {
-        const value = field.value.trim();
-        const fieldName = field.name;
-        let isValid = true;
-        let errorMessage = '';
-        
-        switch (fieldName) {
-            case 'fullName':
-                if (!value) {
-                    isValid = false;
-                    errorMessage = 'Full name is required';
-                } else if (value.length < 2) {
-                    isValid = false;
-                    errorMessage = 'Name must be at least 2 characters long';
-                }
-                break;
-                
-            case 'email':
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!value) {
-                    isValid = false;
-                    errorMessage = 'Email address is required';
-                } else if (!emailRegex.test(value)) {
-                    isValid = false;
-                    errorMessage = 'Please enter a valid email address';
-                }
-                break;
-        }
-        
-        this.displayFieldError(fieldName, errorMessage, !isValid);
-        return isValid;
-    }
-
-    displayFieldError(fieldName, message, show) {
-        const errorElement = document.getElementById(`${fieldName}Error`);
-        if (errorElement) {
-            errorElement.textContent = message;
-            errorElement.classList.toggle('show', show);
-        }
-    }
-
-    validateForm() {
-        let isValid = true;
-        const errors = [];
-        
-        // Validate skin type selection
-        if (this.formData.skinType.length === 0) {
-            errors.push('Please select at least one skin type');
-            this.showError('skinTypeError', 'Please select at least one skin type');
-            isValid = false;
-        }
-        
-        // Validate key actives selection
-        if (this.formData.keyActives.length === 0) {
-            errors.push('Please select at least one key active ingredient');
-            this.showError('keyActivesError', 'Please select at least one key active ingredient');
-            isValid = false;
-        }
-        
-        // Validate contact information
-        const fullNameValid = this.validateContactField(document.getElementById('fullName'));
-        const emailValid = this.validateContactField(document.getElementById('email'));
-        
-        if (!fullNameValid || !emailValid) {
-            isValid = false;
-        }
-        
-        return isValid;
-    }
-
-    showError(elementId, message) {
-        const errorElement = document.getElementById(elementId);
-        if (errorElement) {
-            errorElement.textContent = message;
-            errorElement.classList.add('show');
-        }
-    }
-
-    clearError(elementId) {
-        const errorElement = document.getElementById(elementId);
-        if (errorElement) {
-            errorElement.classList.remove('show');
-            errorElement.textContent = '';
-        }
-    }
-
-    // Form validation and state management methods
-    hasValidSelections() {
-        return this.formData.skinType.length > 0 || 
-               this.formData.baseFormat || 
-               this.formData.keyActives.length > 0 || 
-               this.formData.extracts.length > 0 || 
-               this.formData.boosters.length > 0;
-    }
-
-    updateFormState() {
-        const submitBtn = document.getElementById('submitBtn');
-        if (!submitBtn) return;
-        
-        const hasMinimumSelections = this.formData.skinType.length > 0 && 
-                                    this.formData.keyActives.length > 0 &&
-                                    this.formData.contact?.fullName &&
-                                    this.formData.contact?.email;
-        
-        submitBtn.disabled = !hasMinimumSelections;
-    }
-
-    addSelectionFeedback(sectionId) {
-        const section = document.getElementById(sectionId);
-        section.classList.add('fade-in');
-        
-        setTimeout(() => {
-            section.classList.remove('fade-in');
-        }, 500);
-    }
-
-    saveFormData() {
-        try {
-            localStorage.setItem('skincareFormData', JSON.stringify(this.formData));
-        } catch (error) {
-            console.warn('Failed to save form data to localStorage:', error);
-        }
-    }
-
-    loadSavedData() {
-        try {
-            const savedData = localStorage.getItem('skincareFormData');
-            if (savedData) {
-                const parsedData = JSON.parse(savedData);
-                this.restoreFormState(parsedData);
-            }
-        } catch (error) {
-            console.warn('Failed to load saved form data:', error);
-        }
-    }
-
-    restoreFormState(data) {
-        // Restore skin type selections
-        if (data.skinType) {
-            data.skinType.forEach(type => {
-                const checkbox = document.getElementById(type);
-                if (checkbox) checkbox.checked = true;
-            });
-            this.formData.skinType = data.skinType;
-        }
-        
-        // Restore base format selection
-        if (data.baseFormat) {
-            const radio = document.getElementById(data.baseFormat);
-            if (radio) radio.checked = true;
-            this.formData.baseFormat = data.baseFormat;
-        }
-        
-        // Restore key actives selections
-        if (data.keyActives) {
-            data.keyActives.forEach(active => {
-                const checkbox = document.getElementById(active);
-                if (checkbox) checkbox.checked = true;
-            });
-            this.formData.keyActives = data.keyActives;
-            this.selectedKeyActives = data.keyActives.length;
-            this.toggleKeyActivesAvailability();
-        }
-        
-        // Restore extracts selections
-        if (data.extracts) {
-            data.extracts.forEach(extract => {
-                const checkbox = document.getElementById(extract);
-                if (checkbox) checkbox.checked = true;
-            });
-            this.formData.extracts = data.extracts;
-        }
-        
-        // Restore boosters selections
-        if (data.boosters) {
-            data.boosters.forEach(booster => {
-                const checkbox = document.getElementById(booster);
-                if (checkbox) checkbox.checked = true;
-            });
-            this.formData.boosters = data.boosters;
-        }
-        
-        // Restore contact information
-        if (data.contact) {
-            if (data.contact.fullName) {
-                document.getElementById('fullName').value = data.contact.fullName;
-            }
-            if (data.contact.email) {
-                document.getElementById('email').value = data.contact.email;
-            }
-            if (data.contact.skinConcerns) {
-                document.getElementById('skinConcerns').value = data.contact.skinConcerns;
-            }
-            this.formData.contact = data.contact;
-        }
-        
-        // Update UI state
-        this.updateFormState();
-        
-        this.updateKeyActivesCounter();
-    }
-
+    // Form Submission
     async handleFormSubmit(event) {
         event.preventDefault();
         
@@ -442,74 +333,63 @@ class SkincareFormulationApp {
             return;
         }
         
-        const submitBtn = document.getElementById('submitBtn');
-        const statusDiv = document.getElementById('submissionStatus');
-        
-        // Show loading state
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        this.state.isSubmitting = true;
+        this.showSubmissionState(true);
         
         try {
-            // Prepare submission data
             const submissionData = this.prepareSubmissionData();
-            
-            // Submit to backend and get formulation results
-            const response = await this.simulateFormSubmission(submissionData);
+            const response = await this.submitToBackend(submissionData);
             
             if (response.formulation) {
-                this.displayFormulationResults(response.formulation, response.pdf);
+                this.displayResults(response.formulation, response.pdf);
             } else {
-                statusDiv.className = 'status-message success';
-                statusDiv.innerHTML = `
-                    <i class="fas fa-check-circle"></i>
-                    <strong>Request Submitted Successfully!</strong><br>
-                    We'll review your custom formulation and get back to you within 24 hours at ${this.formData.contact.email}.
-                `;
+                this.displaySuccessMessage();
             }
             
-            // Clear form data from localStorage
-            localStorage.removeItem('skincareFormData');
-            
-            // Scroll to success message
-            statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            this.clearSavedData();
+            this.scrollToStatus();
             
         } catch (error) {
-            console.error('Form submission error:', error);
-            statusDiv.className = 'status-message error';
-            statusDiv.innerHTML = `
-                <i class="fas fa-exclamation-circle"></i>
-                <strong>Submission Failed</strong><br>
-                Please try again. If the problem persists, contact support.
-            `;
+            console.error('Submission error:', error);
+            this.displayErrorMessage();
         } finally {
-            // Reset button state
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
+            this.state.isSubmitting = false;
+            this.showSubmissionState(false);
         }
     }
 
-    prepareSubmissionData() {
-        const timestamp = new Date().toISOString();
+    showSubmissionState(isSubmitting) {
+        const submitBtn = document.getElementById('submitBtn');
+        if (!submitBtn) return;
         
+        if (isSubmitting) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        } else {
+            submitBtn.innerHTML = 'Submit Request';
+        }
+        
+        this.updateSubmitButton();
+    }
+
+    prepareSubmissionData() {
         return {
-            timestamp,
+            timestamp: new Date().toISOString(),
             formulation: {
-                skinType: this.formData.skinType,
-                baseFormat: this.formData.baseFormat,
-                keyActives: this.formData.keyActives,
-                extracts: this.formData.extracts,
-                boosters: this.formData.boosters
+                skinType: this.state.formData.skinType,
+                baseFormat: this.state.formData.baseFormat,
+                keyActives: this.state.formData.keyActives,
+                extracts: this.state.formData.extracts,
+                boosters: this.state.formData.boosters
             },
-            contact: this.formData.contact,
+            contact: this.state.formData.contact,
             userAgent: navigator.userAgent,
             screenResolution: `${screen.width}x${screen.height}`,
-            formVersion: '1.0'
+            formVersion: '2.0'
         };
     }
 
-    async simulateFormSubmission(data) {
-        // Submit to PHP backend API
-        const response = await fetch('/api/submit_formulation.php', {
+    async submitToBackend(data) {
+        const response = await fetch(this.config.apiEndpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -526,101 +406,179 @@ class SkincareFormulationApp {
         return responseData;
     }
 
-    scrollToFirstError() {
-        const firstError = document.querySelector('.error-message.show');
-        if (firstError) {
-            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
-
-    displayFormulationResults(formulation, pdfInfo) {
+    // Display Results
+    displayResults(formulation, pdfInfo) {
         const statusDiv = document.getElementById('submissionStatus');
-        
-        // Create formula table
-        let formulaRows = '';
-        for (const [ingredient, percentage] of Object.entries(formulation.formula)) {
-            const ingredientName = this.formatIngredientName(ingredient);
-            formulaRows += `
-                <tr>
-                    <td>${ingredientName}</td>
-                    <td>${percentage}%</td>
-                </tr>
-            `;
-        }
-
-        // Create recommendations list
-        let recommendationsHtml = '';
-        if (formulation.recommendations && formulation.recommendations.length > 0) {
-            recommendationsHtml = `
-                <div class="recommendations-section">
-                    <h4><i class="fas fa-lightbulb"></i> Usage Recommendations:</h4>
-                    <ul>
-                        ${formulation.recommendations.map(rec => `<li>${rec}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-
-        // Create PDF download section
-        let pdfSection = '';
-        if (pdfInfo && pdfInfo.success) {
-            pdfSection = `
-                <div class="pdf-section">
-                    <h4><i class="fas fa-file-pdf"></i> Your Formulation Document</h4>
-                    <p>Download your personalized formulation guide:</p>
-                    <a href="${pdfInfo.download_url}" class="pdf-download-btn" target="_blank">
-                        <i class="fas fa-download"></i> Download PDF${pdfInfo.fallback ? ' (HTML Format)' : ''}
-                    </a>
-                </div>
-            `;
-        }
+        if (!statusDiv) return;
 
         statusDiv.className = 'status-message formulation-results';
-        statusDiv.innerHTML = `
+        statusDiv.innerHTML = this.buildResultsHTML(formulation, pdfInfo);
+    }
+
+    buildResultsHTML(formulation, pdfInfo) {
+        const formulaRows = Object.entries(formulation.formula || {})
+            .map(([ingredient, percentage]) => 
+                `<tr><td>${this.formatDisplayName(ingredient)}</td><td>${percentage}%</td></tr>`
+            ).join('');
+
+        const recommendations = formulation.recommendations?.length > 0 ? 
+            `<div class="recommendations-section">
+                <h4><i class="fas fa-lightbulb"></i> Usage Recommendations:</h4>
+                <ul>${formulation.recommendations.map(rec => `<li>${rec}</li>`).join('')}</ul>
+            </div>` : '';
+
+        const pdfSection = pdfInfo?.success ? 
+            `<div class="pdf-section">
+                <h4><i class="fas fa-file-pdf"></i> Your Formulation Document</h4>
+                <p>Download your personalized formulation guide:</p>
+                <a href="${pdfInfo.download_url}" class="pdf-download-btn" target="_blank">
+                    <i class="fas fa-download"></i> Download PDF${pdfInfo.fallback ? ' (HTML Format)' : ''}
+                </a>
+            </div>` : '';
+
+        return `
             <div class="formulation-header">
                 <i class="fas fa-flask"></i>
                 <h3>${formulation.title}</h3>
                 <div class="profile-badge">${formulation.profile}</div>
             </div>
-            
             <div class="formulation-description">
                 <p>${formulation.description}</p>
             </div>
-            
             <div class="formulation-breakdown">
                 <h4><i class="fas fa-list-ul"></i> Formulation Breakdown (% w/w)</h4>
                 <table class="formula-table">
-                    <thead>
-                        <tr>
-                            <th>Ingredient</th>
-                            <th>Percentage</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${formulaRows}
-                    </tbody>
+                    <thead><tr><th>Ingredient</th><th>Percentage</th></tr></thead>
+                    <tbody>${formulaRows}</tbody>
                 </table>
             </div>
-            
-            ${recommendationsHtml}
+            ${recommendations}
             ${pdfSection}
-            
             <div class="formulation-footer">
                 <p><i class="fas fa-info-circle"></i> Formulation ID: ${formulation.formulation_id}</p>
                 <p>Generated on ${formulation.generated_at}</p>
             </div>
         `;
-        
-        // Scroll to results
-        statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    formatIngredientName(ingredient) {
-        // Handle special formatting for display
+    displaySuccessMessage() {
+        const statusDiv = document.getElementById('submissionStatus');
+        if (!statusDiv) return;
+
+        statusDiv.className = 'status-message success';
+        statusDiv.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <strong>Request Submitted Successfully!</strong><br>
+            We'll review your custom formulation and get back to you within 24 hours at ${this.state.formData.contact.email}.
+        `;
+    }
+
+    displayErrorMessage() {
+        const statusDiv = document.getElementById('submissionStatus');
+        if (!statusDiv) return;
+
+        statusDiv.className = 'status-message error';
+        statusDiv.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <strong>Submission Failed</strong><br>
+            Please try again. If the problem persists, contact support.
+        `;
+    }
+
+    // Data Management
+    saveFormData() {
+        try {
+            localStorage.setItem(this.config.storageKey, JSON.stringify(this.state.formData));
+        } catch (error) {
+            console.warn('Failed to save form data:', error);
+        }
+    }
+
+    loadSavedData() {
+        try {
+            const saved = localStorage.getItem(this.config.storageKey);
+            if (saved) {
+                const data = JSON.parse(saved);
+                this.restoreFormState(data);
+            }
+        } catch (error) {
+            console.warn('Failed to load saved data:', error);
+        }
+    }
+
+    restoreFormState(data) {
+        // Restore form selections
+        this.restoreSelections('skinType', data.skinType);
+        this.restoreRadioSelection('baseFormat', data.baseFormat);
+        this.restoreSelections('keyActives', data.keyActives);
+        this.restoreSelections('extracts', data.extracts);
+        this.restoreSelections('boosters', data.boosters);
+        this.restoreContactInfo(data.contact);
+
+        // Update state
+        this.state.formData = { ...this.state.formData, ...data };
+        this.state.selectedKeyActives = data.keyActives?.length || 0;
+
+        // Update UI
+        this.updateUI();
+        this.updateKeyActivesUI();
+    }
+
+    restoreSelections(name, values) {
+        if (!Array.isArray(values)) return;
+        values.forEach(value => {
+            const checkbox = document.getElementById(value);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+
+    restoreRadioSelection(name, value) {
+        if (!value) return;
+        const radio = document.getElementById(value);
+        if (radio) radio.checked = true;
+    }
+
+    restoreContactInfo(contact) {
+        if (!contact) return;
+        Object.entries(contact).forEach(([field, value]) => {
+            const input = document.getElementById(field);
+            if (input) input.value = value;
+        });
+    }
+
+    clearSavedData() {
+        try {
+            localStorage.removeItem(this.config.storageKey);
+        } catch (error) {
+            console.warn('Failed to clear saved data:', error);
+        }
+    }
+
+    // Utility Functions
+    getSelectedValues(name) {
+        return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
+            .map(input => input.value);
+    }
+
+    hasRequiredSelections() {
+        return this.state.formData.skinType.length > 0 && 
+               this.state.formData.keyActives.length > 0 &&
+               this.state.formData.contact.fullName &&
+               this.state.formData.contact.email;
+    }
+
+    hasValidSelections() {
+        return this.state.formData.skinType.length > 0 || 
+               this.state.formData.baseFormat || 
+               this.state.formData.keyActives.length > 0 || 
+               this.state.formData.extracts.length > 0 || 
+               this.state.formData.boosters.length > 0;
+    }
+
+    formatDisplayName(ingredient) {
         let formatted = ingredient.replace(/-/g, ' ');
         formatted = formatted.replace(/\b\w/g, l => l.toUpperCase());
         
-        // Special cases
         const replacements = {
             'L Carnitine': 'L-Carnitine',
             'Beta Vulgaris': 'Beta Vulgaris (Beet Root)',
@@ -633,186 +591,48 @@ class SkincareFormulationApp {
         return replacements[formatted] || formatted;
     }
 
-    updateSidebarSection(elementId, items, placeholder) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-        
-        container.innerHTML = '';
-        
-        if (items.length === 0) {
-            container.innerHTML = `<span class="placeholder">${placeholder}</span>`;
-        } else {
-            items.forEach(item => {
-                const tag = document.createElement('span');
-                tag.className = 'ingredient-tag';
-                tag.textContent = this.formatIngredientName(item);
-                container.appendChild(tag);
-            });
-        }
-        
-        // Update preview button state
-        this.updatePreviewButton();
-    }
-
-    async previewFormulation() {
-        if (!this.formData.skinType.length || !this.formData.keyActives.length) {
-            alert('Please select at least one skin type and one key active ingredient.');
-            return;
-        }
-
-        try {
-            const previewData = {
-                skinType: this.formData.skinType,
-                baseFormat: this.formData.baseFormat || 'mist',
-                keyActives: this.formData.keyActives,
-                extracts: this.formData.extracts,
-                boosters: this.formData.boosters
-            };
-
-            const response = await fetch('/api/generate_formulation.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(previewData)
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                this.displayFormulationPreview(result.formulation);
-            } else {
-                throw new Error(result.error || 'Failed to generate preview');
-            }
-
-        } catch (error) {
-            console.error('Preview error:', error);
-            alert('Failed to generate preview. Please try again.');
+    showError(elementId, message) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = message;
+            element.classList.add('show');
         }
     }
 
-    displayFormulationPreview(formulation) {
-        // Create modal or replace sidebar content with preview
-        const sidebar = document.querySelector('.ingredients-sidebar');
-        const originalContent = sidebar.innerHTML;
-
-        // Create preview content
-        let formulaRows = '';
-        for (const [ingredient, percentage] of Object.entries(formulation.formula)) {
-            const ingredientName = this.formatIngredientName(ingredient);
-            formulaRows += `<div class="preview-ingredient"><span>${ingredientName}</span><span>${percentage}%</span></div>`;
+    clearError(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.remove('show');
+            element.textContent = '';
         }
-
-        sidebar.innerHTML = `
-            <div class="formulation-preview">
-                <div class="preview-header">
-                    <h3><i class="fas fa-eye"></i> Formula Preview</h3>
-                    <button type="button" class="close-preview" id="closePreview">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="preview-content">
-                    <h4>${formulation.title}</h4>
-                    <p class="preview-description">${formulation.description}</p>
-                    
-                    <div class="preview-formula">
-                        <h5>Ingredients:</h5>
-                        ${formulaRows}
-                    </div>
-                    
-                    <div class="preview-actions">
-                        <button type="button" class="back-to-edit" id="backToEdit">
-                            <i class="fas fa-edit"></i> Continue Editing
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        // Add event listeners for preview actions
-        document.getElementById('closePreview').addEventListener('click', () => {
-            sidebar.innerHTML = originalContent;
-            this.rebindPreviewButton();
-        });
-
-        document.getElementById('backToEdit').addEventListener('click', () => {
-            sidebar.innerHTML = originalContent;
-            this.rebindPreviewButton();
-        });
     }
 
-    rebindPreviewButton() {
-        const previewBtn = document.getElementById('previewBtn');
-        if (previewBtn) {
-            previewBtn.addEventListener('click', () => this.previewFormulation());
+    displayFieldError(fieldName, message, show) {
+        const errorElement = document.getElementById(`${fieldName}Error`);
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.classList.toggle('show', show);
         }
-        this.updatePreviewButton();
     }
 
-    updatePreviewButton() {
-        const previewBtn = document.getElementById('previewBtn');
-        if (!previewBtn) return;
-        
-        const hasMinimumSelections = this.formData.skinType.length > 0 && 
-                                    this.formData.keyActives.length > 0;
-        
-        previewBtn.disabled = !hasMinimumSelections;
+    scrollToFirstError() {
+        const firstError = document.querySelector('.error-message.show');
+        firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    scrollToStatus() {
+        const statusDiv = document.getElementById('submissionStatus');
+        statusDiv?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Preview functionality
+    previewFormulation() {
+        console.log('Preview formulation:', this.state.formData);
+        // This can be expanded later for preview functionality
     }
 }
 
-// Initialize the application when the DOM is fully loaded
+// Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.skincareApp = new SkincareFormulationApp();
+    new SkincareApp();
 });
-
-// Add some utility functions for enhanced user experience
-document.addEventListener('DOMContentLoaded', () => {
-    // Add smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
-    // Add keyboard navigation support
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && e.target.type === 'checkbox') {
-            e.target.click();
-        }
-    });
-    
-    // Add focus management for accessibility
-    const checkboxItems = document.querySelectorAll('.checkbox-item, .radio-item');
-    checkboxItems.forEach(item => {
-        // Only make the label clickable, not the entire container
-        const label = item.querySelector('label');
-        const input = item.querySelector('input');
-        
-        // Ensure clicking only on label or checkbox triggers the action
-        if (label && input) {
-            // Prevent the container from being clickable
-            item.addEventListener('click', (e) => {
-                // Only allow clicks on the input or label
-                if (e.target === input || e.target === label) {
-                    return; // Allow normal behavior
-                } else {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-            });
-        }
-    });
-});
-
-// Export for potential testing or external usage
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = SkincareFormulationApp;
-}
