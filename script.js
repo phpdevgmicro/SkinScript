@@ -141,48 +141,55 @@ class SkincareApp {
     }
 
     bindClickableItems() {
-        // Make entire checkbox-item clickable
-        const checkboxItems = document.querySelectorAll('.checkbox-item');
-        checkboxItems.forEach(item => {
+        // Improved checkbox/radio item handling for smooth interaction
+        const allItems = document.querySelectorAll('.checkbox-item, .radio-item');
+        
+        allItems.forEach(item => {
+            // Remove any existing event listeners first
+            item.replaceWith(item.cloneNode(true));
+        });
+
+        // Re-select items after cloning (to remove old listeners)
+        document.querySelectorAll('.checkbox-item, .radio-item').forEach(item => {
             item.addEventListener('click', (e) => {
-                // Don't double-trigger if clicking directly on input or label
-                if (e.target.type === 'checkbox' || e.target.type === 'radio' || e.target.tagName === 'LABEL') {
+                // Only handle clicks on the container, not on the input or label directly
+                if (e.target.type === 'checkbox' || e.target.type === 'radio' || 
+                    e.target.tagName === 'LABEL' || e.target.closest('label')) {
                     return;
                 }
                 
                 const input = item.querySelector('input[type="checkbox"], input[type="radio"]');
                 if (input && !input.disabled) {
-                    if (input.type === 'checkbox') {
-                        input.checked = !input.checked;
-                    } else if (input.type === 'radio') {
-                        input.checked = true;
-                    }
-                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                    // Prevent any conflicts
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Use setTimeout to ensure smooth visual transition
+                    setTimeout(() => {
+                        if (input.type === 'checkbox') {
+                            input.checked = !input.checked;
+                        } else if (input.type === 'radio') {
+                            input.checked = true;
+                        }
+                        
+                        // Trigger change event
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                    }, 0);
                 }
             });
 
-            // Add visual feedback on hover
+            // Ensure proper cursor style
             item.style.cursor = 'pointer';
         });
 
-        // Make entire radio-item clickable  
-        const radioItems = document.querySelectorAll('.radio-item');
-        radioItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                // Don't double-trigger if clicking directly on input or label
-                if (e.target.type === 'checkbox' || e.target.type === 'radio' || e.target.tagName === 'LABEL') {
-                    return;
-                }
-                
-                const input = item.querySelector('input[type="radio"]');
-                if (input && !input.disabled) {
-                    input.checked = true;
+        // Add specific input handling for better responsiveness
+        document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+            input.addEventListener('click', (e) => {
+                // Let the default behavior happen but ensure change event fires
+                setTimeout(() => {
                     input.dispatchEvent(new Event('change', { bubbles: true }));
-                }
+                }, 0);
             });
-
-            // Add visual feedback on hover
-            item.style.cursor = 'pointer';
         });
     }
 
