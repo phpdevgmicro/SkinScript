@@ -480,28 +480,22 @@ class SkincareFormulationApp {
     }
 
     async simulateFormSubmission(data) {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Submit to PHP backend API
+        const response = await fetch('/api/submit_formulation.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
         
-        // Log submission data for development
-        console.log('Form submission data:', data);
+        const responseData = await response.json();
         
-        // In a real application, this would be an actual API call:
-        // const response = await fetch('/api/formulations', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(data)
-        // });
-        // 
-        // if (!response.ok) {
-        //     throw new Error('Network response was not ok');
-        // }
-        // 
-        // return response.json();
+        if (!response.ok) {
+            throw new Error(responseData.error || 'Network response was not ok');
+        }
         
-        return { success: true, id: 'FORM_' + Date.now() };
+        return responseData;
     }
 
     scrollToFirstError() {
