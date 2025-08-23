@@ -152,14 +152,14 @@ body {
     background: white;
     border: 1px solid #e9ecef;
     border-radius: 16px;
-    padding: 2rem;
+    padding: 1.25rem;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     height: fit-content;
 }
 
 .sidebar-header {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.25rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
     border-bottom: 2px solid #f1f5f9;
     text-align: center;
 }
@@ -192,59 +192,95 @@ body {
 
 .sidebar-header h3 {
     color: var(--primary-color);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    margin: 0 0 0.5rem 0;
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
 }
 
-.sidebar-subtitle {
-    color: var(--text-secondary);
+.formula-summary {
+    margin-bottom: 1rem;
+}
+
+.summary-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
     font-size: 0.85rem;
-    margin: 0;
-    font-weight: 400;
 }
 
-.selected-ingredients {
-    margin-bottom: 1.5rem;
+.summary-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
 }
 
-.ingredient-category {
-    margin-bottom: 1.25rem;
-    padding: 1rem;
-    background: #f8fafc;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
-}
-
-.ingredient-category h4 {
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin: 0 0 0.75rem 0;
+.summary-row .label {
+    color: var(--text-secondary);
+    font-weight: 500;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    gap: 0.4rem;
+    min-width: 70px;
+    flex-shrink: 0;
 }
 
-.ingredient-category h4 i {
+.summary-row .label i {
     color: var(--primary-color);
-    margin-right: 0.5rem;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    width: 12px;
+}
+
+.summary-row .value {
+    color: var(--text-primary);
+    font-weight: 500;
+    text-align: right;
+    flex: 1;
+    margin-left: 0.5rem;
+    line-height: 1.3;
+}
+
+.value-with-counter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.actives-row .value {
+    margin-right: 0;
 }
 
 .counter {
     background: var(--primary-color);
     color: white;
-    padding: 0.2rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 10px;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+.extras-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.extras-items:empty {
+    display: none;
+}
+
+.extras-items:not(:empty) + .extras-items:not(:empty)::before {
+    content: "+ ";
+    color: var(--text-secondary);
 }
 
 .selected-items {

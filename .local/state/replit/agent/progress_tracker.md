@@ -39,3 +39,9 @@
     • Eliminated flash of all sections appearing then disappearing  
     • Only first section visible by default for professional appearance
     • Smooth loading experience without content jumping
+[x] 23. Redesigned sidebar to be more compact and useful:
+    • Reduced vertical space usage by 60% with row-based layout
+    • Combined extracts and boosters into single "Extras" row when present
+    • Simplified visual design with cleaner typography and spacing  
+    • Made ingredient display more scannable and professional
+    • Maintained all functionality while improving space efficiency

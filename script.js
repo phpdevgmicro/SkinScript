@@ -170,7 +170,7 @@ class SkincareApp {
         const selectedTypes = this.getSelectedValues('skinType');
         this.state.formData.skinType = selectedTypes;
         
-        this.updateSidebar('skinTypeItems', selectedTypes, 'Select your skin type');
+        this.updateSidebar('skinTypeItems', selectedTypes, 'Not selected');
         this.clearError('skinTypeError');
         this.addVisualFeedback('skinTypeSection');
     }
@@ -180,7 +180,7 @@ class SkincareApp {
         this.state.formData.baseFormat = selected ? selected.value : '';
         
         const formatArray = selected ? [selected.value] : [];
-        this.updateSidebar('baseFormatItems', formatArray, 'Choose format');
+        this.updateSidebar('baseFormatItems', formatArray, 'Mist');
         this.addVisualFeedback('baseFormatSection');
     }
 
@@ -190,7 +190,7 @@ class SkincareApp {
         this.state.selectedKeyActives = selectedActives.length;
         
         this.updateKeyActivesUI();
-        this.updateSidebar('keyActivesItems', selectedActives, 'Select up to 3 actives');
+        this.updateSidebar('keyActivesItems', selectedActives, 'None selected');
         this.checkCompatibility();
         this.clearError('keyActivesError');
         this.addVisualFeedback('keyActivesSection');
@@ -200,7 +200,7 @@ class SkincareApp {
         const selectedExtracts = this.getSelectedValues('extracts');
         this.state.formData.extracts = selectedExtracts;
         
-        this.updateSidebar('extractsItems', selectedExtracts, 'Add botanical extracts');
+        this.updateSidebar('extractsItems', selectedExtracts, '');
         this.addVisualFeedback('extractsSection');
     }
 
@@ -208,7 +208,7 @@ class SkincareApp {
         const selectedBoosters = this.getSelectedValues('boosters');
         this.state.formData.boosters = selectedBoosters;
         
-        this.updateSidebar('boostersItems', selectedBoosters, 'Add hydrating boosters');
+        this.updateSidebar('boostersItems', selectedBoosters, '');
         this.addVisualFeedback('boostersSection');
     }
 
@@ -267,17 +267,30 @@ class SkincareApp {
         const container = document.getElementById(containerId);
         if (!container) return;
 
-        if (items.length === 0) {
-            container.innerHTML = `<span class="placeholder">${placeholder}</span>`;
+        if (containerId === 'extractsItems' || containerId === 'boostersItems') {
+            // Handle extras section
+            if (items.length === 0) {
+                container.innerHTML = '';
+            } else {
+                container.innerHTML = items.map(item => this.formatDisplayName(item)).join(', ');
+            }
+            
+            // Show/hide extras row
+            const extrasRow = document.getElementById('extrasRow');
+            const extractsItems = document.getElementById('extractsItems');
+            const boostersItems = document.getElementById('boostersItems');
+            const hasExtras = extractsItems.innerHTML.trim() || boostersItems.innerHTML.trim();
+            
+            if (extrasRow) {
+                extrasRow.style.display = hasExtras ? 'flex' : 'none';
+            }
         } else {
-            const tags = items.map(item => {
-                const displayName = this.formatDisplayName(item);
-                return `<span class="ingredient-tag" data-ingredient="${item}" title="Remove ${displayName}">
-                    ${displayName}
-                    <button class="remove-ingredient" onclick="skincareApp.removeIngredient('${containerId}', '${item}')">&times;</button>
-                </span>`;
-            }).join('');
-            container.innerHTML = tags;
+            // Handle main items (skin type, format, actives)
+            if (items.length === 0) {
+                container.innerHTML = placeholder;
+            } else {
+                container.innerHTML = items.map(item => this.formatDisplayName(item)).join(', ');
+            }
         }
     }
 
@@ -560,14 +573,14 @@ class SkincareApp {
 
     updateAllSidebarSections() {
         // Update all sidebar sections with current form data
-        this.updateSidebar('skinTypeItems', this.state.formData.skinType, 'Select your skin type');
+        this.updateSidebar('skinTypeItems', this.state.formData.skinType, 'Not selected');
         
         const formatArray = this.state.formData.baseFormat ? [this.state.formData.baseFormat] : [];
-        this.updateSidebar('baseFormatItems', formatArray, 'Choose format');
+        this.updateSidebar('baseFormatItems', formatArray, 'Mist');
         
-        this.updateSidebar('keyActivesItems', this.state.formData.keyActives, 'Select up to 3 actives');
-        this.updateSidebar('extractsItems', this.state.formData.extracts, 'Add botanical extracts');
-        this.updateSidebar('boostersItems', this.state.formData.boosters, 'Add hydrating boosters');
+        this.updateSidebar('keyActivesItems', this.state.formData.keyActives, 'None selected');
+        this.updateSidebar('extractsItems', this.state.formData.extracts, '');
+        this.updateSidebar('boostersItems', this.state.formData.boosters, '');
         
         // Update counters
         const count = `${this.state.selectedKeyActives}/${this.config.maxKeyActives}`;
