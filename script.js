@@ -80,6 +80,12 @@ class SkincareFormulationApp {
             this.updateFormState();
             this.saveFormData();
         });
+
+        // Preview button functionality
+        const previewBtn = document.getElementById('previewBtn');
+        if (previewBtn) {
+            previewBtn.addEventListener('click', () => this.previewFormulation());
+        }
     }
 
     handleSkinTypeChange() {
@@ -89,6 +95,9 @@ class SkincareFormulationApp {
         this.formData.skinType = selectedTypes;
         this.clearError('skinTypeError');
         
+        // Update sidebar
+        this.updateSidebarSection('skinTypeItems', selectedTypes, 'Select your skin type');
+        
         // Add visual feedback
         this.addSelectionFeedback('skinTypeSection');
     }
@@ -96,6 +105,10 @@ class SkincareFormulationApp {
     handleBaseFormatChange() {
         const selectedFormat = document.querySelector('input[name="baseFormat"]:checked');
         this.formData.baseFormat = selectedFormat ? selectedFormat.value : '';
+        
+        // Update sidebar
+        const formatArray = selectedFormat ? [selectedFormat.value] : [];
+        this.updateSidebarSection('baseFormatItems', formatArray, 'Choose format');
         
         this.addSelectionFeedback('baseFormatSection');
     }
@@ -108,6 +121,10 @@ class SkincareFormulationApp {
         this.formData.keyActives = selectedActives;
         
         this.updateKeyActivesCounter();
+        
+        // Update sidebar
+        this.updateSidebarSection('keyActivesItems', selectedActives, 'Select up to 3 actives');
+        document.getElementById('activesCounterSidebar').textContent = `${this.selectedKeyActives}/3`;
         
         // Disable/enable checkboxes based on limit
         this.toggleKeyActivesAvailability();
@@ -124,6 +141,10 @@ class SkincareFormulationApp {
             .map(input => input.value);
         
         this.formData.extracts = selectedExtracts;
+        
+        // Update sidebar
+        this.updateSidebarSection('extractsItems', selectedExtracts, 'Add botanical extracts');
+        
         this.addSelectionFeedback('extractsSection');
     }
 
@@ -132,6 +153,10 @@ class SkincareFormulationApp {
             .map(input => input.value);
         
         this.formData.boosters = selectedBoosters;
+        
+        // Update sidebar
+        this.updateSidebarSection('boostersItems', selectedBoosters, 'Add hydrating boosters');
+        
         this.addSelectionFeedback('boostersSection');
     }
 
@@ -606,6 +631,133 @@ class SkincareFormulationApp {
         };
         
         return replacements[formatted] || formatted;
+    }
+
+    updateSidebarSection(elementId, items, placeholder) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        if (items.length === 0) {
+            container.innerHTML = `<span class="placeholder">${placeholder}</span>`;
+        } else {
+            items.forEach(item => {
+                const tag = document.createElement('span');
+                tag.className = 'ingredient-tag';
+                tag.textContent = this.formatIngredientName(item);
+                container.appendChild(tag);
+            });
+        }
+        
+        // Update preview button state
+        this.updatePreviewButton();
+    }
+
+    async previewFormulation() {
+        if (!this.formData.skinType.length || !this.formData.keyActives.length) {
+            alert('Please select at least one skin type and one key active ingredient.');
+            return;
+        }
+
+        try {
+            const previewData = {
+                skinType: this.formData.skinType,
+                baseFormat: this.formData.baseFormat || 'mist',
+                keyActives: this.formData.keyActives,
+                extracts: this.formData.extracts,
+                boosters: this.formData.boosters
+            };
+
+            const response = await fetch('/api/generate_formulation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(previewData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.displayFormulationPreview(result.formulation);
+            } else {
+                throw new Error(result.error || 'Failed to generate preview');
+            }
+
+        } catch (error) {
+            console.error('Preview error:', error);
+            alert('Failed to generate preview. Please try again.');
+        }
+    }
+
+    displayFormulationPreview(formulation) {
+        // Create modal or replace sidebar content with preview
+        const sidebar = document.querySelector('.ingredients-sidebar');
+        const originalContent = sidebar.innerHTML;
+
+        // Create preview content
+        let formulaRows = '';
+        for (const [ingredient, percentage] of Object.entries(formulation.formula)) {
+            const ingredientName = this.formatIngredientName(ingredient);
+            formulaRows += `<div class="preview-ingredient"><span>${ingredientName}</span><span>${percentage}%</span></div>`;
+        }
+
+        sidebar.innerHTML = `
+            <div class="formulation-preview">
+                <div class="preview-header">
+                    <h3><i class="fas fa-eye"></i> Formula Preview</h3>
+                    <button type="button" class="close-preview" id="closePreview">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="preview-content">
+                    <h4>${formulation.title}</h4>
+                    <p class="preview-description">${formulation.description}</p>
+                    
+                    <div class="preview-formula">
+                        <h5>Ingredients:</h5>
+                        ${formulaRows}
+                    </div>
+                    
+                    <div class="preview-actions">
+                        <button type="button" class="back-to-edit" id="backToEdit">
+                            <i class="fas fa-edit"></i> Continue Editing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Add event listeners for preview actions
+        document.getElementById('closePreview').addEventListener('click', () => {
+            sidebar.innerHTML = originalContent;
+            this.rebindPreviewButton();
+        });
+
+        document.getElementById('backToEdit').addEventListener('click', () => {
+            sidebar.innerHTML = originalContent;
+            this.rebindPreviewButton();
+        });
+    }
+
+    rebindPreviewButton() {
+        const previewBtn = document.getElementById('previewBtn');
+        if (previewBtn) {
+            previewBtn.addEventListener('click', () => this.previewFormulation());
+        }
+        this.updatePreviewButton();
+    }
+
+    updatePreviewButton() {
+        const previewBtn = document.getElementById('previewBtn');
+        if (!previewBtn) return;
+        
+        const hasMinimumSelections = this.formData.skinType.length > 0 && 
+                                    this.formData.keyActives.length > 0;
+        
+        previewBtn.disabled = !hasMinimumSelections;
     }
 }
 
