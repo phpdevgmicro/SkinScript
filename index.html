@@ -11,462 +11,242 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container">
         <!-- Header Section -->
-        <header class="text-center py-5 mb-4">
-            <div class="container">
-                <h1 class="display-4 fw-bold text-primary mb-3">
-                    <i class="fas fa-tint me-3"></i>
-                    Build Your Own Energizing Mist
-                </h1>
-                <p class="lead text-muted mb-4">Create a personalized skincare formula tailored to your unique needs</p>
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="d-flex justify-content-center gap-3">
-                            <img src="https://pixabay.com/get/g717396e5f50eae09a6bc1a1c0ff2c32b174de6dcc2612f350834370aa6ad2bc9cf623ccb564108cc662b8d60023c775be56795fe6dc88059b885b1856b9b1ea6_1280.jpg" alt="Skincare bottles" class="img-fluid rounded shadow hero-img" style="width: 120px; height: 120px; object-fit: cover;">
-                            <img src="https://pixabay.com/get/g9ff25e24d2c7afb18e53fdaea03871ec533934c2a92d0d5ea986a003cce2163319f0026aed492d3ae0e8458d673e941d615bfa7fa8ee308323bad85ead2fcc3a_1280.jpg" alt="Natural ingredients" class="img-fluid rounded shadow hero-img" style="width: 120px; height: 120px; object-fit: cover;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold mb-4">Build Your Own Energizing Mist</h1>
+        </div>
 
         <!-- Main Form -->
-        <main class="container">
-            <form id="formulationForm" class="needs-validation" novalidate>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form id="formulationForm" class="needs-validation" novalidate>
                 <!-- Skin Type Section -->
-                <div class="card mb-4" id="skinTypeSection">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="h5 mb-0">
-                            <i class="fas fa-user me-2"></i>
-                            Choose Skin Type:
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6 col-lg-3">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="skinType" value="oily" id="oily">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="oily">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-droplet text-primary fs-2 mb-2"></i>
-                                            <h6 class="card-title">Oily</h6>
-                                            <small class="text-muted">Excess sebum production</small>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="skinType" value="dry" id="dry">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="dry">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-leaf text-success fs-2 mb-2"></i>
-                                            <h6 class="card-title">Dry</h6>
-                                            <small class="text-muted">Needs hydration</small>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="skinType" value="sensitive" id="sensitive">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="sensitive">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-heart text-danger fs-2 mb-2"></i>
-                                            <h6 class="card-title">Sensitive</h6>
-                                            <small class="text-muted">Gentle formulation</small>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="skinType" value="combination" id="combination">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="combination">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-balance-scale text-warning fs-2 mb-2"></i>
-                                            <h6 class="card-title">Combination</h6>
-                                            <small class="text-muted">Mixed skin zones</small>
-                                        </div>
-                                    </label>
-                                </div>
+                <div class="mb-4" id="skinTypeSection">
+                    <h3 class="h5 mb-3">Choose Skin Type:</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="skinType" value="oily" id="oily">
+                                <label class="form-check-label" for="oily">Oily</label>
                             </div>
                         </div>
-                        <div class="invalid-feedback d-block" id="skinTypeError"></div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="skinType" value="dry" id="dry">
+                                <label class="form-check-label" for="dry">Dry</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="skinType" value="sensitive" id="sensitive">
+                                <label class="form-check-label" for="sensitive">Sensitive</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="skinType" value="combination" id="combination">
+                                <label class="form-check-label" for="combination">Combination</label>
+                            </div>
+                        </div>
                     </div>
+                    <div class="invalid-feedback d-block" id="skinTypeError"></div>
                 </div>
 
                 <!-- Base Format Section -->
-                <div class="card mb-4" id="baseFormatSection">
-                    <div class="card-header bg-info text-white">
-                        <h2 class="h5 mb-0">
-                            <i class="fas fa-flask me-2"></i>
-                            Select Base Format:
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="radio" name="baseFormat" value="mist" id="mist" checked>
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="mist">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-spray-can text-info fs-2 mb-2"></i>
-                                            <h6 class="card-title">Mist</h6>
-                                            <small class="text-muted">Light, refreshing spray</small>
-                                        </div>
-                                    </label>
-                                </div>
+                <div class="mb-4" id="baseFormatSection">
+                    <h3 class="h5 mb-3">Select Base Format:</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="baseFormat" value="mist" id="mist" checked>
+                                <label class="form-check-label" for="mist">Mist</label>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="radio" name="baseFormat" value="serum" id="serum">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="serum">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-tint text-primary fs-2 mb-2"></i>
-                                            <h6 class="card-title">Serum</h6>
-                                            <small class="text-muted">Concentrated treatment</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="baseFormat" value="serum" id="serum">
+                                <label class="form-check-label" for="serum">Serum</label>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="radio" name="baseFormat" value="cream" id="cream">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="cream">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-circle text-secondary fs-2 mb-2"></i>
-                                            <h6 class="card-title">Cream</h6>
-                                            <small class="text-muted">Rich, moisturizing base</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="baseFormat" value="cream" id="cream">
+                                <label class="form-check-label" for="cream">Cream</label>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Key Actives Section -->
-                <div class="card mb-4" id="keyActivesSection">
-                    <div class="card-header bg-success text-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h2 class="h5 mb-0">
-                                <i class="fas fa-atom me-2"></i>
-                                Pick Your Key Actives:
-                            </h2>
-                            <span class="badge bg-light text-dark" id="activesCounter">(0/3 selected)</span>
-                        </div>
+                <div class="mb-4" id="keyActivesSection">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="h5 mb-0">Pick Your Key Actives (up to 3):</h3>
+                        <span class="text-muted" id="activesCounter">(0/3 selected)</span>
                     </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="keyActives" value="caffeine" id="caffeine">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="caffeine">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-coffee text-success fs-2 mb-2"></i>
-                                            <h6 class="card-title">Caffeine</h6>
-                                            <small class="text-muted">Energizing & anti-puffiness</small>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="keyActives" value="l-carnitine" id="l-carnitine">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="l-carnitine">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-dna text-primary fs-2 mb-2"></i>
-                                            <h6 class="card-title">L-Carnitine</h6>
-                                            <small class="text-muted">Cellular energy boost</small>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="keyActives" value="retinol" id="retinol">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="retinol">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-star text-warning fs-2 mb-2"></i>
-                                            <h6 class="card-title">Retinol</h6>
-                                            <small class="text-muted">Anti-aging powerhouse</small>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="keyActives" value="niacinamide" id="niacinamide">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="niacinamide">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-shield-alt text-info fs-2 mb-2"></i>
-                                            <h6 class="card-title">Niacinamide</h6>
-                                            <small class="text-muted">Pore refining & balancing</small>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="keyActives" value="vitamin-c" id="vitamin-c">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="vitamin-c">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-sun text-warning fs-2 mb-2"></i>
-                                            <h6 class="card-title">Vitamin C</h6>
-                                            <small class="text-muted">Brightening antioxidant</small>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="keyActives" value="hyaluronic-acid" id="hyaluronic-acid">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="hyaluronic-acid">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-tint text-primary fs-2 mb-2"></i>
-                                            <h6 class="card-title">Hyaluronic Acid</h6>
-                                            <small class="text-muted">Deep hydration</small>
-                                        </div>
-                                    </label>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="caffeine" id="caffeine">
+                                <label class="form-check-label" for="caffeine">Caffeine</label>
                             </div>
                         </div>
-                        <div class="invalid-feedback d-block" id="keyActivesError"></div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="l-carnitine" id="l-carnitine">
+                                <label class="form-check-label" for="l-carnitine">L-Carnitine</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="retinol" id="retinol">
+                                <label class="form-check-label" for="retinol">Retinol</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="niacinamide" id="niacinamide">
+                                <label class="form-check-label" for="niacinamide">Niacinamide</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="vitamin-c" id="vitamin-c">
+                                <label class="form-check-label" for="vitamin-c">Vitamin C</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="hyaluronic-acid" id="hyaluronic-acid">
+                                <label class="form-check-label" for="hyaluronic-acid">Hyaluronic Acid</label>
+                            </div>
+                        </div>
                     </div>
+                    <div class="invalid-feedback d-block" id="keyActivesError"></div>
                 </div>
 
                 <!-- Functional Extracts Section -->
-                <div class="card mb-4" id="extractsSection">
-                    <div class="card-header bg-warning text-dark">
-                        <h2 class="h5 mb-0">
-                            <i class="fas fa-seedling me-2"></i>
-                            Add Functional Extracts:
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="extracts" value="beta-vulgaris" id="beta-vulgaris">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="beta-vulgaris">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-carrot text-warning fs-2 mb-2"></i>
-                                            <h6 class="card-title">Beta Vulgaris (Beet)</h6>
-                                            <small class="text-muted">Circulation boosting</small>
-                                        </div>
-                                    </label>
-                                </div>
+                <div class="mb-4" id="extractsSection">
+                    <h3 class="h5 mb-3">Add Functional Extracts:</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="beta-vulgaris" id="beta-vulgaris">
+                                <label class="form-check-label" for="beta-vulgaris">Beta Vulgaris (Beet)</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="extracts" value="avena-sativa" id="avena-sativa">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="avena-sativa">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-wheat-awn text-success fs-2 mb-2"></i>
-                                            <h6 class="card-title">Avena Sativa (Oat)</h6>
-                                            <small class="text-muted">Soothing & calming</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="avena-sativa" id="avena-sativa">
+                                <label class="form-check-label" for="avena-sativa">Avena Sativa (Oat)</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="extracts" value="neem" id="neem">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="neem">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-leaf text-success fs-2 mb-2"></i>
-                                            <h6 class="card-title">Neem</h6>
-                                            <small class="text-muted">Purifying & antibacterial</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="neem" id="neem">
+                                <label class="form-check-label" for="neem">Neem</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="extracts" value="bilberry" id="bilberry">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="bilberry">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-circle text-primary fs-2 mb-2"></i>
-                                            <h6 class="card-title">Bilberry</h6>
-                                            <small class="text-muted">Antioxidant protection</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="bilberry" id="bilberry">
+                                <label class="form-check-label" for="bilberry">Bilberry</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="extracts" value="green-tea" id="green-tea">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="green-tea">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-mug-hot text-success fs-2 mb-2"></i>
-                                            <h6 class="card-title">Green Tea</h6>
-                                            <small class="text-muted">Anti-inflammatory</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="green-tea" id="green-tea">
+                                <label class="form-check-label" for="green-tea">Green Tea</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="extracts" value="chamomile" id="chamomile">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="chamomile">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-spa text-info fs-2 mb-2"></i>
-                                            <h6 class="card-title">Chamomile</h6>
-                                            <small class="text-muted">Gentle & soothing</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="chamomile" id="chamomile">
+                                <label class="form-check-label" for="chamomile">Chamomile</label>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Boosters/Hydrators Section -->
-                <div class="card mb-4" id="boostersSection">
-                    <div class="card-header bg-secondary text-white">
-                        <h2 class="h5 mb-0">
-                            <i class="fas fa-rocket me-2"></i>
-                            Add Boosters / Hydrators:
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="boosters" value="glycerin" id="glycerin">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="glycerin">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-tint text-primary fs-2 mb-2"></i>
-                                            <h6 class="card-title">Glycerin</h6>
-                                            <small class="text-muted">Moisture retention</small>
-                                        </div>
-                                    </label>
-                                </div>
+                <div class="mb-4" id="boostersSection">
+                    <h3 class="h5 mb-3">Add Boosters / Hydrators:</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="glycerin" id="glycerin">
+                                <label class="form-check-label" for="glycerin">Glycerin</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="boosters" value="sodium-pca" id="sodium-pca">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="sodium-pca">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-water text-info fs-2 mb-2"></i>
-                                            <h6 class="card-title">Sodium PCA</h6>
-                                            <small class="text-muted">Natural hydration factor</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="sodium-pca" id="sodium-pca">
+                                <label class="form-check-label" for="sodium-pca">Sodium PCA</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="boosters" value="copper-peptides" id="copper-peptides">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="copper-peptides">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-link text-warning fs-2 mb-2"></i>
-                                            <h6 class="card-title">Copper Peptides</h6>
-                                            <small class="text-muted">Collagen synthesis</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="copper-peptides" id="copper-peptides">
+                                <label class="form-check-label" for="copper-peptides">Copper Peptides</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="boosters" value="ceramides" id="ceramides">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="ceramides">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-shield text-success fs-2 mb-2"></i>
-                                            <h6 class="card-title">Ceramides</h6>
-                                            <small class="text-muted">Barrier repair</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="ceramides" id="ceramides">
+                                <label class="form-check-label" for="ceramides">Ceramides</label>
                             </div>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="form-check-card h-100">
-                                    <input class="form-check-input d-none" type="checkbox" name="boosters" value="squalane" id="squalane">
-                                    <label class="card text-center h-100 border-2 cursor-pointer" for="squalane">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="fas fa-oil-can text-secondary fs-2 mb-2"></i>
-                                            <h6 class="card-title">Squalane</h6>
-                                            <small class="text-muted">Lightweight moisture</small>
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="squalane" id="squalane">
+                                <label class="form-check-label" for="squalane">Squalane</label>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Contact Information Section -->
-                <div class="card mb-4" id="contactSection">
-                    <div class="card-header bg-dark text-white">
-                        <h2 class="h5 mb-0">
-                            <i class="fas fa-envelope me-2"></i>
-                            Contact Information:
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="fullName" class="form-label">Full Name *</label>
-                                    <input type="text" class="form-control" id="fullName" name="fullName" required>
-                                    <div class="invalid-feedback" id="fullNameError"></div>
-                                </div>
+                <div class="mb-4" id="contactSection">
+                    <h3 class="h5 mb-3">Contact Information:</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" required>
+                                <div class="invalid-feedback" id="fullNameError"></div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email Address *</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                    <div class="invalid-feedback" id="emailError"></div>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback" id="emailError"></div>
                             </div>
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="skinConcerns" class="form-label">Additional Skin Concerns (Optional)</label>
-                                    <textarea class="form-control" id="skinConcerns" name="skinConcerns" rows="3" placeholder="Tell us about any specific skin concerns or goals..."></textarea>
-                                </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="skinConcerns" class="form-label">Additional Skin Concerns (Optional)</label>
+                                <textarea class="form-control" id="skinConcerns" name="skinConcerns" rows="3" placeholder="Tell us about any specific skin concerns or goals..."></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Submit Section -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="h5 mb-0">Your Custom Formulation Preview</h3>
-                    </div>
-                    <div class="card-body" id="formulationPreview">
-                        <div id="previewContent">
-                            <p class="text-muted text-center fst-italic">Make your selections above to see your custom formulation preview</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mb-4">
+                <div class="text-center mt-5">
                     <button type="submit" class="btn btn-primary btn-lg px-5" id="submitBtn" disabled>
-                        <i class="fas fa-paper-plane me-2"></i>
                         Submit Request
                     </button>
                 </div>
                 
                 <div id="submissionStatus"></div>
-            </form>
-        </main>
+                </form>
+            </div>
+        </div>
 
         <!-- Footer -->
-        <footer class="bg-light text-center py-4 mt-5">
-            <div class="container">
-                <div class="row justify-content-center mb-3">
-                    <div class="col-auto">
-                        <img src="https://pixabay.com/get/g786952c099e7cd5e2a542f00c7f67ec92d7f99e004e917303f90035cbcb2b98c525220d77171eafff21275f659e08d6290d1bfe428018fbbf401d947fa87ab22_1280.jpg" alt="Skincare routine" class="img-fluid rounded" style="width: 60px; height: 60px; object-fit: cover; opacity: 0.7;">
-                    </div>
-                    <div class="col-auto">
-                        <img src="https://pixabay.com/get/gf6d2b72ef6cf6a23165c0a4dadf2771e8cb155e703218b85161b76c60955382466d12cb2a8d86d52b5006a4aa89b411ee91ebd65d18446bde7750e9fa8e07f4d_1280.jpg" alt="Natural skincare" class="img-fluid rounded" style="width: 60px; height: 60px; object-fit: cover; opacity: 0.7;">
-                    </div>
-                </div>
-                <p class="text-muted mb-0">&copy; 2025 Custom Skincare Formulations. Professional consultation recommended.</p>
-            </div>
+        <footer class="text-center py-4 mt-5">
+            <p class="text-muted mb-0">&copy; 2025 Custom Skincare Formulations. Professional consultation recommended.</p>
         </footer>
     </div>
 

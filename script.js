@@ -158,20 +158,11 @@ class SkincareFormulationApp {
 
     toggleKeyActivesAvailability() {
         const keyActiveInputs = document.querySelectorAll('input[name="keyActives"]');
-        const keyActiveCards = document.querySelectorAll('.form-check-card');
         
-        keyActiveInputs.forEach((input, index) => {
-            const card = keyActiveCards[index];
-            
+        keyActiveInputs.forEach((input) => {
             if (!input.checked && this.selectedKeyActives >= this.maxKeyActives) {
-                if (card) {
-                    card.classList.add('disabled');
-                }
                 input.disabled = true;
             } else {
-                if (card) {
-                    card.classList.remove('disabled');
-                }
                 input.disabled = false;
             }
         });
