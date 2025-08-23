@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your Own Energizing Mist | Custom Skincare Formulation</title>
+    <meta name="description" content="Create your personalized energizing mist with our interactive skincare formulation tool">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="hero-section">
+                <h1 class="main-title">
+                    <i class="fas fa-tint title-icon"></i>
+                    Build Your Own Energizing Mist
+                </h1>
+                <p class="subtitle">Create a personalized skincare formula tailored to your unique needs</p>
+                <div class="hero-images">
+                    <div class="hero-image-grid">
+                        <img src="https://pixabay.com/get/g717396e5f50eae09a6bc1a1c0ff2c32b174de6dcc2612f350834370aa6ad2bc9cf623ccb564108cc662b8d60023c775be56795fe6dc88059b885b1856b9b1ea6_1280.jpg" alt="Skincare bottles" class="hero-img">
+                        <img src="https://pixabay.com/get/g9ff25e24d2c7afb18e53fdaea03871ec533934c2a92d0d5ea986a003cce2163319f0026aed492d3ae0e8458d673e941d615bfa7fa8ee308323bad85ead2fcc3a_1280.jpg" alt="Natural ingredients" class="hero-img">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Form -->
+        <main class="main-content">
+            <form id="formulationForm" class="formulation-form" novalidate>
+                <!-- Skin Type Section -->
+                <section class="form-section" id="skinTypeSection">
+                    <h2 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Choose Skin Type:
+                    </h2>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-card" data-type="skin-type">
+                            <input type="checkbox" name="skinType" value="oily" id="oily">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-droplet"></i>
+                                <span class="label-text">Oily</span>
+                                <small class="description">Excess sebum production</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="skin-type">
+                            <input type="checkbox" name="skinType" value="dry" id="dry">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-leaf"></i>
+                                <span class="label-text">Dry</span>
+                                <small class="description">Needs hydration</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="skin-type">
+                            <input type="checkbox" name="skinType" value="sensitive" id="sensitive">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-heart"></i>
+                                <span class="label-text">Sensitive</span>
+                                <small class="description">Gentle formulation</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="skin-type">
+                            <input type="checkbox" name="skinType" value="combination" id="combination">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-balance-scale"></i>
+                                <span class="label-text">Combination</span>
+                                <small class="description">Mixed skin zones</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="error-message" id="skinTypeError"></div>
+                </section>
+
+                <!-- Base Format Section -->
+                <section class="form-section" id="baseFormatSection">
+                    <h2 class="section-title">
+                        <i class="fas fa-flask"></i>
+                        Select Base Format:
+                    </h2>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-card" data-type="base-format">
+                            <input type="radio" name="baseFormat" value="mist" id="mist" checked>
+                            <span class="checkmark radio"></span>
+                            <div class="card-content">
+                                <i class="fas fa-spray-can"></i>
+                                <span class="label-text">Mist</span>
+                                <small class="description">Light, refreshing spray</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="base-format">
+                            <input type="radio" name="baseFormat" value="serum" id="serum">
+                            <span class="checkmark radio"></span>
+                            <div class="card-content">
+                                <i class="fas fa-tint"></i>
+                                <span class="label-text">Serum</span>
+                                <small class="description">Concentrated treatment</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="base-format">
+                            <input type="radio" name="baseFormat" value="cream" id="cream">
+                            <span class="checkmark radio"></span>
+                            <div class="card-content">
+                                <i class="fas fa-circle"></i>
+                                <span class="label-text">Cream</span>
+                                <small class="description">Rich, moisturizing base</small>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Key Actives Section -->
+                <section class="form-section" id="keyActivesSection">
+                    <h2 class="section-title">
+                        <i class="fas fa-atom"></i>
+                        Pick Your Key Actives:
+                        <span class="selection-counter" id="activesCounter">(0/3 selected)</span>
+                    </h2>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-card" data-type="key-active">
+                            <input type="checkbox" name="keyActives" value="caffeine" id="caffeine">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-coffee"></i>
+                                <span class="label-text">Caffeine</span>
+                                <small class="description">Energizing & anti-puffiness</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="key-active">
+                            <input type="checkbox" name="keyActives" value="l-carnitine" id="l-carnitine">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-dna"></i>
+                                <span class="label-text">L-Carnitine</span>
+                                <small class="description">Cellular energy boost</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="key-active">
+                            <input type="checkbox" name="keyActives" value="retinol" id="retinol">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-star"></i>
+                                <span class="label-text">Retinol</span>
+                                <small class="description">Anti-aging powerhouse</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="key-active">
+                            <input type="checkbox" name="keyActives" value="niacinamide" id="niacinamide">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-shield-alt"></i>
+                                <span class="label-text">Niacinamide</span>
+                                <small class="description">Pore refining & balancing</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="key-active">
+                            <input type="checkbox" name="keyActives" value="vitamin-c" id="vitamin-c">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-sun"></i>
+                                <span class="label-text">Vitamin C</span>
+                                <small class="description">Brightening antioxidant</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="key-active">
+                            <input type="checkbox" name="keyActives" value="hyaluronic-acid" id="hyaluronic-acid">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-tint"></i>
+                                <span class="label-text">Hyaluronic Acid</span>
+                                <small class="description">Deep hydration</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="error-message" id="keyActivesError"></div>
+                </section>
+
+                <!-- Functional Extracts Section -->
+                <section class="form-section" id="extractsSection">
+                    <h2 class="section-title">
+                        <i class="fas fa-seedling"></i>
+                        Add Functional Extracts:
+                    </h2>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-card" data-type="extract">
+                            <input type="checkbox" name="extracts" value="beta-vulgaris" id="beta-vulgaris">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-carrot"></i>
+                                <span class="label-text">Beta Vulgaris (Beet)</span>
+                                <small class="description">Circulation boosting</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="extract">
+                            <input type="checkbox" name="extracts" value="avena-sativa" id="avena-sativa">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-wheat-awn"></i>
+                                <span class="label-text">Avena Sativa (Oat)</span>
+                                <small class="description">Soothing & calming</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="extract">
+                            <input type="checkbox" name="extracts" value="neem" id="neem">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-leaf"></i>
+                                <span class="label-text">Neem</span>
+                                <small class="description">Purifying & antibacterial</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="extract">
+                            <input type="checkbox" name="extracts" value="bilberry" id="bilberry">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-circle"></i>
+                                <span class="label-text">Bilberry</span>
+                                <small class="description">Antioxidant protection</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="extract">
+                            <input type="checkbox" name="extracts" value="green-tea" id="green-tea">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-mug-hot"></i>
+                                <span class="label-text">Green Tea</span>
+                                <small class="description">Anti-inflammatory</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="extract">
+                            <input type="checkbox" name="extracts" value="chamomile" id="chamomile">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-flower"></i>
+                                <span class="label-text">Chamomile</span>
+                                <small class="description">Gentle & soothing</small>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Boosters/Hydrators Section -->
+                <section class="form-section" id="boostersSection">
+                    <h2 class="section-title">
+                        <i class="fas fa-rocket"></i>
+                        Add Boosters / Hydrators:
+                    </h2>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-card" data-type="booster">
+                            <input type="checkbox" name="boosters" value="glycerin" id="glycerin">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-tint"></i>
+                                <span class="label-text">Glycerin</span>
+                                <small class="description">Moisture retention</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="booster">
+                            <input type="checkbox" name="boosters" value="sodium-pca" id="sodium-pca">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-water"></i>
+                                <span class="label-text">Sodium PCA</span>
+                                <small class="description">Natural hydration factor</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="booster">
+                            <input type="checkbox" name="boosters" value="copper-peptides" id="copper-peptides">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-link"></i>
+                                <span class="label-text">Copper Peptides</span>
+                                <small class="description">Collagen synthesis</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="booster">
+                            <input type="checkbox" name="boosters" value="ceramides" id="ceramides">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-shield"></i>
+                                <span class="label-text">Ceramides</span>
+                                <small class="description">Barrier repair</small>
+                            </div>
+                        </label>
+                        <label class="checkbox-card" data-type="booster">
+                            <input type="checkbox" name="boosters" value="squalane" id="squalane">
+                            <span class="checkmark"></span>
+                            <div class="card-content">
+                                <i class="fas fa-oil-can"></i>
+                                <span class="label-text">Squalane</span>
+                                <small class="description">Lightweight moisture</small>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Contact Information Section -->
+                <section class="form-section" id="contactSection">
+                    <h2 class="section-title">
+                        <i class="fas fa-envelope"></i>
+                        Contact Information:
+                    </h2>
+                    <div class="contact-grid">
+                        <div class="input-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                            <div class="error-message" id="fullNameError"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                            <div class="error-message" id="emailError"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="skinConcerns">Additional Skin Concerns (Optional)</label>
+                            <textarea id="skinConcerns" name="skinConcerns" rows="3" placeholder="Tell us about any specific skin concerns or goals..."></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Submit Section -->
+                <section class="submit-section">
+                    <div class="formulation-preview" id="formulationPreview">
+                        <h3>Your Custom Formulation Preview</h3>
+                        <div class="preview-content" id="previewContent">
+                            <p class="empty-state">Make your selections above to see your custom formulation preview</p>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Request
+                    </button>
+                    
+                    <div class="submission-status" id="submissionStatus"></div>
+                </section>
+            </form>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-images">
+                    <img src="https://pixabay.com/get/g786952c099e7cd5e2a542f00c7f67ec92d7f99e004e917303f90035cbcb2b98c525220d77171eafff21275f659e08d6290d1bfe428018fbbf401d947fa87ab22_1280.jpg" alt="Skincare routine" class="footer-img">
+                    <img src="https://pixabay.com/get/gf6d2b72ef6cf6a23165c0a4dadf2771e8cb155e703218b85161b76c60955382466d12cb2a8d86d52b5006a4aa89b411ee91ebd65d18446bde7750e9fa8e07f4d_1280.jpg" alt="Natural skincare" class="footer-img">
+                </div>
+                <p>&copy; 2025 Custom Skincare Formulations. Professional consultation recommended.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
