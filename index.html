@@ -27,6 +27,45 @@
     </header>
 
     <div class="container-fluid px-3 px-md-4">
+        <!-- Progress Bar -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="progress-container">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="progressBarFill"></div>
+                        </div>
+                        <div class="progress-steps">
+                            <div class="progress-step active" data-step="1">
+                                <span class="step-icon">1</span>
+                                <span class="step-label">Skin Type</span>
+                            </div>
+                            <div class="progress-step" data-step="2">
+                                <span class="step-icon">2</span>
+                                <span class="step-label">Format</span>
+                            </div>
+                            <div class="progress-step" data-step="3">
+                                <span class="step-icon">3</span>
+                                <span class="step-label">Actives</span>
+                            </div>
+                            <div class="progress-step" data-step="4">
+                                <span class="step-icon">4</span>
+                                <span class="step-label">Extracts</span>
+                            </div>
+                            <div class="progress-step" data-step="5">
+                                <span class="step-icon">5</span>
+                                <span class="step-label">Hydrators</span>
+                            </div>
+                            <div class="progress-step" data-step="6">
+                                <span class="step-icon">6</span>
+                                <span class="step-label">Details</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="row g-4">
             <!-- Form Column -->
             <div class="col-lg-8">
@@ -39,7 +78,7 @@
                         <span class="step-number">1</span>
                         <h3 class="section-title">What's your skin type?</h3>
                     </div>
-                    <p class="step-description">Select all that apply to your skin</p>
+                    <p class="step-description">Select all that apply to your skin. Not sure? <a href="#" class="help-link" data-bs-toggle="tooltip" title="Oily: shiny T-zone, large pores. Dry: tight, flaky skin. Sensitive: reacts to products. Combination: oily T-zone, dry cheeks.">Get help choosing</a></p>
                     <div class="row g-2">
                         <div class="col-6 col-md-3">
                             <div class="checkbox-item">
@@ -111,42 +150,60 @@
                         </div>
                         <span class="counter-badge" id="activesCounter">0/3</span>
                     </div>
-                    <p class="step-description">Choose up to 3 key ingredients for your skin concerns</p>
+                    <p class="step-description">Choose up to 3 key ingredients for your skin concerns. <strong>Tip:</strong> Combine ingredients that target different benefits for best results.</p>
                     <div class="row g-2">
                         <div class="col-6 col-md-4">
                             <div class="checkbox-item">
                                 <input class="form-check-input" type="checkbox" name="keyActives" value="caffeine" id="caffeine">
-                                <label class="checkbox-label" for="caffeine">Caffeine</label>
+                                <label class="checkbox-label" for="caffeine">
+                                    <span class="ingredient-name">Caffeine</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-bolt"></i> Energizing</span>
+                                </label>
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
                             <div class="checkbox-item">
                                 <input class="form-check-input" type="checkbox" name="keyActives" value="l-carnitine" id="l-carnitine">
-                                <label class="checkbox-label" for="l-carnitine">L-Carnitine</label>
+                                <label class="checkbox-label" for="l-carnitine">
+                                    <span class="ingredient-name">L-Carnitine</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-fire"></i> Firming</span>
+                                </label>
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
                             <div class="checkbox-item">
                                 <input class="form-check-input" type="checkbox" name="keyActives" value="retinol" id="retinol">
-                                <label class="checkbox-label" for="retinol">Retinol</label>
+                                <label class="checkbox-label" for="retinol">
+                                    <span class="ingredient-name">Retinol</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-magic"></i> Anti-aging</span>
+                                </label>
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
                             <div class="checkbox-item">
                                 <input class="form-check-input" type="checkbox" name="keyActives" value="niacinamide" id="niacinamide">
-                                <label class="checkbox-label" for="niacinamide">Niacinamide</label>
+                                <label class="checkbox-label" for="niacinamide">
+                                    <span class="ingredient-name">Niacinamide</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-shield-alt"></i> Pore refining</span>
+                                </label>
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
                             <div class="checkbox-item">
                                 <input class="form-check-input" type="checkbox" name="keyActives" value="vitamin-c" id="vitamin-c">
-                                <label class="checkbox-label" for="vitamin-c">Vitamin C</label>
+                                <label class="checkbox-label" for="vitamin-c">
+                                    <span class="ingredient-name">Vitamin C</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-sun"></i> Brightening</span>
+                                </label>
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
                             <div class="checkbox-item">
                                 <input class="form-check-input" type="checkbox" name="keyActives" value="hyaluronic-acid" id="hyaluronic-acid">
-                                <label class="checkbox-label" for="hyaluronic-acid">Hyaluronic Acid</label>
+                                <label class="checkbox-label" for="hyaluronic-acid">
+                                    <span class="ingredient-name">Hyaluronic Acid</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-tint"></i> Hydrating</span>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -279,12 +336,31 @@
                     </div>
                 </div>
 
+                <!-- Navigation & Submit Section -->
+                <div class="form-navigation">
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-btn prev-btn" id="prevBtn" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous Step
+                        </button>
+                        <button type="button" class="nav-btn next-btn" id="nextBtn">
+                            Next Step <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Submit Section -->
-                <div class="submit-section">
+                <div class="submit-section" style="display: none;" id="submitSection">
+                    <div class="submit-info">
+                        <h4><i class="fas fa-paper-plane"></i> Ready to Create Your Formula?</h4>
+                        <p>We'll analyze your selections and email you a personalized skincare formula within 24 hours.</p>
+                    </div>
                     <button type="submit" class="sleek-button" id="submitBtn" disabled>
-                        Submit Request
+                        <i class="fas fa-flask"></i> Create My Formula
                     </button>
                     <div class="status-message" id="submissionStatus"></div>
+                    <p class="privacy-note">
+                        <i class="fas fa-lock"></i> Your information is secure and will only be used to create your custom formula.
+                    </p>
                 </div>
                 </form>
             </div>  

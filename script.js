@@ -41,7 +41,24 @@ class SkincareApp {
         this.bindEvents();
         this.loadSavedData();
         this.updateUI();
+        this.hideAllSections(); // Hide all sections initially for step navigation
         console.log('Skincare Formulation App initialized');
+    }
+
+    hideAllSections() {
+        // Hide all form sections initially - they'll be shown by navigation
+        const sections = [
+            'baseFormatSection', 
+            'keyActivesSection',
+            'extractsSection',
+            'boostersSection',
+            'contactSection'
+        ];
+        
+        sections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) section.style.display = 'none';
+        });
     }
 
     // Event Binding
@@ -729,7 +746,186 @@ class SkincareApp {
     }
 }
 
+// Progress and Navigation Class for Enhanced UX
+class ProgressNavigation {
+    constructor(app) {
+        this.app = app;
+        this.currentStep = 1;
+        this.totalSteps = 6;
+        this.sections = [
+            'skinTypeSection',
+            'baseFormatSection', 
+            'keyActivesSection',
+            'extractsSection',
+            'boostersSection',
+            'contactSection'
+        ];
+        this.init();
+    }
+
+    init() {
+        this.bindNavigationEvents();
+        this.updateProgressBar();
+        this.showCurrentStep();
+    }
+
+    bindNavigationEvents() {
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        nextBtn?.addEventListener('click', () => this.nextStep());
+        prevBtn?.addEventListener('click', () => this.prevStep());
+
+        // Allow clicking on progress steps
+        document.querySelectorAll('.progress-step').forEach((step, index) => {
+            step.addEventListener('click', () => this.goToStep(index + 1));
+        });
+    }
+
+    nextStep() {
+        if (this.validateCurrentStep()) {
+            this.currentStep++;
+            this.updateStep();
+        }
+    }
+
+    prevStep() {
+        this.currentStep--;
+        this.updateStep();
+    }
+
+    goToStep(step) {
+        this.currentStep = step;
+        this.updateStep();
+    }
+
+    updateStep() {
+        this.showCurrentStep();
+        this.updateProgressBar();
+        this.updateNavigationButtons();
+        this.scrollToTop();
+    }
+
+    showCurrentStep() {
+        // Hide all sections
+        this.sections.forEach(sectionId => {
+            document.getElementById(sectionId).style.display = 'none';
+        });
+
+        // Show current section
+        if (this.currentStep <= this.sections.length) {
+            document.getElementById(this.sections[this.currentStep - 1]).style.display = 'block';
+        }
+
+        // Show/hide submit section
+        const submitSection = document.getElementById('submitSection');
+        const formNavigation = document.querySelector('.form-navigation');
+        
+        if (this.currentStep > this.sections.length) {
+            submitSection.style.display = 'block';
+            formNavigation.style.display = 'none';
+        } else {
+            submitSection.style.display = 'none';
+            formNavigation.style.display = 'block';
+        }
+    }
+
+    updateProgressBar() {
+        // Update progress bar fill
+        const progressFill = document.getElementById('progressBarFill');
+        const percentage = (this.currentStep / this.totalSteps) * 100;
+        if (progressFill) {
+            progressFill.style.width = `${percentage}%`;
+        }
+
+        // Update step indicators
+        document.querySelectorAll('.progress-step').forEach((step, index) => {
+            step.classList.remove('active', 'completed');
+            if (index + 1 < this.currentStep) {
+                step.classList.add('completed');
+                step.querySelector('.step-icon').innerHTML = '<i class="fas fa-check"></i>';
+            } else if (index + 1 === this.currentStep) {
+                step.classList.add('active');
+                step.querySelector('.step-icon').textContent = index + 1;
+            } else {
+                step.querySelector('.step-icon').textContent = index + 1;
+            }
+        });
+    }
+
+    updateNavigationButtons() {
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        // Previous button
+        if (prevBtn) {
+            prevBtn.disabled = this.currentStep <= 1;
+        }
+
+        // Next button
+        if (nextBtn) {
+            if (this.currentStep >= this.sections.length) {
+                nextBtn.textContent = 'Review & Submit';
+                nextBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Review & Submit';
+            } else {
+                nextBtn.innerHTML = 'Next Step <i class="fas fa-arrow-right"></i>';
+            }
+        }
+    }
+
+    validateCurrentStep() {
+        const currentSection = this.sections[this.currentStep - 1];
+        
+        // Required steps validation
+        if (currentSection === 'skinTypeSection') {
+            const selected = document.querySelectorAll('input[name="skinType"]:checked');
+            if (selected.length === 0) {
+                this.app.displayError('skinTypeError', 'Please select your skin type');
+                return false;
+            }
+        }
+
+        if (currentSection === 'keyActivesSection') {
+            const selected = document.querySelectorAll('input[name="keyActives"]:checked');
+            if (selected.length === 0) {
+                this.app.displayError('keyActivesError', 'Please select at least one key active ingredient');
+                return false;
+            }
+        }
+
+        if (currentSection === 'contactSection') {
+            const nameField = document.getElementById('fullName');
+            const emailField = document.getElementById('email');
+            
+            if (!nameField.value.trim()) {
+                this.app.displayError('fullNameError', 'Name is required');
+                return false;
+            }
+            
+            if (!emailField.value.trim() || !this.isValidEmail(emailField.value)) {
+                this.app.displayError('emailError', 'Valid email is required');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.skincareApp = new SkincareApp();
+    window.progressNav = new ProgressNavigation(window.skincareApp);
+    
+    // Initialize Bootstrap tooltips
+    const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltips.forEach(tooltip => new bootstrap.Tooltip(tooltip));
 });
