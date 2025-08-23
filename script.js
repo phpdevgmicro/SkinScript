@@ -535,20 +535,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Add focus management for accessibility
-    const checkboxCards = document.querySelectorAll('.checkbox-card');
-    checkboxCards.forEach(card => {
-        card.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                const input = card.querySelector('input');
-                if (input && !input.disabled) {
-                    input.click();
-                }
-            }
-        });
+    const checkboxItems = document.querySelectorAll('.checkbox-item, .radio-item');
+    checkboxItems.forEach(item => {
+        // Only make the label clickable, not the entire container
+        const label = item.querySelector('label');
+        const input = item.querySelector('input');
         
-        // Make cards focusable
-        card.setAttribute('tabindex', '0');
+        // Ensure clicking only on label or checkbox triggers the action
+        if (label && input) {
+            // Prevent the container from being clickable
+            item.addEventListener('click', (e) => {
+                // Only allow clicks on the input or label
+                if (e.target === input || e.target === label) {
+                    return; // Allow normal behavior
+                } else {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        }
     });
 });
 

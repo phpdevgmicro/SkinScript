@@ -122,7 +122,6 @@ body {
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius);
     transition: var(--transition);
-    cursor: pointer;
     background: #fafafa;
     position: relative;
     overflow: hidden;

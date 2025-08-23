@@ -9,7 +9,7 @@ class Database {
     private $port = '5432';
     private $dbname = 'postgres';
     private $username = 'postgres';
-    private $password = 'Command$$5';
+    private $password = 'Skincare1@1@1';
     private $pdo = null;
     private $fallbackMode = false;
     
