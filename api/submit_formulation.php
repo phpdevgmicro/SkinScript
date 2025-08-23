@@ -86,12 +86,33 @@ try {
         
         error_log("Formulation logged locally (fallback mode) - ID: $formulation_id, Email: " . $contact['email']);
         
+        // Generate formulation and PDF
+        require_once '../engine/FormulationEngine.php';
+        require_once '../pdf/PDFGenerator.php';
+        
+        $engine = new FormulationEngine();
+        $pdfGenerator = new PDFGenerator();
+        
+        $generatedFormulation = $engine->generateFormulation(
+            $formulation['skinType'],
+            $formulation['baseFormat'],
+            $formulation['keyActives'],
+            $formulation['extracts'] ?? [],
+            $formulation['boosters'] ?? []
+        );
+        
+        $generatedFormulation['formulation_id'] = $formulation_id;
+        
+        $pdfResult = $pdfGenerator->generateFormulationPDF($generatedFormulation, $contact);
+        
         echo json_encode([
             'success' => true,
             'message' => 'Formulation submitted successfully (stored locally)',
             'id' => $formulation_id,
             'timestamp' => date('Y-m-d H:i:s'),
-            'fallback_mode' => true
+            'fallback_mode' => true,
+            'formulation' => $generatedFormulation,
+            'pdf' => $pdfResult
         ]);
         
     } else {
@@ -132,12 +153,33 @@ try {
             // Log success
             error_log("Formulation submitted successfully - ID: $formulation_id, Email: " . $contact['email']);
             
+            // Generate formulation and PDF
+            require_once '../engine/FormulationEngine.php';
+            require_once '../pdf/PDFGenerator.php';
+            
+            $engine = new FormulationEngine();
+            $pdfGenerator = new PDFGenerator();
+            
+            $generatedFormulation = $engine->generateFormulation(
+                $formulation['skinType'],
+                $formulation['baseFormat'],
+                $formulation['keyActives'],
+                $formulation['extracts'] ?? [],
+                $formulation['boosters'] ?? []
+            );
+            
+            $generatedFormulation['formulation_id'] = $formulation_id;
+            
+            $pdfResult = $pdfGenerator->generateFormulationPDF($generatedFormulation, $contact);
+            
             // Return success response
             echo json_encode([
                 'success' => true,
                 'message' => 'Formulation submitted successfully',
                 'id' => $formulation_id,
-                'timestamp' => date('Y-m-d H:i:s')
+                'timestamp' => date('Y-m-d H:i:s'),
+                'formulation' => $generatedFormulation,
+                'pdf' => $pdfResult
             ]);
         } else {
             throw new Exception('Failed to save formulation');

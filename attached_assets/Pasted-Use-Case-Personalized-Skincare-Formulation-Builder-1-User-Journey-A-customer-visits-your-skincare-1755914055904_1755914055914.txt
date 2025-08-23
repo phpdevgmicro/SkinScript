@@ -1,0 +1,90 @@
+Use Case: Personalized Skincare Formulation Builder
+1. User Journey
+
+A customer visits your skincare web app.
+
+They see the interactive ingredient selection form (like your mockup).
+
+They check boxes for their skin type, preferred format, and ingredients.
+
+Example selection:
+
+Skin type → Oily
+
+Format → Mist
+
+Key actives → Caffeine
+
+Functional Extracts → Beta Vulgaris (Beet), Avena Sativa
+
+Boosters → none
+
+They enter contact info (email/phone).
+
+They click Submit Request.
+
+2. Backend Functionality
+
+When submitted:
+
+The system logs the entry in a database (MySQL / Firebase).
+
+It also sends you an email summary:
+
+New User Request:
+- Skin Type: Oily
+- Format: Mist
+- Actives: Caffeine
+- Extracts: Beet, Avena Sativa
+- Boosters: None
+- Contact: user@example.com
+
+3. Smart Formulation Logic
+
+The system runs pre-coded rules (or AI-based logic):
+
+Rule Example:
+
+If caffeine + beetroot + oat → suggest energizing + anti-fatigue + calming profile.
+
+If caffeine + bilberry + neem → target oily/acne-prone skin.
+
+Auto-generate a suggested formulation:
+
+Caffeine: 0.3%
+
+Beta Vulgaris Extract: 2%
+
+Avena Sativa Extract: 1.5%
+
+Hydrating Base (mist): 96.2%
+
+Preservative: 0.5%
+
+4. PDF Preview (Auto-generated)
+
+A PDF file is generated with:
+
+Title: “Your Energizing Mist – Oily Skin Formula”
+
+Ingredient Breakdown (% w/w)
+
+Description:
+“A lightweight mist designed for oily skin. Caffeine helps energize and depuff, beetroot extract boosts radiance, while oat extract soothes irritation.”
+
+The PDF is emailed to the user, and optionally available for instant download.
+
+5. Optional AI-Powered Add-on
+
+If you integrate GPT API:
+
+The AI could generate marketing copy, safety notes, or alternative suggestions.
+
+Example:
+“Since you chose caffeine and beetroot, we recommend avoiding retinol in the same formula due to sensitivity concerns. Would you like to swap it with Niacinamide?”
+
+Example Final Output (User-facing Summary)
+
+✅ You built a mist for oily skin with Caffeine + Beetroot + Oat Extracts.
+✅ Suggested Formula: Caffeine (0.3%), Beetroot Extract (2%), Avena Sativa Extract (1.5%), Hydrating Base (96.2%), Preservative (0.5%).
+✅ Your custom energizing mist helps energize tired skin, boost glow, and calm redness.

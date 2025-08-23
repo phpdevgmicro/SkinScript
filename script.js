@@ -428,16 +428,19 @@ class SkincareFormulationApp {
             // Prepare submission data
             const submissionData = this.prepareSubmissionData();
             
-            // Simulate API call (replace with actual backend integration)
-            await this.simulateFormSubmission(submissionData);
+            // Submit to backend and get formulation results
+            const response = await this.simulateFormSubmission(submissionData);
             
-            // Show success message
-            statusDiv.className = 'status-message success';
-            statusDiv.innerHTML = `
-                <i class="fas fa-check-circle"></i>
-                <strong>Request Submitted Successfully!</strong><br>
-                We'll review your custom formulation and get back to you within 24 hours at ${this.formData.contact.email}.
-            `;
+            if (response.formulation) {
+                this.displayFormulationResults(response.formulation, response.pdf);
+            } else {
+                statusDiv.className = 'status-message success';
+                statusDiv.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <strong>Request Submitted Successfully!</strong><br>
+                    We'll review your custom formulation and get back to you within 24 hours at ${this.formData.contact.email}.
+                `;
+            }
             
             // Clear form data from localStorage
             localStorage.removeItem('skincareFormData');
@@ -503,6 +506,106 @@ class SkincareFormulationApp {
         if (firstError) {
             firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+    }
+
+    displayFormulationResults(formulation, pdfInfo) {
+        const statusDiv = document.getElementById('submissionStatus');
+        
+        // Create formula table
+        let formulaRows = '';
+        for (const [ingredient, percentage] of Object.entries(formulation.formula)) {
+            const ingredientName = this.formatIngredientName(ingredient);
+            formulaRows += `
+                <tr>
+                    <td>${ingredientName}</td>
+                    <td>${percentage}%</td>
+                </tr>
+            `;
+        }
+
+        // Create recommendations list
+        let recommendationsHtml = '';
+        if (formulation.recommendations && formulation.recommendations.length > 0) {
+            recommendationsHtml = `
+                <div class="recommendations-section">
+                    <h4><i class="fas fa-lightbulb"></i> Usage Recommendations:</h4>
+                    <ul>
+                        ${formulation.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Create PDF download section
+        let pdfSection = '';
+        if (pdfInfo && pdfInfo.success) {
+            pdfSection = `
+                <div class="pdf-section">
+                    <h4><i class="fas fa-file-pdf"></i> Your Formulation Document</h4>
+                    <p>Download your personalized formulation guide:</p>
+                    <a href="${pdfInfo.download_url}" class="pdf-download-btn" target="_blank">
+                        <i class="fas fa-download"></i> Download PDF${pdfInfo.fallback ? ' (HTML Format)' : ''}
+                    </a>
+                </div>
+            `;
+        }
+
+        statusDiv.className = 'status-message formulation-results';
+        statusDiv.innerHTML = `
+            <div class="formulation-header">
+                <i class="fas fa-flask"></i>
+                <h3>${formulation.title}</h3>
+                <div class="profile-badge">${formulation.profile}</div>
+            </div>
+            
+            <div class="formulation-description">
+                <p>${formulation.description}</p>
+            </div>
+            
+            <div class="formulation-breakdown">
+                <h4><i class="fas fa-list-ul"></i> Formulation Breakdown (% w/w)</h4>
+                <table class="formula-table">
+                    <thead>
+                        <tr>
+                            <th>Ingredient</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${formulaRows}
+                    </tbody>
+                </table>
+            </div>
+            
+            ${recommendationsHtml}
+            ${pdfSection}
+            
+            <div class="formulation-footer">
+                <p><i class="fas fa-info-circle"></i> Formulation ID: ${formulation.formulation_id}</p>
+                <p>Generated on ${formulation.generated_at}</p>
+            </div>
+        `;
+        
+        // Scroll to results
+        statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    formatIngredientName(ingredient) {
+        // Handle special formatting for display
+        let formatted = ingredient.replace(/-/g, ' ');
+        formatted = formatted.replace(/\b\w/g, l => l.toUpperCase());
+        
+        // Special cases
+        const replacements = {
+            'L Carnitine': 'L-Carnitine',
+            'Beta Vulgaris': 'Beta Vulgaris (Beet Root)',
+            'Avena Sativa': 'Avena Sativa (Oat)',
+            'Green Tea': 'Green Tea Extract',
+            'Sodium Pca': 'Sodium PCA',
+            'Copper Peptides': 'Copper Peptides'
+        };
+        
+        return replacements[formatted] || formatted;
     }
 }
 
