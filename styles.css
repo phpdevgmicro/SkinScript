@@ -91,24 +91,18 @@ body {
     padding: 0 1rem;
 }
 
-/* Main Layout - Side by Side */
-.main-layout {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 2rem;
-    margin: 2rem 0;
-}
-
+/* Form Wrapper - Compact & Sleek */
 .form-wrapper {
     background: white;
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    padding: 2rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-wrapper {
-    display: flex;
-    flex-direction: column;
+    position: sticky;
+    top: 2rem;
 }
 
 .ingredients-sidebar {
@@ -116,9 +110,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 1.5rem;
-    height: fit-content;
-    position: sticky;
-    top: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-header {
@@ -293,42 +285,50 @@ body {
 }
 
 
-/* Form Styling - Simplified */
+/* Form Styling - Compact */
 .sleek-form {
     margin-top: 0;
 }
 
 .form-section {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f3f4;
 }
 
 .form-section:last-of-type {
     margin-bottom: 0;
     padding-bottom: 0;
+    border-bottom: none;
 }
 
-/* Step Headers - Simplified */
+.submit-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f3f4;
+}
+
+/* Step Headers - Compact */
 .step-header {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .step-number {
     display: inline-block;
     background: var(--primary-color);
     color: white;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 4px;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 3px;
     text-align: center;
-    line-height: 1.5rem;
+    line-height: 1.25rem;
     font-weight: 600;
-    font-size: 0.8rem;
-    margin-right: 0.75rem;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
 }
 
 .section-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
@@ -337,9 +337,9 @@ body {
 
 .step-description {
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin: 0.5rem 0 1rem 2.25rem;
-    line-height: 1.4;
+    font-size: 0.85rem;
+    margin: 0.25rem 0 0.75rem 1.75rem;
+    line-height: 1.3;
 }
 
 .section-header {
@@ -359,35 +359,19 @@ body {
     font-weight: 600;
 }
 
-/* Grid Layouts */
-.checkbox-grid,
-.radio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 0.75rem;
-}
+/* Bootstrap Grid Layout - No custom grid needed */
 
-.input-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.input-grid .full-width {
-    grid-column: 1 / -1;
-}
-
-/* Checkbox and Radio Items - Simplified */
+/* Checkbox and Radio Items - Compact */
 .checkbox-item,
 .radio-item {
     display: flex;
     align-items: center;
-    padding: 0.75rem;
+    padding: 0.5rem 0.75rem;
     border: 1px solid #e5e7eb;
-    border-radius: 6px;
+    border-radius: 4px;
     transition: all 0.2s ease;
     background: white;
-    min-height: 48px;
+    min-height: 40px;
     cursor: pointer;
     user-select: none;
 }
@@ -396,6 +380,8 @@ body {
 .radio-item:hover {
     border-color: var(--primary-color);
     background: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Form Controls */
