@@ -4,5 +4,5 @@
 [x] 4. Configure OpenAI API key to be read from config file instead of environment variables
 [x] 5. Redesign app interface to match modern SkinCraft design with step-by-step navigation
 [x] 6. Add auto-generated PDF preview feature with ingredients & descriptions
-[ ] 7. Verify the project is working using the feedback tool
-[ ] 8. Inform user the import is completed and they can start building, mark the import as completed using the complete_project_import tool
+[x] 7. Verify the project is working using the feedback tool
+[x] 8. Inform user the import is completed and they can start building, mark the import as completed using the complete_project_import tool

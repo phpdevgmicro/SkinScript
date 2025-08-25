@@ -1,0 +1,21 @@
+# Admin Panel .htaccess
+DirectoryIndex index.php
+
+# Ensure clean URLs work
+RewriteEngine On
+
+# Redirect to login if not authenticated (handled by PHP)
+# This provides additional security at the web server level
+
+# Prevent access to auth files directly from browser
+<Files "check_auth.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
