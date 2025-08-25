@@ -12,7 +12,6 @@ import {
   Heart, 
   CircleDot, 
   SprayCan, 
-  DropletOff, 
   Gavel,
   TriangleAlert,
   ArrowLeft,
@@ -49,7 +48,7 @@ const skinTypes = [
 
 const formats = [
   { value: 'mist', label: 'Mist', description: 'Light, refreshing application', icon: SprayCan, gradient: 'from-teal to-cyan-400' },
-  { value: 'serum', label: 'Serum', description: 'Concentrated, fast-absorbing', icon: DropletOff, gradient: 'from-sage to-green-400' },
+  { value: 'serum', label: 'Serum', description: 'Concentrated, fast-absorbing', icon: Droplet, gradient: 'from-sage to-green-400' },
   { value: 'cream', label: 'Cream', description: 'Rich, nourishing texture', icon: Gavel, gradient: 'from-coral to-amber-400' },
 ];
 
@@ -72,10 +71,10 @@ const botanicalExtracts = [
 ];
 
 const hydrators = [
-  { value: 'glycerin', label: 'Glycerin', description: 'Humectant, draws moisture to skin', concentration: '3-10%', icon: DropletOff, gradient: 'from-blue-400 to-cyan-400' },
-  { value: 'sodium-pca', label: 'Sodium PCA', description: 'Natural moisturizing factor', concentration: '1-5%', icon: DropletOff, gradient: 'from-teal to-emerald-400' },
-  { value: 'hyaluronic-acid', label: 'Hyaluronic Acid', description: 'Intense hydration, plumping', concentration: '0.1-2%', icon: DropletOff, gradient: 'from-purple-400 to-indigo-400' },
-  { value: 'ceramides', label: 'Ceramides', description: 'Barrier repair, long-lasting moisture', concentration: '0.5-5%', icon: DropletOff, gradient: 'from-amber-400 to-orange-400' },
+  { value: 'glycerin', label: 'Glycerin', description: 'Humectant, draws moisture to skin', concentration: '3-10%', icon: Droplet, gradient: 'from-blue-400 to-cyan-400' },
+  { value: 'sodium-pca', label: 'Sodium PCA', description: 'Natural moisturizing factor', concentration: '1-5%', icon: Droplet, gradient: 'from-teal to-emerald-400' },
+  { value: 'hyaluronic-acid', label: 'Hyaluronic Acid', description: 'Intense hydration, plumping', concentration: '0.1-2%', icon: Droplet, gradient: 'from-purple-400 to-indigo-400' },
+  { value: 'ceramides', label: 'Ceramides', description: 'Barrier repair, long-lasting moisture', concentration: '0.5-5%', icon: Droplet, gradient: 'from-amber-400 to-orange-400' },
 ];
 
 export function FormWizard({ formData, onFormDataChange, onSubmit, isSubmitting }: FormWizardProps) {

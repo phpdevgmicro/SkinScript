@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertFormulationSchema } from "@shared/schema";
 import { getFormulationSuggestion } from "./services/openai";
+import { sendFormulationEmail } from "./services/email";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Create a new formulation
@@ -10,6 +11,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertFormulationSchema.parse(req.body);
       const formulation = await storage.createFormulation(validatedData);
+      
+      // Send email notification to user
+      try {
+        await sendFormulationEmail({
+          firstName: formulation.firstName,
+          lastName: formulation.lastName,
+          email: formulation.email,
+          skinType: formulation.skinType,
+          format: formulation.format,
+          actives: formulation.actives,
+          extracts: formulation.extracts,
+          hydrators: formulation.hydrators,
+          skinConcerns: formulation.skinConcerns || undefined,
+          safetyScore: formulation.safetyScore,
+          aiSuggestion: formulation.aiSuggestion || undefined,
+          formulationId: formulation.id,
+        });
+      } catch (emailError) {
+        console.error('Failed to send email notification:', emailError);
+        // Don't fail the request if email fails
+      }
+      
       res.json({ success: true, formulation });
     } catch (error) {
       console.error("Error creating formulation:", error);

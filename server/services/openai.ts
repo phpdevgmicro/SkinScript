@@ -41,7 +41,7 @@ Please provide a JSON response with:
 Ensure all concentration recommendations are safe and within industry standards.`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",

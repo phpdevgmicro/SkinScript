@@ -1,4 +1,7 @@
-import { type User, type InsertUser, type Formulation, type InsertFormulation } from "@shared/schema";
+import { type User, type InsertUser, type Formulation, type InsertFormulation, users, formulations } from "@shared/schema";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { eq } from "drizzle-orm";
+import postgres from "postgres";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -10,52 +13,55 @@ export interface IStorage {
   getFormulationsByEmail(email: string): Promise<Formulation[]>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private formulations: Map<string, Formulation>;
+// Initialize database connection
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is required");
+}
 
-  constructor() {
-    this.users = new Map();
-    this.formulations = new Map();
+const queryClient = postgres(process.env.DATABASE_URL!, {
+  prepare: false,
+  ssl: 'require',
+  connection: {
+    options: `--search_path=public`,
   }
+});
+const db = drizzle(queryClient);
 
+export class DatabaseStorage implements IStorage {
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return result[0];
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const result = await db.select().from(users).where(eq(users.username, username)).limit(1);
+    return result[0];
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    const [result] = await db.insert(users).values(insertUser).returning();
+    return result;
   }
 
   async createFormulation(insertFormulation: InsertFormulation): Promise<Formulation> {
-    const id = randomUUID();
-    const formulation: Formulation = {
-      ...insertFormulation,
-      id,
-      createdAt: new Date(),
-    };
-    this.formulations.set(id, formulation);
-    return formulation;
+    try {
+      const [result] = await db.insert(formulations).values(insertFormulation).returning();
+      return result;
+    } catch (error) {
+      console.error('Database insertion error:', error);
+      throw error;
+    }
   }
 
   async getFormulation(id: string): Promise<Formulation | undefined> {
-    return this.formulations.get(id);
+    const result = await db.select().from(formulations).where(eq(formulations.id, id)).limit(1);
+    return result[0];
   }
 
   async getFormulationsByEmail(email: string): Promise<Formulation[]> {
-    return Array.from(this.formulations.values()).filter(
-      (formulation) => formulation.email === email,
-    );
+    const result = await db.select().from(formulations).where(eq(formulations.email, email));
+    return result;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

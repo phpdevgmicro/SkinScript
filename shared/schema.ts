@@ -34,6 +34,8 @@ export const insertUserSchema = createInsertSchema(users).pick({
 export const insertFormulationSchema = createInsertSchema(formulations).omit({
   id: true,
   createdAt: true,
+}).extend({
+  newsletter: z.boolean().transform(val => val ? 1 : 0),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
