@@ -158,7 +158,7 @@ class FormulationController {
             
             // Generate PDF report
             $pdfService = new PDFService();
-            $pdfResult = $pdfService->generateFormulationPDF($data, $suggestions);
+            //$pdfResult = $pdfService->generateFormulationPDF($data, $suggestions);
             
             return [
                 'success' => true,
@@ -168,7 +168,7 @@ class FormulationController {
                 'warnings' => $warnings,
                 'suggestions' => $suggestions,
                 'email_sent' => $emailSent,
-                'pdf_generated' => ($pdfResult && isset($pdfResult['success']) ? $pdfResult['success'] : $pdfResult !== false),
+                //'pdf_generated' => ($pdfResult && isset($pdfResult['success']) ? $pdfResult['success'] : $pdfResult !== false),
                 'pdf_info' => $pdfResult
             ];
         } else {

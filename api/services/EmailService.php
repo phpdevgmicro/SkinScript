@@ -15,18 +15,19 @@ class EmailService {
     private $smtpConfig;
     
     public function __construct() {
-        $this->fromEmail = 'noreply@skincareapp.com';
+        $this->fromEmail = 'phpdevgmicro@gmail.com';
         $this->fromName = 'Skincare Formulation App';
         
         // SMTP Configuration - you can update these with your SMTP settings
         $this->smtpConfig = [
-            'host' => $_ENV['SMTP_HOST'] ?? 'smtp.gmail.com',
-            'port' => $_ENV['SMTP_PORT'] ?? 587,
-            'username' => $_ENV['SMTP_USERNAME'] ?? '',
-            'password' => $_ENV['SMTP_PASSWORD'] ?? '',
-            'encryption' => $_ENV['SMTP_ENCRYPTION'] ?? 'tls'
+            'host' => 'smtp-relay.sendinblue.com',
+            'port' =>  587,
+            'username' => 'phpdevgmicro@gmail.com',
+            'password' => 'N2DFZECX67YGBHRO',
+            'encryption' => 'tls'
         ];
     }
+
     
     /**
      * Send formulation notification email
