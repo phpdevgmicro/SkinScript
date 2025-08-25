@@ -1,66 +1,65 @@
-# Build Your Own Energizing Mist - Skincare Formulation Tool
+# Overview
 
-## Overview
+This is a full-stack skincare formulation configurator application that allows users to create custom skincare products by selecting ingredients and providing personal information. The app generates personalized AI-powered recommendations, calculates safety scores, and produces downloadable PDF reports of the custom formulations.
 
-This is an interactive web application that allows users to create personalized skincare formulations, specifically energizing mists. The app guides users through a multi-step process to select skin types, base formats, key active ingredients, botanical extracts, and boosters while enforcing compatibility rules between ingredients. The application features a modern, responsive design with form validation and data persistence capabilities.
+The application features a step-by-step wizard interface where users select their skin type, product format (mist, serum, cream), active ingredients, botanical extracts, and hydrators. After collecting user details, the system processes the formulation through an AI service to provide professional recommendations and generates a comprehensive PDF document with ingredient lists, safety information, and usage instructions.
 
-## User Preferences
+# User Preferences
 
 Preferred communication style: Simple, everyday language.
 
-## System Architecture
+# System Architecture
 
-### Frontend Architecture
-- **Single Page Application (SPA)**: Built with vanilla HTML, CSS, and JavaScript without frameworks
-- **Component-Based Design**: Modular CSS classes and JavaScript methods for different form sections
-- **Responsive Layout**: Mobile-first design using CSS Grid and Flexbox with clamp() functions for fluid typography
-- **Progressive Enhancement**: Form works without JavaScript, with enhanced UX when enabled
+## Frontend Architecture
+- **Framework**: React with TypeScript using Vite as the build tool
+- **UI Library**: Radix UI primitives with shadcn/ui components for consistent design
+- **Styling**: Tailwind CSS with CSS custom properties for theming
+- **State Management**: React Query (TanStack Query) for server state management
+- **Routing**: Wouter for lightweight client-side routing
+- **Form Handling**: React Hook Form with Zod schema validation
 
-### AI-Enhanced Backend Architecture
-- **PHP MCP Server**: Custom Model Context Protocol implementation using PostgreSQL database
-- **Real-Time Database Integration**: Direct PostgreSQL connection for current ingredient safety data
-- **AI-Powered Formulation Engine**: GPT-4o with real-time ingredient database context
-- **Database-Verified Compatibility**: Live ingredient compatibility checking and safety validation
+The frontend follows a component-based architecture with reusable UI components. The main application flow is handled through a multi-step wizard component that collects user input progressively. State management is primarily handled through React Query for server communication and local React state for form data.
 
-### Form Management System
-- **Multi-Step Form Flow**: Sections for skin type, base format, key actives, extracts, boosters, and contact information
-- **State Management**: Centralized form data object tracking user selections across all sections
-- **Validation Engine**: Custom validation rules for required fields, selection limits, and ingredient compatibility
-- **Data Persistence**: localStorage integration for saving and restoring user progress
+## Backend Architecture
+- **Framework**: Express.js with TypeScript
+- **Database**: PostgreSQL with Drizzle ORM for type-safe database operations
+- **Storage Strategy**: Dual storage implementation with in-memory storage for development and PostgreSQL for production
+- **API Design**: RESTful API with structured JSON responses
+- **Error Handling**: Centralized error handling middleware with proper HTTP status codes
 
-### Ingredient Compatibility System
-- **Rule-Based Validation**: Predefined incompatible ingredient combinations (retinol + vitamin C, etc.)
-- **Dynamic UI Updates**: Real-time enabling/disabling of options based on current selections
-- **Selection Limits**: Maximum of 3 key active ingredients with counter tracking
-- **Conflict Prevention**: Automatic validation prevents incompatible ingredient selection
+The backend uses a service-oriented architecture with clear separation between routes, storage layer, and business logic. The storage interface pattern allows for easy switching between different storage implementations.
 
-### User Interface Design
-- **Modern CSS Architecture**: Custom properties, gradients, and backdrop filters for visual appeal
-- **Interactive Components**: Custom checkbox cards, radio buttons, and form controls with hover/focus states
-- **Icon Integration**: Font Awesome icons throughout the interface for visual hierarchy
-- **Loading States**: Visual feedback for form submission and processing states
+## Data Storage Solutions
+- **Database**: PostgreSQL as the primary database
+- **ORM**: Drizzle ORM with schema-first approach and automatic TypeScript type generation
+- **Schema Design**: Separate tables for users and formulations with proper relationships
+- **Migration Strategy**: Drizzle Kit for database schema migrations
 
-### Data Flow Architecture
-- **Event-Driven Updates**: DOM event listeners trigger state changes and UI updates
-- **Unidirectional Data Flow**: Form data flows from user input → validation → state update → UI refresh
-- **Error Handling**: Comprehensive validation with user-friendly error messages
-- **Success Feedback**: Confirmation systems for successful form completion
+The database schema supports user management and formulation storage with JSON fields for ingredient arrays, allowing flexible storage of variable ingredient lists while maintaining relational integrity.
 
-## External Dependencies
+## Authentication and Authorization
+The current implementation uses a basic storage interface for user management but does not implement active authentication middleware. The system is designed to support user-based data isolation through email-based queries.
 
-### CDN Resources
-- **Google Fonts**: Inter font family for typography
-- **Font Awesome**: Icon library (v6.4.0) for UI elements
-- **Pixabay Images**: External image hosting for hero section visuals
+# External Dependencies
 
-### Browser APIs
-- **localStorage**: Client-side data persistence for form state
-- **DOM APIs**: Event handling, form validation, and dynamic content updates
-- **CSS Features**: Modern CSS properties including backdrop-filter, clamp(), and CSS Grid
+## Third-party Services
+- **OpenAI API**: Integration with GPT-5 for generating personalized skincare formulation recommendations
+- **Neon Database**: Serverless PostgreSQL database hosting for production deployments
 
-### AI and Database Integration
-- **OpenAI GPT-4o**: AI-powered formulation generation with real-time ingredient data
-- **PHP MCP Server**: Model Context Protocol server providing real-time ingredient database access
-- **PostgreSQL Database**: Real-time skincare ingredient database with safety data, compatibility rules, and formulation guidelines
-- **SMTP Email Services**: Automated email notifications for form submissions
-- **PDF Generation**: Dynamic PDF creation for formulation reports
+## Development Tools
+- **Replit**: Development environment integration with custom Vite plugins
+- **TypeScript**: Full-stack type safety with shared schema definitions
+- **ESBuild**: Production build optimization for server-side code
+
+## UI and Styling Dependencies
+- **Radix UI**: Comprehensive set of accessible, unstyled UI primitives
+- **Tailwind CSS**: Utility-first CSS framework with custom design system
+- **Lucide React**: Icon library for consistent iconography
+- **jsPDF**: Client-side PDF generation for formulation reports
+
+## Database and Storage
+- **Drizzle ORM**: Type-safe database operations with PostgreSQL
+- **Zod**: Runtime type validation and schema definition
+- **Connect PG Simple**: PostgreSQL session store for potential session management
+
+The application architecture emphasizes type safety throughout the stack, with shared TypeScript definitions between frontend and backend. The modular design allows for easy extension of features and integration of additional services.

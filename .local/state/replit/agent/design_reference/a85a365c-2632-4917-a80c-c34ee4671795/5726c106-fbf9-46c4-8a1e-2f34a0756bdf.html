@@ -1,0 +1,1058 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Skincare Configurator - Build Your Perfect Formula</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sage': '#9CAF88',
+                        'teal': '#7DB8B3',
+                        'coral': '#F4A261',
+                        'warm-gray': '#F8F6F4',
+                        'charcoal': '#2D3748'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-warm-gray font-inter text-charcoal">
+    <!-- @COMPONENT: Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-leaf text-sage text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-charcoal">SkinCraft</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="text-charcoal hover:text-sage transition-colors">How It Works</a>
+                    <a href="#" class="text-charcoal hover:text-sage transition-colors">Ingredients</a>
+                    <a href="#" class="text-charcoal hover:text-sage transition-colors">About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: MainContent -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid lg:grid-cols-3 gap-8">
+            
+            <!-- @COMPONENT: FormWizard -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    
+                    <!-- Progress Indicator -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-sm font-medium text-sage" data-bind="currentStep">Step 1 of 6</span>
+                            <span class="text-sm text-gray-500">Build Your Formula</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-sage h-2 rounded-full transition-all duration-300" style="width: 16.67%" data-bind="progressWidth"></div>
+                        </div>
+                    </div>
+
+                    <!-- @STATE: currentStep:number = 1, formData:object = {} -->
+                    
+                    <!-- Step 1: Skin Type -->
+                    <div class="step-content" data-step="1">
+                        <h2 class="text-2xl font-bold mb-2">What's your skin type?</h2>
+                        <p class="text-gray-600 mb-6">This helps us recommend the right base and concentration levels.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <!-- @MAP: skinTypes.map(type => ( -->
+                            <label class="skin-type-option cursor-pointer group">
+                                <input type="radio" name="skinType" value="oily" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-6 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-sage to-teal rounded-full flex items-center justify-center">
+                                            <i class="fas fa-droplet text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-lg">Oily</h3>
+                                            <p class="text-sm text-gray-600">Prone to shine, enlarged pores</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="skin-type-option cursor-pointer group">
+                                <input type="radio" name="skinType" value="dry" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-6 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-coral to-orange-400 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-sun text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-lg">Dry</h3>
+                                            <p class="text-sm text-gray-600">Feels tight, flaky, rough texture</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="skin-type-option cursor-pointer group">
+                                <input type="radio" name="skinType" value="sensitive" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-6 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-heart text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-lg">Sensitive</h3>
+                                            <p class="text-sm text-gray-600">Easily irritated, reactive</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="skin-type-option cursor-pointer group">
+                                <input type="radio" name="skinType" value="combination" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-6 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-indigo-400 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-adjust text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-lg">Combination</h3>
+                                            <p class="text-sm text-gray-600">Oily T-zone, dry cheeks</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <!-- @END_MAP -->
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Base Format -->
+                    <div class="step-content hidden" data-step="2">
+                        <h2 class="text-2xl font-bold mb-2">Choose your format</h2>
+                        <p class="text-gray-600 mb-6">Different formats work better for different skin types and preferences.</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <label class="format-option cursor-pointer group">
+                                <input type="radio" name="format" value="mist" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-6 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-teal to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-spray-can text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-lg mb-2">Mist</h3>
+                                    <p class="text-sm text-gray-600">Light, refreshing application</p>
+                                </div>
+                            </label>
+                            
+                            <label class="format-option cursor-pointer group">
+                                <input type="radio" name="format" value="serum" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-6 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-sage to-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-tint text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-lg mb-2">Serum</h3>
+                                    <p class="text-sm text-gray-600">Concentrated, fast-absorbing</p>
+                                </div>
+                            </label>
+                            
+                            <label class="format-option cursor-pointer group">
+                                <input type="radio" name="format" value="cream" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-6 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-coral to-amber-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-jar text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-lg mb-2">Cream</h3>
+                                    <p class="text-sm text-gray-600">Rich, nourishing texture</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Key Actives -->
+                    <div class="step-content hidden" data-step="3">
+                        <h2 class="text-2xl font-bold mb-2">Select key actives</h2>
+                        <p class="text-gray-600 mb-2">Choose up to 3 active ingredients for targeted results.</p>
+                        <p class="text-sm text-amber-600 mb-6"><i class="fas fa-exclamation-triangle mr-1"></i> Selected combination will be checked for safety compatibility</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <!-- @MAP: activeIngredients.map(ingredient => ( -->
+                            <label class="active-option cursor-pointer group">
+                                <input type="checkbox" name="actives" value="caffeine" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-lg">Caffeine</h3>
+                                            <p class="text-sm text-gray-600 mb-2">Energizing, reduces puffiness</p>
+                                            <span class="text-xs bg-sage/10 text-sage px-2 py-1 rounded-full">Safe: 0.5-2%</span>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="active-option cursor-pointer group">
+                                <input type="checkbox" name="actives" value="retinol" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-lg">Retinol</h3>
+                                            <p class="text-sm text-gray-600 mb-2">Anti-aging, smoothing</p>
+                                            <span class="text-xs bg-coral/10 text-coral px-2 py-1 rounded-full">Caution: 0.1-0.5%</span>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="active-option cursor-pointer group">
+                                <input type="checkbox" name="actives" value="niacinamide" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-lg">Niacinamide</h3>
+                                            <p class="text-sm text-gray-600 mb-2">Pore-refining, brightening</p>
+                                            <span class="text-xs bg-sage/10 text-sage px-2 py-1 rounded-full">Safe: 2-10%</span>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="active-option cursor-pointer group">
+                                <input type="checkbox" name="actives" value="vitamin-c" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-lg">Vitamin C</h3>
+                                            <p class="text-sm text-gray-600 mb-2">Antioxidant, brightening</p>
+                                            <span class="text-xs bg-amber-500/10 text-amber-600 px-2 py-1 rounded-full">Unstable: 10-20%</span>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="active-option cursor-pointer group">
+                                <input type="checkbox" name="actives" value="salicylic-acid" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-lg">Salicylic Acid</h3>
+                                            <p class="text-sm text-gray-600 mb-2">Exfoliating, acne-fighting</p>
+                                            <span class="text-xs bg-coral/10 text-coral px-2 py-1 rounded-full">Caution: 0.5-2%</span>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="active-option cursor-pointer group">
+                                <input type="checkbox" name="actives" value="azelaic-acid" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-lg">Azelaic Acid</h3>
+                                            <p class="text-sm text-gray-600 mb-2">Gentle exfoliant, anti-inflammatory</p>
+                                            <span class="text-xs bg-sage/10 text-sage px-2 py-1 rounded-full">Safe: 5-20%</span>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            <!-- @END_MAP -->
+                        </div>
+                        
+                        <div class="mt-4 p-4 bg-amber-50 rounded-lg" data-mock="true">
+                            <div class="flex items-start space-x-2">
+                                <i class="fas fa-exclamation-triangle text-amber-500 mt-1"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-amber-800">Compatibility Check</p>
+                                    <p class="text-xs text-amber-700 mt-1" data-bind="compatibilityMessage">Selected ingredients are compatible. Recommended concentrations will be suggested.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Functional Extracts -->
+                    <div class="step-content hidden" data-step="4">
+                        <h2 class="text-2xl font-bold mb-2">Add functional extracts</h2>
+                        <p class="text-gray-600 mb-6">Botanical extracts for additional skin benefits and natural enhancement.</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <!-- @MAP: botanicalExtracts.map(extract => ( -->
+                            <label class="extract-option cursor-pointer group">
+                                <input type="checkbox" name="extracts" value="neem" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <!-- Beautiful botanical illustration of neem leaves -->
+                                    <img src="https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200" alt="Neem extract" class="w-full h-32 object-cover rounded-lg mb-3" />
+                                    <h3 class="font-semibold">Neem</h3>
+                                    <p class="text-sm text-gray-600">Purifying, antibacterial</p>
+                                </div>
+                            </label>
+                            
+                            <label class="extract-option cursor-pointer group">
+                                <input type="checkbox" name="extracts" value="beetroot" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <!-- Fresh beetroot with natural red coloring -->
+                                    <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200" alt="Beetroot extract" class="w-full h-32 object-cover rounded-lg mb-3" />
+                                    <h3 class="font-semibold">Beetroot</h3>
+                                    <p class="text-sm text-gray-600">Natural tinting, antioxidant</p>
+                                </div>
+                            </label>
+                            
+                            <label class="extract-option cursor-pointer group">
+                                <input type="checkbox" name="extracts" value="oat" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <!-- Oat grains with a natural, soothing appearance -->
+                                    <img src="https://pixabay.com/get/g87cae90863cf53467609eec5fe1d0d213ae81298991879416c223ea752d5a00e3bbaa683b603d5dedb33a426bc300dfd_1280.jpg" alt="Oat extract" class="w-full h-32 object-cover rounded-lg mb-3" />
+                                    <h3 class="font-semibold">Oat</h3>
+                                    <p class="text-sm text-gray-600">Soothing, calming</p>
+                                </div>
+                            </label>
+                            
+                            <label class="extract-option cursor-pointer group">
+                                <input type="checkbox" name="extracts" value="green-tea" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <!-- Green tea leaves with fresh, vibrant appearance -->
+                                    <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200" alt="Green tea extract" class="w-full h-32 object-cover rounded-lg mb-3" />
+                                    <h3 class="font-semibold">Green Tea</h3>
+                                    <p class="text-sm text-gray-600">Anti-inflammatory, protective</p>
+                                </div>
+                            </label>
+                            
+                            <label class="extract-option cursor-pointer group">
+                                <input type="checkbox" name="extracts" value="chamomile" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <!-- Chamomile flowers with delicate white petals -->
+                                    <img src="https://pixabay.com/get/gc7bdf543bf862a0fbd25347baf1d245e830028b792129faf8f19f42c8690a3d4f8586e95b4e86e50bad3dc7262b304f8278c2e611fbaacd02f7b9a078e082380_1280.jpg" alt="Chamomile extract" class="w-full h-32 object-cover rounded-lg mb-3" />
+                                    <h3 class="font-semibold">Chamomile</h3>
+                                    <p class="text-sm text-gray-600">Gentle, soothing</p>
+                                </div>
+                            </label>
+                            
+                            <label class="extract-option cursor-pointer group">
+                                <input type="checkbox" name="extracts" value="aloe-vera" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <!-- Aloe vera plant with thick, succulent leaves -->
+                                    <img src="https://images.unsplash.com/photo-1609840112855-9ab5ad8f66e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200" alt="Aloe vera extract" class="w-full h-32 object-cover rounded-lg mb-3" />
+                                    <h3 class="font-semibold">Aloe Vera</h3>
+                                    <p class="text-sm text-gray-600">Hydrating, healing</p>
+                                </div>
+                            </label>
+                            <!-- @END_MAP -->
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Boosters/Hydrators -->
+                    <div class="step-content hidden" data-step="5">
+                        <h2 class="text-2xl font-bold mb-2">Choose hydration boosters</h2>
+                        <p class="text-gray-600 mb-6">Select hydrating and texture-enhancing ingredients.</p>
+                        
+                        <div class="space-y-4">
+                            <!-- @MAP: hydrators.map(hydrator => ( -->
+                            <label class="hydrator-option cursor-pointer group block">
+                                <input type="checkbox" name="hydrators" value="glycerin" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-tint text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-semibold text-lg">Glycerin</h3>
+                                                <p class="text-sm text-gray-600">Humectant, draws moisture to skin</p>
+                                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">Concentration: 3-10%</span>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="hydrator-option cursor-pointer group block">
+                                <input type="checkbox" name="hydrators" value="sodium-pca" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-teal to-emerald-400 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-leaf text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-semibold text-lg">Sodium PCA</h3>
+                                                <p class="text-sm text-gray-600">Natural moisturizing factor</p>
+                                                <span class="text-xs bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full">Concentration: 1-5%</span>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="hydrator-option cursor-pointer group block">
+                                <input type="checkbox" name="hydrators" value="hyaluronic-acid" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-indigo-400 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-gem text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-semibold text-lg">Hyaluronic Acid</h3>
+                                                <p class="text-sm text-gray-600">Intense hydration, plumping</p>
+                                                <span class="text-xs bg-purple-50 text-purple-600 px-2 py-1 rounded-full">Concentration: 0.1-2%</span>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="hydrator-option cursor-pointer group block">
+                                <input type="checkbox" name="hydrators" value="ceramides" class="sr-only" data-mock="true">
+                                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all duration-200 group-hover:border-sage group-focus-within:border-sage group-focus-within:ring-2 group-focus-within:ring-sage/20">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-shield-alt text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-semibold text-lg">Ceramides</h3>
+                                                <p class="text-sm text-gray-600">Barrier repair, long-lasting moisture</p>
+                                                <span class="text-xs bg-amber-50 text-amber-600 px-2 py-1 rounded-full">Concentration: 0.5-5%</span>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            <!-- @END_MAP -->
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Contact Information -->
+                    <div class="step-content hidden" data-step="6">
+                        <h2 class="text-2xl font-bold mb-2">Almost done!</h2>
+                        <p class="text-gray-600 mb-6">Enter your details to receive your custom formulation.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-charcoal mb-2">First Name</label>
+                                    <input type="text" name="firstName" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/20 focus:border-sage" placeholder="Enter your first name" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-charcoal mb-2">Last Name</label>
+                                    <input type="text" name="lastName" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/20 focus:border-sage" placeholder="Enter your last name" data-mock="true">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal mb-2">Email Address</label>
+                                <input type="email" name="email" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/20 focus:border-sage" placeholder="Enter your email" data-mock="true">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal mb-2">Skin Concerns (Optional)</label>
+                                <textarea name="skinConcerns" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/20 focus:border-sage resize-none" placeholder="Tell us about any specific skin concerns or goals..." data-mock="true"></textarea>
+                            </div>
+                            
+                            <div class="flex items-start space-x-3">
+                                <input type="checkbox" name="newsletter" class="mt-1 w-4 h-4 text-sage border-gray-300 rounded focus:ring-sage" data-mock="true">
+                                <label class="text-sm text-gray-600">
+                                    I'd like to receive skincare tips and product updates via email
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+                        <button class="btn-secondary px-6 py-3 text-charcoal border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors" data-event="click:previousStep" style="display: none;">
+                            <i class="fas fa-arrow-left mr-2"></i>Previous
+                        </button>
+                        
+                        <div class="flex space-x-4 ml-auto">
+                            <button class="btn-primary bg-sage text-white px-8 py-3 rounded-xl hover:bg-sage/90 transition-colors font-medium" data-event="click:nextStep">
+                                Next Step <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                            
+                            <button class="btn-submit bg-coral text-white px-8 py-3 rounded-xl hover:bg-coral/90 transition-colors font-medium" data-event="click:submitForm" style="display: none;">
+                                Create My Formula <i class="fas fa-flask ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: FormWizard -->
+
+            <!-- @COMPONENT: ProductPreview -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-8">
+                    <h3 class="text-xl font-bold mb-4">Your Custom Formula</h3>
+                    
+                    <!-- Product Visualization -->
+                    <div class="text-center mb-6">
+                        <!-- Product bottle mockup visualization -->
+                        <div class="relative mx-auto w-32 h-40 bg-gradient-to-b from-sage/20 to-teal/30 rounded-2xl flex items-end justify-center p-4 mb-4">
+                            <div class="w-20 h-24 bg-gradient-to-b from-sage to-teal rounded-xl flex items-center justify-center">
+                                <i class="fas fa-tint text-white text-2xl" data-bind="formatIcon"></i>
+                            </div>
+                        </div>
+                        <h4 class="font-semibold text-lg" data-bind="productName">Custom Energizing Mist</h4>
+                        <p class="text-sm text-gray-600" data-bind="skinTypeDescription">For sensitive skin</p>
+                    </div>
+
+                    <!-- Selected Ingredients -->
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-medium text-sm text-gray-700 mb-2">BASE FORMAT</h5>
+                            <div class="bg-sage/10 rounded-lg p-3">
+                                <span class="text-sm font-medium text-sage" data-bind="selectedFormat">Mist</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="font-medium text-sm text-gray-700 mb-2">ACTIVE INGREDIENTS</h5>
+                            <div class="space-y-2" data-bind="selectedActives">
+                                <div class="bg-teal/10 rounded-lg p-2">
+                                    <span class="text-sm text-teal-700">Caffeine (1.5%)</span>
+                                </div>
+                                <div class="bg-teal/10 rounded-lg p-2">
+                                    <span class="text-sm text-teal-700">Niacinamide (5%)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="font-medium text-sm text-gray-700 mb-2">BOTANICAL EXTRACTS</h5>
+                            <div class="space-y-2" data-bind="selectedExtracts">
+                                <div class="bg-emerald-50 rounded-lg p-2">
+                                    <span class="text-sm text-emerald-700">Green Tea Extract</span>
+                                </div>
+                                <div class="bg-emerald-50 rounded-lg p-2">
+                                    <span class="text-sm text-emerald-700">Aloe Vera</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="font-medium text-sm text-gray-700 mb-2">HYDRATORS</h5>
+                            <div class="space-y-2" data-bind="selectedHydrators">
+                                <div class="bg-blue-50 rounded-lg p-2">
+                                    <span class="text-sm text-blue-700">Hyaluronic Acid (1%)</span>
+                                </div>
+                                <div class="bg-blue-50 rounded-lg p-2">
+                                    <span class="text-sm text-blue-700">Glycerin (5%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Suggestion Button -->
+                    <button class="w-full mt-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all duration-200 font-medium" data-event="click:getAISuggestion">
+                        <i class="fas fa-magic mr-2"></i>Get AI Formulation Suggestion
+                    </button>
+
+                    <!-- Safety Score -->
+                    <div class="mt-6 p-4 bg-sage/10 rounded-xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-sage">Safety Score</span>
+                            <span class="text-lg font-bold text-sage" data-bind="safetyScore">92/100</span>
+                        </div>
+                        <div class="w-full bg-sage/20 rounded-full h-2">
+                            <div class="bg-sage h-2 rounded-full" style="width: 92%" data-bind="safetyScoreWidth"></div>
+                        </div>
+                        <p class="text-xs text-sage mt-2">Excellent compatibility with selected ingredients</p>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: ProductPreview -->
+        </div>
+    </main>
+    <!-- @END_COMPONENT: MainContent -->
+
+    <!-- @COMPONENT: PDFPreviewModal -->
+    <div class="fixed inset-0 bg-black/50 z-50 hidden" id="pdfModal" data-event="click:closePDFModal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden" data-event="click:stopPropagation">
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h3 class="text-xl font-bold">Your Custom Formulation</h3>
+                    <button class="text-gray-500 hover:text-gray-700" data-event="click:closePDFModal">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6 overflow-y-auto max-h-[70vh]">
+                    <!-- PDF Preview Content -->
+                    <div class="space-y-6">
+                        <div class="text-center">
+                            <h2 class="text-2xl font-bold mb-2">Custom Energizing Mist</h2>
+                            <p class="text-gray-600">Formulated for Sensitive Skin</p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold mb-3">ACTIVE INGREDIENTS</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span>Caffeine</span>
+                                        <span class="font-medium">1.5%</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Niacinamide</span>
+                                        <span class="font-medium">5.0%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="font-semibold mb-3">BOTANICAL EXTRACTS</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span>Green Tea Extract</span>
+                                        <span class="font-medium">2.0%</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Aloe Vera Extract</span>
+                                        <span class="font-medium">3.0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold mb-3">FULL INGREDIENT LIST (INCI)</h4>
+                            <p class="text-sm text-gray-700 leading-relaxed">
+                                Aqua, Glycerin, Niacinamide, Caffeine, Sodium PCA, Hyaluronic Acid, Camellia Sinensis (Green Tea) Leaf Extract, Aloe Barbadensis Leaf Extract, Phenoxyethanol, Ethylhexylglycerin, Citric Acid
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold mb-3">USAGE INSTRUCTIONS</h4>
+                            <ul class="text-sm space-y-1 text-gray-700">
+                                <li>• Apply to clean, dry skin</li>
+                                <li>• Use morning and evening</li>
+                                <li>• Follow with moisturizer if needed</li>
+                                <li>• Always use sunscreen during the day</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-amber-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-amber-800">Safety Notes</h4>
+                            <p class="text-sm text-amber-700">
+                                This formulation has been checked for ingredient compatibility. Patch test recommended before first use. Discontinue if irritation occurs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4 p-6 border-t border-gray-200">
+                    <button class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" data-event="click:closePDFModal">
+                        Close
+                    </button>
+                    <button class="px-6 py-2 bg-coral text-white rounded-lg hover:bg-coral/90 transition-colors" data-event="click:downloadPDF">
+                        <i class="fas fa-download mr-2"></i>Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: PDFPreviewModal -->
+
+    <!-- @COMPONENT: SuccessModal -->
+    <div class="fixed inset-0 bg-black/50 z-50 hidden" id="successModal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+                <div class="w-16 h-16 bg-sage/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-sage text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Formula Created!</h3>
+                <p class="text-gray-600 mb-6">Your custom skincare formulation has been saved and will be sent to your email shortly.</p>
+                
+                <div class="space-y-3">
+                    <button class="w-full bg-sage text-white py-3 rounded-xl hover:bg-sage/90 transition-colors" data-event="click:viewPDF">
+                        <i class="fas fa-file-pdf mr-2"></i>View PDF Preview
+                    </button>
+                    <button class="w-full border border-gray-300 py-3 rounded-xl hover:bg-gray-50 transition-colors" data-event="click:createAnother">
+                        Create Another Formula
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: SuccessModal -->
+
+    <script>
+        (function() {
+            // Application state
+            let currentStep = 1;
+            const totalSteps = 6;
+            let formData = {
+                skinType: '',
+                format: '',
+                actives: [],
+                extracts: [],
+                hydrators: [],
+                contact: {}
+            };
+
+            // DOM Elements
+            const stepContents = document.querySelectorAll('.step-content');
+            const prevButton = document.querySelector('[data-event="click:previousStep"]');
+            const nextButton = document.querySelector('[data-event="click:nextStep"]');
+            const submitButton = document.querySelector('[data-event="click:submitForm"]');
+            const progressBar = document.querySelector('[data-bind="progressWidth"]');
+            const currentStepText = document.querySelector('[data-bind="currentStep"]');
+
+            // Initialize application
+            function init() {
+                updateUI();
+                attachEventListeners();
+                updateProductPreview();
+            }
+
+            // Event listeners
+            function attachEventListeners() {
+                // Navigation buttons
+                nextButton.addEventListener('click', nextStep);
+                prevButton.addEventListener('click', previousStep);
+                submitButton.addEventListener('click', submitForm);
+
+                // Form inputs
+                document.addEventListener('change', handleFormChange);
+                document.addEventListener('click', handleFormClick);
+
+                // Modal events
+                document.getElementById('pdfModal').addEventListener('click', closePDFModal);
+                document.querySelector('[data-event="click:downloadPDF"]').addEventListener('click', downloadPDF);
+                document.querySelector('[data-event="click:getAISuggestion"]').addEventListener('click', getAISuggestion);
+            }
+
+            // Handle form changes
+            function handleFormChange(e) {
+                const { name, value, type, checked } = e.target;
+                
+                if (type === 'radio') {
+                    formData[name] = value;
+                } else if (type === 'checkbox') {
+                    if (name === 'actives') {
+                        if (checked && formData.actives.length < 3) {
+                            formData.actives.push(value);
+                        } else if (!checked) {
+                            formData.actives = formData.actives.filter(item => item !== value);
+                        }
+                    } else if (name === 'extracts') {
+                        if (checked) {
+                            formData.extracts.push(value);
+                        } else {
+                            formData.extracts = formData.extracts.filter(item => item !== value);
+                        }
+                    } else if (name === 'hydrators') {
+                        if (checked) {
+                            formData.hydrators.push(value);
+                        } else {
+                            formData.hydrators = formData.hydrators.filter(item => item !== value);
+                        }
+                    }
+                } else {
+                    if (!formData.contact) formData.contact = {};
+                    formData.contact[name] = value;
+                }
+
+                updateProductPreview();
+                updateCompatibilityCheck();
+                updateUIState();
+            }
+
+            // Handle form clicks for custom styling
+            function handleFormClick(e) {
+                const label = e.target.closest('label');
+                if (!label) return;
+
+                const input = label.querySelector('input');
+                if (!input) return;
+
+                // Update visual state for radio buttons
+                if (input.type === 'radio') {
+                    const group = document.querySelectorAll(`input[name="${input.name}"]`);
+                    group.forEach(radio => {
+                        const container = radio.closest('label').querySelector('div');
+                        container.classList.remove('border-sage', 'ring-2', 'ring-sage/20');
+                        container.classList.add('border-gray-200');
+                    });
+
+                    if (input.checked) {
+                        const container = label.querySelector('div');
+                        container.classList.remove('border-gray-200');
+                        container.classList.add('border-sage', 'ring-2', 'ring-sage/20');
+                    }
+                }
+
+                // Update visual state for checkboxes
+                if (input.type === 'checkbox') {
+                    const container = label.querySelector('div');
+                    const customCheckbox = label.querySelector('.checkbox-custom');
+                    
+                    if (input.checked) {
+                        container.classList.remove('border-gray-200');
+                        container.classList.add('border-sage', 'ring-2', 'ring-sage/20');
+                        if (customCheckbox) {
+                            customCheckbox.classList.add('bg-sage', 'border-sage');
+                            customCheckbox.innerHTML = '<i class="fas fa-check text-white text-xs"></i>';
+                        }
+                    } else {
+                        container.classList.remove('border-sage', 'ring-2', 'ring-sage/20');
+                        container.classList.add('border-gray-200');
+                        if (customCheckbox) {
+                            customCheckbox.classList.remove('bg-sage', 'border-sage');
+                            customCheckbox.innerHTML = '';
+                        }
+                    }
+                }
+            }
+
+            // Navigation functions
+            function nextStep() {
+                if (validateCurrentStep() && currentStep < totalSteps) {
+                    currentStep++;
+                    updateUI();
+                }
+            }
+
+            function previousStep() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateUI();
+                }
+            }
+
+            // Validation
+            function validateCurrentStep() {
+                switch (currentStep) {
+                    case 1:
+                        return formData.skinType !== '';
+                    case 2:
+                        return formData.format !== '';
+                    case 3:
+                        return formData.actives.length > 0;
+                    case 4:
+                        return true; // Optional step
+                    case 5:
+                        return true; // Optional step
+                    case 6:
+                        return formData.contact.firstName && formData.contact.email;
+                    default:
+                        return true;
+                }
+            }
+
+            // Update UI state
+            function updateUI() {
+                // Update step visibility
+                stepContents.forEach((content, index) => {
+                    content.classList.toggle('hidden', index + 1 !== currentStep);
+                });
+
+                // Update progress
+                const progress = (currentStep / totalSteps) * 100;
+                progressBar.style.width = `${progress}%`;
+                currentStepText.textContent = `Step ${currentStep} of ${totalSteps}`;
+
+                // Update button visibility
+                prevButton.style.display = currentStep > 1 ? 'block' : 'none';
+                nextButton.style.display = currentStep < totalSteps ? 'block' : 'none';
+                submitButton.style.display = currentStep === totalSteps ? 'block' : 'none';
+
+                updateUIState();
+            }
+
+            function updateUIState() {
+                // Enable/disable next button based on validation
+                const isValid = validateCurrentStep();
+                nextButton.disabled = !isValid;
+                nextButton.classList.toggle('opacity-50', !isValid);
+                nextButton.classList.toggle('cursor-not-allowed', !isValid);
+
+                // Enable/disable submit button
+                if (currentStep === totalSteps) {
+                    const canSubmit = validateCurrentStep();
+                    submitButton.disabled = !canSubmit;
+                    submitButton.classList.toggle('opacity-50', !canSubmit);
+                    submitButton.classList.toggle('cursor-not-allowed', !canSubmit);
+                }
+            }
+
+            // Product preview updates
+            function updateProductPreview() {
+                // Update product name based on selections
+                const productName = `Custom ${formData.format || 'Energizing'} ${formData.format === 'cream' ? 'Cream' : formData.format === 'serum' ? 'Serum' : 'Mist'}`;
+                const productNameEl = document.querySelector('[data-bind="productName"]');
+                if (productNameEl) productNameEl.textContent = productName;
+
+                // Update skin type description
+                const skinTypeDesc = formData.skinType ? `For ${formData.skinType} skin` : 'Custom formulation';
+                const skinTypeEl = document.querySelector('[data-bind="skinTypeDescription"]');
+                if (skinTypeEl) skinTypeEl.textContent = skinTypeDesc;
+
+                // Update format display
+                const formatEl = document.querySelector('[data-bind="selectedFormat"]');
+                if (formatEl) formatEl.textContent = formData.format || 'Not selected';
+
+                // Update actives display
+                updateSelectedIngredients('[data-bind="selectedActives"]', formData.actives, 'teal');
+                updateSelectedIngredients('[data-bind="selectedExtracts"]', formData.extracts, 'emerald');
+                updateSelectedIngredients('[data-bind="selectedHydrators"]', formData.hydrators, 'blue');
+
+                // Update safety score based on selections
+                updateSafetyScore();
+            }
+
+            function updateSelectedIngredients(selector, ingredients, colorClass) {
+                const container = document.querySelector(selector);
+                if (!container) return;
+
+                if (ingredients.length === 0) {
+                    container.innerHTML = '<div class="text-sm text-gray-400 italic">None selected</div>';
+                    return;
+                }
+
+                container.innerHTML = ingredients.map(ingredient => {
+                    const percentage = getIngredientPercentage(ingredient);
+                    return `
+                        <div class="bg-${colorClass}-50 rounded-lg p-2">
+                            <span class="text-sm text-${colorClass}-700">${formatIngredientName(ingredient)}${percentage ? ` (${percentage})` : ''}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function formatIngredientName(ingredient) {
+                return ingredient.split('-').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+            }
+
+            function getIngredientPercentage(ingredient) {
+                const percentages = {
+                    'caffeine': '1.5%',
+                    'retinol': '0.3%',
+                    'niacinamide': '5%',
+                    'vitamin-c': '15%',
+                    'salicylic-acid': '1%',
+                    'azelaic-acid': '10%',
+                    'glycerin': '5%',
+                    'sodium-pca': '2%',
+                    'hyaluronic-acid': '1%',
+                    'ceramides': '2%'
+                };
+                return percentages[ingredient];
+            }
+
+            // Compatibility checking
+            function updateCompatibilityCheck() {
+                const message = checkIngredientCompatibility(formData.actives);
+                const messageEl = document.querySelector('[data-bind="compatibilityMessage"]');
+                if (messageEl) messageEl.textContent = message;
+            }
+
+            function checkIngredientCompatibility(actives) {
+                const incompatible = [
+                    ['retinol', 'vitamin-c'],
+                    ['retinol', 'salicylic-acid'],
+                    ['vitamin-c', 'niacinamide']
+                ];
+
+                for (const pair of incompatible) {
+                    if (actives.includes(pair[0]) && actives.includes(pair[1])) {
+                        return `Warning: ${formatIngredientName(pair[0])} and ${formatIngredientName(pair[1])} may not be compatible for sensitive skin.`;
+                    }
+                }
+
+                return 'Selected ingredients are compatible. Recommended concentrations will be suggested.';
+            }
+
+            // Safety score calculation
+            function updateSafetyScore() {
+                let score = 100;
+                
+                // Reduce score for potentially irritating combinations
+                if (formData.actives.includes('retinol') && formData.skinType === 'sensitive') score -= 10;
+                if (formData.actives.includes('salicylic-acid') && formData.skinType === 'dry') score -= 5;
+                if (formData.actives.length > 2) score -= 5;
+
+                const scoreEl = document.querySelector('[data-bind="safetyScore"]');
+                const widthEl = document.querySelector('[data-bind="safetyScoreWidth"]');
+                
+                if (scoreEl) scoreEl.textContent = `${score}/100`;
+                if (widthEl) widthEl.style.width = `${score}%`;
+            }
+
+            // Form submission
+            function submitForm() {
+                if (!validateCurrentStep()) return;
+
+                // TODO: Implement actual form submission to backend
+                console.log('Submitting form data:', formData);
+                
+                // Show success modal
+                document.getElementById('successModal').classList.remove('hidden');
+                
+                // TODO: Send data to backend API
+                // TODO: Generate and send email
+                // TODO: Save to database
+            }
+
+            // AI Suggestion functionality
+            function getAISuggestion() {
+                // TODO: Implement OpenAI API integration
+                alert('AI formulation suggestion would integrate with OpenAI API to provide personalized recommendations based on skin type and concerns.');
+            }
+
+            // PDF functionality
+            function closePDFModal(e) {
+                if (e.target === e.currentTarget || e.target.closest('[data-event="click:closePDFModal"]')) {
+                    document.getElementById('pdfModal').classList.add('hidden');
+                }
+            }
+
+            function downloadPDF() {
+                // TODO: Implement PDF generation
+                alert('PDF download functionality would generate a detailed formulation report using a PDF library like jsPDF.');
+            }
+
+            // Modal events
+            document.querySelector('[data-event="click:viewPDF"]').addEventListener('click', () => {
+                document.getElementById('successModal').classList.add('hidden');
+                document.getElementById('pdfModal').classList.remove('hidden');
+            });
+
+            document.querySelector('[data-event="click:createAnother"]').addEventListener('click', () => {
+                document.getElementById('successModal').classList.add('hidden');
+                currentStep = 1;
+                formData = { skinType: '', format: '', actives: [], extracts: [], hydrators: [], contact: {} };
+                updateUI();
+                updateProductPreview();
+                
+                // Reset form inputs
+                document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+                    input.checked = false;
+                });
+                document.querySelectorAll('input[type="text"], input[type="email"], textarea').forEach(input => {
+                    input.value = '';
+                });
+            });
+
+            // Initialize the application
+            init();
+        })();
+    </script>
+</body>
+</html>
