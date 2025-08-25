@@ -45,7 +45,7 @@ class PDFService {
             
             // Generate filename
             $filename = 'formulation_' . date('Y-m-d_H-i-s') . '.pdf';
-            $filepath = '/tmp/' . $filename;
+            $filepath = '/pdf/' . $filename;
             
             // Output PDF to file
             $pdf->Output($filepath, 'F');
@@ -65,7 +65,7 @@ class PDFService {
                 'error' => $e->getMessage(),
                 'content' => $this->generateFormulationHTML($formulation, $suggestions), // Fallback to HTML
                 'filename' => 'formulation_' . date('Y-m-d_H-i-s') . '.html',
-                'filepath' => '/tmp/formulation_' . date('Y-m-d_H-i-s') . '.html',
+                'filepath' => '/pdf/formulation_' . date('Y-m-d_H-i-s') . '.html',
                 'type' => 'text/html'
             ];
         }
