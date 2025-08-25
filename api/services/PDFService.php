@@ -45,7 +45,11 @@ class PDFService {
             
             // Generate filename
             $filename = 'formulation_' . date('Y-m-d_H-i-s') . '.pdf';
-            $filepath = '/pdf/' . $filename;
+            $pdfDir = __DIR__ . '/../../pdf';
+            if (!file_exists($pdfDir)) {
+                mkdir($pdfDir, 0755, true);
+            }
+            $filepath = $pdfDir . '/' . $filename;
             
             // Output PDF to file
             $pdf->Output($filepath, 'F');
@@ -137,7 +141,55 @@ class PDFService {
             $html .= '</div>';
         }
 
-        // Add formulation suggestions if available
+        // Add AI-generated formulation content if available
+        if (!empty($suggestions['ai_formulation'])) {
+            $aiFormulation = $suggestions['ai_formulation'];
+            
+            $html .= '<div class="section">';
+            $html .= '<h3>🤖 AI-Generated Formulation Analysis</h3>';
+            $html .= '<div class="summary">';
+            $html .= '<h4>' . htmlspecialchars($aiFormulation['formulation_name'] ?? 'Custom AI Formulation') . '</h4>';
+            
+            if (!empty($aiFormulation['recommended_percentages'])) {
+                $html .= '<div class="ingredient-list">';
+                foreach ($aiFormulation['recommended_percentages'] as $ingredient => $range) {
+                    $html .= '<div class="ingredient-item">';
+                    $html .= '<strong>' . ucfirst($ingredient) . ':</strong> ';
+                    $html .= ($range['recommended'] ?? 1.0) . '% (Safe range: ' . ($range['min'] ?? 0.1) . '% - ' . ($range['max'] ?? 5.0) . '%)';
+                    $html .= '</div>';
+                }
+                $html .= '</div>';
+            }
+            
+            if (!empty($aiFormulation['expected_benefits'])) {
+                $html .= '<p><strong>Expected Benefits:</strong> ' . implode(', ', $aiFormulation['expected_benefits']) . '</p>';
+            }
+            
+            if (!empty($aiFormulation['application_instructions'])) {
+                $html .= '<p><strong>Application Instructions:</strong> ' . htmlspecialchars($aiFormulation['application_instructions']) . '</p>';
+            }
+            
+            if (!empty($aiFormulation['ingredient_synergies'])) {
+                $html .= '<p><strong>Ingredient Synergies:</strong> ' . htmlspecialchars($aiFormulation['ingredient_synergies']) . '</p>';
+            }
+            
+            if (!empty($aiFormulation['warnings']) && is_array($aiFormulation['warnings'])) {
+                $html .= '<p><strong>Warnings:</strong> ' . implode(', ', $aiFormulation['warnings']) . '</p>';
+            }
+            
+            $html .= '</div>';
+            $html .= '</div>';
+        }
+
+        // Add product description if available
+        if (!empty($suggestions['product_description'])) {
+            $html .= '<div class="section">';
+            $html .= '<h3>Product Description</h3>';
+            $html .= '<p>' . htmlspecialchars($suggestions['product_description']) . '</p>';
+            $html .= '</div>';
+        }
+
+        // Add template-based formulation suggestions if available
         if (!empty($suggestions)) {
             if (!empty($suggestions['recommended_percentages'])) {
                 $html .= '<div class="section">';

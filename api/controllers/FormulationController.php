@@ -8,6 +8,8 @@ require_once __DIR__ . '/../models/FormulationModel.php';
 require_once __DIR__ . '/../services/EmailService.php';
 require_once __DIR__ . '/../services/PDFService.php';
 require_once __DIR__ . '/../services/FormulationTemplateService.php';
+require_once __DIR__ . '/../services/OpenAIService.php';
+require_once __DIR__ . '/../services/DatabaseMCPOpenAIService.php';
 
 class FormulationController {
     private $model;
@@ -156,9 +158,25 @@ class FormulationController {
             $templateService = new FormulationTemplateService();
             $suggestions = $templateService->generateFormulationSuggestions($data);
             
+            // Generate AI-powered formulation with real-time MySQL database enhancement
+            $aiSuggestions = null;
+            try {
+                $databaseMcpService = new DatabaseMCPOpenAIService();
+                $aiSuggestions = $databaseMcpService->generateFormulation($data);
+                
+                // Merge AI suggestions with template suggestions
+                if ($aiSuggestions) {
+                    $suggestions['ai_formulation'] = $aiSuggestions;
+                    $suggestions['product_description'] = $databaseMcpService->generateProductDescription($data, $aiSuggestions);
+                }
+            } catch (Exception $e) {
+                error_log('AI formulation failed: ' . $e->getMessage());
+                // Continue without AI - template suggestions will still work
+            }
+            
             // Generate PDF report
             $pdfService = new PDFService();
-            //$pdfResult = $pdfService->generateFormulationPDF($data, $suggestions);
+            $pdfResult = $pdfService->generateFormulationPDF($data, $suggestions);
             
             return [
                 'success' => true,
@@ -168,7 +186,7 @@ class FormulationController {
                 'warnings' => $warnings,
                 'suggestions' => $suggestions,
                 'email_sent' => $emailSent,
-                //'pdf_generated' => ($pdfResult && isset($pdfResult['success']) ? $pdfResult['success'] : $pdfResult !== false),
+                'pdf_generated' => ($pdfResult && isset($pdfResult['success']) ? $pdfResult['success'] : $pdfResult !== false),
                 'pdf_info' => $pdfResult
             ];
         } else {

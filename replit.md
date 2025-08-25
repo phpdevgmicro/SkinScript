@@ -16,6 +16,12 @@ Preferred communication style: Simple, everyday language.
 - **Responsive Layout**: Mobile-first design using CSS Grid and Flexbox with clamp() functions for fluid typography
 - **Progressive Enhancement**: Form works without JavaScript, with enhanced UX when enabled
 
+### AI-Enhanced Backend Architecture
+- **PHP MCP Server**: Custom Model Context Protocol implementation using PostgreSQL database
+- **Real-Time Database Integration**: Direct PostgreSQL connection for current ingredient safety data
+- **AI-Powered Formulation Engine**: GPT-4o with real-time ingredient database context
+- **Database-Verified Compatibility**: Live ingredient compatibility checking and safety validation
+
 ### Form Management System
 - **Multi-Step Form Flow**: Sections for skin type, base format, key actives, extracts, boosters, and contact information
 - **State Management**: Centralized form data object tracking user selections across all sections
@@ -52,7 +58,9 @@ Preferred communication style: Simple, everyday language.
 - **DOM APIs**: Event handling, form validation, and dynamic content updates
 - **CSS Features**: Modern CSS properties including backdrop-filter, clamp(), and CSS Grid
 
-### Potential Integrations
-- **Email Services**: Form submission likely requires backend email integration
-- **Analytics**: User interaction tracking for formulation preferences
-- **Database Storage**: Future enhancement for saving user formulations and preferences
+### AI and Database Integration
+- **OpenAI GPT-4o**: AI-powered formulation generation with real-time ingredient data
+- **PHP MCP Server**: Model Context Protocol server providing real-time ingredient database access
+- **PostgreSQL Database**: Real-time skincare ingredient database with safety data, compatibility rules, and formulation guidelines
+- **SMTP Email Services**: Automated email notifications for form submissions
+- **PDF Generation**: Dynamic PDF creation for formulation reports
