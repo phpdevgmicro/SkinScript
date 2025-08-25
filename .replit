@@ -4,7 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["php83", "php83Extensions.pdo", "php83Extensions.pdo_pgsql", "php83Extensions.pgsql", "php83Extensions.curl", "php83Extensions.mbstring", "wkhtmltopdf"]
+packages = ["php83", "php83Extensions.pdo", "php83Extensions.pdo_pgsql", "php83Extensions.pgsql", "php83Extensions.curl", "php83Extensions.mbstring", "wkhtmltopdf", "php83Extensions.pdo_mysql", "php82Packages.composer"]
 
 [workflows]
 runButton = "Project"

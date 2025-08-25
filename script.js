@@ -423,10 +423,13 @@ class SkincareApp {
             const submissionData = this.prepareSubmissionData();
             const response = await this.submitToBackend(submissionData);
             
-            if (response.formulation) {
-                this.displayResults(response.formulation, response.pdf);
+            // Store response for PDF download
+            this.lastSubmissionResponse = response;
+            
+            if (response.success) {
+                this.displayResults(response, response.pdf_info);
             } else {
-                this.displaySuccessMessage();
+                this.displayErrorMessage();
             }
             this.scrollToStatus();
             
@@ -475,58 +478,89 @@ class SkincareApp {
     }
 
     // Display Results
-    displayResults(formulation, pdfInfo) {
+    displayResults(response, pdfInfo) {
         const statusDiv = document.getElementById('submissionStatus');
         if (!statusDiv) return;
 
         statusDiv.className = 'status-message formulation-results';
-        statusDiv.innerHTML = this.buildResultsHTML(formulation, pdfInfo);
+        statusDiv.innerHTML = this.buildResultsHTML(response, pdfInfo);
     }
 
-    buildResultsHTML(formulation, pdfInfo) {
-        const formulaRows = Object.entries(formulation.formula || {})
-            .map(([ingredient, percentage]) => 
-                `<tr><td>${this.formatDisplayName(ingredient)}</td><td>${percentage}%</td></tr>`
-            ).join('');
-
-        const recommendations = formulation.recommendations?.length > 0 ? 
-            `<div class="recommendations-section">
-                <h4><i class="fas fa-lightbulb"></i> Usage Recommendations:</h4>
-                <ul>${formulation.recommendations.map(rec => `<li>${rec}</li>`).join('')}</ul>
-            </div>` : '';
-
-        const pdfSection = pdfInfo?.success ? 
-            `<div class="pdf-section">
-                <h4><i class="fas fa-file-pdf"></i> Your Formulation Document</h4>
-                <p>Download your personalized formulation guide:</p>
-                <a href="${pdfInfo.download_url}" class="pdf-download-btn" target="_blank">
-                    <i class="fas fa-download"></i> Download PDF${pdfInfo.fallback ? ' (HTML Format)' : ''}
-                </a>
-            </div>` : '';
-
-        return `
-            <div class="formulation-header">
-                <i class="fas fa-flask"></i>
-                <h3>${formulation.title}</h3>
-                <div class="profile-badge">${formulation.profile}</div>
-            </div>
-            <div class="formulation-description">
-                <p>${formulation.description}</p>
-            </div>
-            <div class="formulation-breakdown">
-                <h4><i class="fas fa-list-ul"></i> Formulation Breakdown (% w/w)</h4>
-                <table class="formula-table">
-                    <thead><tr><th>Ingredient</th><th>Percentage</th></tr></thead>
-                    <tbody>${formulaRows}</tbody>
-                </table>
-            </div>
-            ${recommendations}
-            ${pdfSection}
-            <div class="formulation-footer">
-                <p><i class="fas fa-info-circle"></i> Formulation ID: ${formulation.formulation_id}</p>
-                <p>Generated on ${formulation.generated_at}</p>
-            </div>
-        `;
+    buildResultsHTML(response, pdfInfo) {
+        let html = '<div class="success-message">';
+        html += '<h3><i class="fas fa-check-circle"></i> Formulation Created Successfully!</h3>';
+        html += `<p><strong>Formulation ID:</strong> ${response.formulation_id}</p>`;
+        html += `<p><strong>Summary:</strong> ${response.summary}</p>`;
+        
+        // Display percentage calculations
+        if (response.suggestions && response.suggestions.recommended_percentages) {
+            html += '<div class="formulation-section">';
+            html += '<h4><i class="fas fa-calculator"></i> Recommended Concentrations</h4>';
+            html += '<div class="percentage-grid">';
+            Object.entries(response.suggestions.recommended_percentages).forEach(([ingredient, range]) => {
+                html += `<div class="percentage-item">
+                    <strong>${ingredient.charAt(0).toUpperCase() + ingredient.slice(1)}:</strong> 
+                    ${range.recommended}% 
+                    <small>(Range: ${range.min}% - ${range.max}%)</small>
+                </div>`;
+            });
+            html += '</div></div>';
+        }
+        
+        // Display benefits
+        if (response.suggestions && response.suggestions.formulation_benefits) {
+            html += '<div class="formulation-section">';
+            html += '<h4><i class="fas fa-star"></i> Expected Benefits</h4>';
+            html += '<ul class="benefits-list">';
+            response.suggestions.formulation_benefits.forEach(benefit => {
+                html += `<li>${benefit}</li>`;
+            });
+            html += '</ul></div>';
+        }
+        
+        // Display application instructions
+        if (response.suggestions && response.suggestions.application_instructions) {
+            html += '<div class="formulation-section">';
+            html += '<h4><i class="fas fa-info-circle"></i> Usage Instructions</h4>';
+            html += `<p>${response.suggestions.application_instructions}</p>`;
+            html += '</div>';
+        }
+        
+        // Display synergies
+        if (response.suggestions && response.suggestions.ingredient_synergies && response.suggestions.ingredient_synergies.length > 0) {
+            html += '<div class="formulation-section">';
+            html += '<h4><i class="fas fa-link"></i> Ingredient Synergies</h4>';
+            html += '<ul class="synergies-list">';
+            response.suggestions.ingredient_synergies.forEach(synergy => {
+                html += `<li>${synergy}</li>`;
+            });
+            html += '</ul></div>';
+        }
+        
+        // Display warnings
+        if (response.warnings && response.warnings.length > 0) {
+            html += '<div class="formulation-section warning">';
+            html += '<h4><i class="fas fa-exclamation-triangle"></i> Important Notes</h4>';
+            html += '<ul>';
+            response.warnings.forEach(warning => {
+                html += `<li>${warning}</li>`;
+            });
+            html += '</ul></div>';
+        }
+        
+        // PDF download link
+        if (pdfInfo && pdfInfo.content) {
+            html += '<div class="formulation-section">';
+            html += '<h4><i class="fas fa-file-pdf"></i> Your Formulation Report</h4>';
+            html += `<button class="btn btn-primary" onclick="window.skincareApp.downloadPDF()">
+                <i class="fas fa-download"></i> Download PDF Report
+            </button>`;
+            html += '</div>';
+        }
+        
+        html += '</div>';
+        
+        return html;
     }
 
     displaySuccessMessage() {
