@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <defs>
+    <!-- Skin Type Icons -->
+    <symbol id="icon-oily" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+    </symbol>
+    
+    <symbol id="icon-dry" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2zm0 4.07L10.05 10l-2.95.43 2.14 2.08-.51 2.95L12 13.91l3.27 1.55-.51-2.95L16.9 10.43 13.95 10 12 6.07z"/>
+    </symbol>
+    
+    <symbol id="icon-sensitive" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </symbol>
+    
+    <symbol id="icon-combination" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6h6V6z"/>
+    </symbol>
+    
+    <!-- Base Format Icons -->
+    <symbol id="icon-mist" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M19 12h-2v3h-2v-3H9v3H7v-3H5v6h14v-6zM5 10h14V8H5v2zm2-6v2h10V4H7z"/>
+    </symbol>
+    
+    <symbol id="icon-serum" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M9 2v2h6V2h-6zm1 4v2h4V6h-4zm-1 4v12h6V10H9zm2 2h2v2h-2v-2zm0 4h2v2h-2v-2z"/>
+    </symbol>
+    
+    <symbol id="icon-cream" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+    </symbol>
+    
+    <!-- Active Ingredient Icons -->
+    <symbol id="icon-caffeine" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M2 21h19v-3H2v3zM20 8H4V6h16v2zm0-7H4v3h16V1zm-8.5 11.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zm3-3c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5z"/>
+    </symbol>
+    
+    <symbol id="icon-vitamin" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    </symbol>
+    
+    <symbol id="icon-molecule" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </symbol>
+    
+    <!-- Extract Icons -->
+    <symbol id="icon-plant" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93z"/>
+    </symbol>
+    
+    <symbol id="icon-leaf" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.54c.48-.81 1.39-1.28 2.34-1.28h1.7c.96 0 1.81-.48 2.32-1.28l.95-2.54c.48-.81 1.39-1.28 2.34-1.28h1.7c.96 0 1.81-.48 2.32-1.28L21.18 8.66 17 8z"/>
+    </symbol>
+    
+    <!-- Booster Icons -->
+    <symbol id="icon-hydration" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2s-2-.9-2-2V4c0-1.1.9-2 2-2zm4.24 7.76l1.41 1.41C18.5 10.33 19 9.23 19 8c0-.62-.13-1.21-.36-1.74l-1.41 1.41c.1.26.15.54.15.83 0 .55-.22 1.07-.59 1.45l-1.41-1.41.03-.03z"/>
+    </symbol>
+    
+    <symbol id="icon-peptide" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h8c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V4h8v16z"/>
+    </symbol>
+  </defs>
+</svg>

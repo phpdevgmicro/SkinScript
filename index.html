@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your Own Energizing Mist | Custom Skincare Formulation</title>
+    <meta name="description" content="Create your personalized energizing mist with our interactive skincare formulation tool">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="bg-gradient-primary text-white py-4 mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="h3 mb-1 fw-bold">Custom Skincare Formulation</h1>
+                    <p class="mb-0 opacity-90">Create your personalized skincare formula in simple steps</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <i class="fas fa-flask fa-2x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid px-3 px-md-4">
+        <!-- Progress Bar -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="progress-container">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="progressBarFill"></div>
+                        </div>
+                        <div class="progress-steps">
+                            <div class="progress-step active" data-step="1">
+                                <span class="step-icon">1</span>
+                                <span class="step-label">Skin Type</span>
+                            </div>
+                            <div class="progress-step" data-step="2">
+                                <span class="step-icon">2</span>
+                                <span class="step-label">Format</span>
+                            </div>
+                            <div class="progress-step" data-step="3">
+                                <span class="step-icon">3</span>
+                                <span class="step-label">Actives</span>
+                            </div>
+                            <div class="progress-step" data-step="4">
+                                <span class="step-icon">4</span>
+                                <span class="step-label">Extracts</span>
+                            </div>
+                            <div class="progress-step" data-step="5">
+                                <span class="step-icon">5</span>
+                                <span class="step-label">Hydrators</span>
+                            </div>
+                            <div class="progress-step" data-step="6">
+                                <span class="step-icon">6</span>
+                                <span class="step-label">Details</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Form Column -->
+            <div class="col-lg-8">
+                <div class="form-wrapper">
+                <form id="formulationForm" class="sleek-form" novalidate>
+                <!-- Step 1: Skin Type -->
+                <div class="form-section-card" id="skinTypeSection">
+                    <div class="section-container">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3 class="section-title">What's your skin type?</h3>
+                    </div>
+                    <p class="step-description">Select all that apply to your skin. Not sure? <a href="#" class="help-link" data-bs-toggle="tooltip" title="Oily: shiny T-zone, large pores. Dry: tight, flaky skin. Sensitive: reacts to products. Combination: oily T-zone, dry cheeks.">Get help choosing</a></p>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-3">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="skinType" value="oily" id="oily">
+                                <label class="checkbox-label" for="oily">Oily</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="skinType" value="dry" id="dry">
+                                <label class="checkbox-label" for="dry">Dry</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="skinType" value="sensitive" id="sensitive">
+                                <label class="checkbox-label" for="sensitive">Sensitive</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="skinType" value="combination" id="combination">
+                                <label class="checkbox-label" for="combination">Combination</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="error-message" id="skinTypeError"></div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Base Format -->
+                <div class="form-section-card" id="baseFormatSection">
+                    <div class="section-container">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3 class="section-title">Choose your preferred format</h3>
+                    </div>
+                    <p class="step-description">How would you like to apply your skincare?</p>
+                    <div class="row g-2">
+                        <div class="col-12 col-md-4">
+                            <div class="radio-item">
+                                <input class="form-check-input" type="radio" name="baseFormat" value="mist" id="mist" checked>
+                                <label class="radio-label" for="mist">Mist<span class="option-hint">Easy spray application</span></label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="radio-item">
+                                <input class="form-check-input" type="radio" name="baseFormat" value="serum" id="serum">
+                                <label class="radio-label" for="serum">Serum<span class="option-hint">Lightweight liquid</span></label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="radio-item">
+                                <input class="form-check-input" type="radio" name="baseFormat" value="cream" id="cream">
+                                <label class="radio-label" for="cream">Cream<span class="option-hint">Rich moisturizer</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Key Ingredients -->
+                <div class="form-section-card" id="keyActivesSection">
+                    <div class="section-container">
+                    <div class="section-header">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <h3 class="section-title">Pick your main ingredients</h3>
+                        </div>
+                        <span class="counter-badge" id="activesCounter">0/3</span>
+                    </div>
+                    <p class="step-description">Choose up to 3 key ingredients for your skin concerns. <strong>Tip:</strong> Combine ingredients that target different benefits for best results.</p>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="caffeine" id="caffeine">
+                                <label class="checkbox-label" for="caffeine">
+                                    <span class="ingredient-name">Caffeine</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-bolt"></i> Energizing</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="l-carnitine" id="l-carnitine">
+                                <label class="checkbox-label" for="l-carnitine">
+                                    <span class="ingredient-name">L-Carnitine</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-fire"></i> Firming</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="retinol" id="retinol">
+                                <label class="checkbox-label" for="retinol">
+                                    <span class="ingredient-name">Retinol</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-magic"></i> Anti-aging</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="niacinamide" id="niacinamide">
+                                <label class="checkbox-label" for="niacinamide">
+                                    <span class="ingredient-name">Niacinamide</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-shield-alt"></i> Pore refining</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="vitamin-c" id="vitamin-c">
+                                <label class="checkbox-label" for="vitamin-c">
+                                    <span class="ingredient-name">Vitamin C</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-sun"></i> Brightening</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="keyActives" value="hyaluronic-acid" id="hyaluronic-acid">
+                                <label class="checkbox-label" for="hyaluronic-acid">
+                                    <span class="ingredient-name">Hyaluronic Acid</span>
+                                    <span class="ingredient-benefit"><i class="fas fa-tint"></i> Hydrating</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="error-message" id="keyActivesError"></div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Natural Extracts -->
+                <div class="form-section-card" id="extractsSection">
+                    <div class="section-container">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3 class="section-title">Add natural extracts (optional)</h3>
+                    </div>
+                    <p class="step-description">Enhance your formula with botanical ingredients</p>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="beta-vulgaris" id="beta-vulgaris">
+                                <label class="checkbox-label" for="beta-vulgaris">Beta Vulgaris (Beet)</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="avena-sativa" id="avena-sativa">
+                                <label class="checkbox-label" for="avena-sativa">Avena Sativa (Oat)</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="neem" id="neem">
+                                <label class="checkbox-label" for="neem">Neem</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="bilberry" id="bilberry">
+                                <label class="checkbox-label" for="bilberry">Bilberry</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="green-tea" id="green-tea">
+                                <label class="checkbox-label" for="green-tea">Green Tea</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="extracts" value="chamomile" id="chamomile">
+                                <label class="checkbox-label" for="chamomile">Chamomile</label>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Hydrators -->
+                <div class="form-section-card" id="boostersSection">
+                    <div class="section-container">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h3 class="section-title">Add hydrators (optional)</h3>
+                    </div>
+                    <p class="step-description">Boost moisture and skin health</p>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="glycerin" id="glycerin">
+                                <label class="checkbox-label" for="glycerin">Glycerin</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="sodium-pca" id="sodium-pca">
+                                <label class="checkbox-label" for="sodium-pca">Sodium PCA</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="copper-peptides" id="copper-peptides">
+                                <label class="checkbox-label" for="copper-peptides">Copper Peptides</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="ceramides" id="ceramides">
+                                <label class="checkbox-label" for="ceramides">Ceramides</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="boosters" value="squalane" id="squalane">
+                                <label class="checkbox-label" for="squalane">Squalane</label>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Your Details -->
+                <div class="form-section-card" id="contactSection">
+                    <div class="section-container">
+                    <div class="step-header">
+                        <span class="step-number">6</span>
+                        <h3 class="section-title">Your details</h3>
+                    </div>
+                    <p class="step-description">We'll send your custom formula to this email</p>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <label for="fullName" class="input-label">Full Name *</label>
+                                <input type="text" class="sleek-input" id="fullName" name="fullName" required>
+                                <div class="error-message" id="fullNameError"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <label for="email" class="input-label">Email Address *</label>
+                                <input type="email" class="sleek-input" id="email" name="email" required>
+                                <div class="error-message" id="emailError"></div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-group">
+                                <label for="skinConcerns" class="input-label">Special Requests (Optional)</label>
+                                <textarea class="sleek-input" id="skinConcerns" name="skinConcerns" rows="2" placeholder="Any special skin concerns or goals?"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="checkbox-item">
+                                <input class="form-check-input" type="checkbox" name="aiPowered" value="true" id="aiPowered" checked>
+                                <label class="checkbox-label" for="aiPowered">
+                                    <i class="fas fa-robot"></i> Use AI-Powered Formulation (Recommended)
+                                    <span class="option-hint">Get personalized ingredient percentages and expert analysis</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Navigation & Submit Section -->
+                <div class="form-navigation">
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-btn prev-btn" id="prevBtn" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous Step
+                        </button>
+                        <button type="button" class="nav-btn next-btn" id="nextBtn">
+                            Next Step <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Submit Section -->
+                <div class="submit-section" style="display: none;" id="submitSection">
+                    <div class="submit-info">
+                        <h4><i class="fas fa-paper-plane"></i> Ready to Create Your Formula?</h4>
+                        <p>We'll analyze your selections and email you a personalized skincare formula within 24 hours.</p>
+                    </div>
+                    <button type="submit" class="sleek-button" id="submitBtn" disabled>
+                        <i class="fas fa-flask"></i> Create My Formula
+                    </button>
+                    <div class="status-message" id="submissionStatus"></div>
+                    <p class="privacy-note">
+                        <i class="fas fa-lock"></i> Your information is secure and will only be used to create your custom formula.
+                    </p>
+                </div>
+                </form>
+            </div>  
+        </div>
+          <!-- Sidebar Column -->
+            <div class="col-lg-4">
+                <div class="sidebar-wrapper">
+                    <div class="ingredients-sidebar">
+                <div class="sidebar-header">
+                    <h3><i class="fas fa-flask"></i> Your Formula</h3>
+                </div>
+                
+                <div class="formula-summary">
+                    <div class="summary-row">
+                        <span class="label"><i class="fas fa-user"></i> Skin:</span>
+                        <div class="value" id="skinTypeItems">Not selected</div>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label"><i class="fas fa-spray-can"></i> Format:</span>
+                        <div class="value" id="baseFormatItems">Mist</div>
+                    </div>
+                    <div class="summary-row actives-row">
+                        <span class="label"><i class="fas fa-star"></i> Actives:</span>
+                        <div class="value-with-counter">
+                            <div class="value" id="keyActivesItems">None selected</div>
+                            <span class="counter" id="activesCounterSidebar">0/3</span>
+                        </div>
+                    </div>
+                    <div class="summary-row" id="extrasRow" style="display: none;">
+                        <span class="label"><i class="fas fa-plus"></i> Extras:</span>
+                        <div class="value extras-list">
+                            <div class="extras-items" id="extractsItems"></div>
+                            <div class="extras-items" id="boostersItems"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-footer">
+                    <button type="button" class="preview-btn" id="previewBtn" disabled>
+                        <i class="fas fa-eye"></i> Preview Formula
+                    </button>
+                </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Footer -->
+        <footer class="text-center py-4 mt-5">
+            <p class="text-muted mb-0">&copy; 2025 Custom Skincare Formulations. Professional consultation recommended.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
