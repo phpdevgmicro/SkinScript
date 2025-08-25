@@ -1,7 +1,7 @@
 <?php
 /**
- * Formulation Controller
- * Handles business logic for skincare formulations
+ * Simple Formulation Controller
+ * Handles form submissions - stores data and sends admin email
  */
 
 require_once __DIR__ . '/../models/FormulationModel.php';
@@ -27,8 +27,6 @@ class FormulationController {
         // Ensure all required arrays exist
         $data['skinType'] = $data['skinType'] ?? [];
         $data['keyActives'] = $data['keyActives'] ?? [];
-        $data['extracts'] = $data['extracts'] ?? [];
-        $data['boosters'] = $data['boosters'] ?? [];
         $data['contact'] = $data['contact'] ?? [];
 
         // Validate skin types
@@ -42,18 +40,13 @@ class FormulationController {
             $errors[] = "Valid base format must be selected";
         }
 
-        // Validate key actives (max 3)
-        if (count($data['keyActives']) > 3) {
-            $errors[] = "Maximum 3 key actives allowed";
-        }
-
         // Validate contact info
         if (empty($data['contact']['email']) || !filter_var($data['contact']['email'], FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Valid email address is required";
         }
 
-        // Handle both 'name' and 'fullName' field names
-        $customerName = $data['contact']['name'] ?? $data['contact']['fullName'] ?? '';
+        // Get customer name from fullName field
+        $customerName = $data['contact']['fullName'] ?? '';
         if (empty($customerName) || strlen(trim($customerName)) < 2) {
             $errors[] = "Name must be at least 2 characters long";
         }
@@ -69,30 +62,7 @@ class FormulationController {
     }
 
     /**
-     * Check for ingredient incompatibilities
-     * @param array $keyActives
-     * @return array
-     */
-    private function checkIncompatibilities($keyActives) {
-        $incompatibleCombinations = [
-            ['retinol', 'vitamin-c'],
-            ['retinol', 'niacinamide'],
-            ['vitamin-c', 'niacinamide']
-        ];
-
-        $warnings = [];
-        
-        foreach ($incompatibleCombinations as $combo) {
-            if (in_array($combo[0], $keyActives) && in_array($combo[1], $keyActives)) {
-                $warnings[] = "Warning: " . ucfirst($combo[0]) . " and " . ucfirst($combo[1]) . " may not be compatible";
-            }
-        }
-
-        return $warnings;
-    }
-
-    /**
-     * Generate formulation summary
+     * Generate simple formulation summary
      * @param array $data
      * @return string
      */
@@ -101,14 +71,6 @@ class FormulationController {
         
         if (!empty($data['keyActives'])) {
             $summary .= " with " . implode(', ', $data['keyActives']);
-        }
-
-        if (!empty($data['extracts'])) {
-            $summary .= " featuring " . implode(', ', $data['extracts']) . " extracts";
-        }
-
-        if (!empty($data['boosters'])) {
-            $summary .= " plus " . implode(', ', $data['boosters']) . " boosters";
         }
 
         return $summary;
@@ -162,51 +124,5 @@ class FormulationController {
         }
     }
 
-    /**
-     * Get formulation details
-     * @param int $id
-     * @return array
-     */
-    public function getFormulation($id) {
-        $formulation = $this->model->getFormulationById($id);
-        
-        if ($formulation) {
-            return [
-                'success' => true,
-                'formulation' => $formulation
-            ];
-        } else {
-            return [
-                'success' => false,
-                'message' => 'Formulation not found'
-            ];
-        }
-    }
-
-    /**
-     * Get all formulations
-     * @param int $page
-     * @return array
-     */
-    public function getAllFormulations($page = 1) {
-        $limit = 20;
-        $offset = ($page - 1) * $limit;
-        
-        $formulations = $this->model->getAllFormulations($limit, $offset);
-        
-        if ($formulations !== false) {
-            return [
-                'success' => true,
-                'formulations' => $formulations,
-                'page' => $page,
-                'limit' => $limit
-            ];
-        } else {
-            return [
-                'success' => false,
-                'message' => 'Failed to retrieve formulations'
-            ];
-        }
-    }
 }
 ?>

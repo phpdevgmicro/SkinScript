@@ -186,38 +186,31 @@ include 'includes/header.php';
                         <div class="mb-3">
                             <label for="ai_model" class="form-label">AI Model</label>
                             <select class="form-select" id="ai_model" name="ai_model">
-                                <optgroup label="GPT-5 Models (Cutting Edge)">
-                                    <option value="gpt-5" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5' ? 'selected' : ''; ?>>GPT-5 (Next Generation)</option>
-                                    <option value="gpt-5-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5-turbo' ? 'selected' : ''; ?>>GPT-5 Turbo</option>
-                                    <option value="gpt-5-mini" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5-mini' ? 'selected' : ''; ?>>GPT-5 Mini (Cost-Efficient)</option>
-                                    <option value="gpt-5-nano" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5-nano' ? 'selected' : ''; ?>>GPT-5 Nano (Ultra Fast)</option>
+                                <optgroup label="GPT-5 Series (Latest - August 2025)">
+                                    <option value="gpt-5" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5' ? 'selected' : ''; ?>>gpt-5 // Most advanced - highest cost, best performance</option>
+                                    <option value="gpt-5-mini" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5-mini' ? 'selected' : ''; ?>>gpt-5-mini // Balanced - good performance, moderate cost</option>
+                                    <option value="gpt-5-nano" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5-nano' ? 'selected' : ''; ?>>gpt-5-nano // Fastest - lowest cost, basic tasks</option>
                                 </optgroup>
-                                <optgroup label="GPT-4.1 Models (Enhanced)">
-                                    <option value="gpt-4.1" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1' ? 'selected' : ''; ?>>GPT-4.1 (Latest Update)</option>
-                                    <option value="gpt-4.1-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1-turbo' ? 'selected' : ''; ?>>GPT-4.1 Turbo</option>
-                                    <option value="gpt-4.1-mini" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1-mini' ? 'selected' : ''; ?>>GPT-4.1 Mini (Faster)</option>
-                                    <option value="gpt-4.1-nano" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1-nano' ? 'selected' : ''; ?>>GPT-4.1 Nano (Most Efficient)</option>
+                                <optgroup label="GPT-4.1 Series (Coding-focused, June 2024 knowledge)">
+                                    <option value="gpt-4.1" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1' ? 'selected' : ''; ?>>gpt-4.1 // Premium - highest accuracy for formulations</option>
+                                    <option value="gpt-4.1-mini" <?php echo ($settingsArray['ai_model'] ?? 'gpt-4.1-mini') === 'gpt-4.1-mini' ? 'selected' : ''; ?>>gpt-4.1-mini // Best balance - newer, accurate, cost-effective ⭐</option>
+                                    <option value="gpt-4.1-nano" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1-nano' ? 'selected' : ''; ?>>gpt-4.1-nano // Budget-friendly - fast responses, basic chemistry</option>
                                 </optgroup>
-                                <optgroup label="GPT-4 Models (Recommended)">
-                                    <option value="gpt-4o" <?php echo ($settingsArray['ai_model'] ?? 'gpt-4o') === 'gpt-4o' ? 'selected' : ''; ?>>GPT-4o (Latest, Fastest)</option>
-                                    <option value="gpt-4o-mini" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4o-mini' ? 'selected' : ''; ?>>GPT-4o Mini (Cost-effective)</option>
-                                    <option value="gpt-4o-nano" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4o-nano' ? 'selected' : ''; ?>>GPT-4o Nano (Ultra Lightweight)</option>
-                                    <option value="gpt-4-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4-turbo' ? 'selected' : ''; ?>>GPT-4 Turbo</option>
-                                    <option value="gpt-4-turbo-preview" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4-turbo-preview' ? 'selected' : ''; ?>>GPT-4 Turbo Preview</option>
-                                    <option value="gpt-4" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4' ? 'selected' : ''; ?>>GPT-4 (Classic)</option>
-                                    <option value="gpt-4-32k" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4-32k' ? 'selected' : ''; ?>>GPT-4 32K Context</option>
+                                <optgroup label="GPT-4o Series (Optimized for chat/multimodal)">
+                                    <option value="gpt-4o" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4o' ? 'selected' : ''; ?>>gpt-4o // Full model - multimodal capabilities</option>
+                                    <option value="gpt-4o-mini" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4o-mini' ? 'selected' : ''; ?>>gpt-4o-mini // Still good - proven, very cheap, reliable ⭐</option>
                                 </optgroup>
-                                <optgroup label="GPT-3.5 Models (Legacy)">
-                                    <option value="gpt-3.5-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-3.5-turbo' ? 'selected' : ''; ?>>GPT-3.5 Turbo</option>
-                                    <option value="gpt-3.5-turbo-16k" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-3.5-turbo-16k' ? 'selected' : ''; ?>>GPT-3.5 Turbo 16K</option>
-                                    <option value="gpt-3.5-turbo-instruct" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-3.5-turbo-instruct' ? 'selected' : ''; ?>>GPT-3.5 Turbo Instruct</option>
+                                <optgroup label="GPT-4 Series (Original)">
+                                    <option value="gpt-4-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4-turbo' ? 'selected' : ''; ?>>gpt-4-turbo // Enhanced GPT-4 - good for complex chemistry</option>
+                                    <option value="gpt-4" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4' ? 'selected' : ''; ?>>gpt-4 // Original - reliable but older</option>
                                 </optgroup>
                             </select>
                             <div class="form-text">
-                                <strong>GPT-5</strong> offers the most advanced capabilities. 
-                                <strong>GPT-4.1</strong> provides enhanced performance over GPT-4. 
-                                <strong>GPT-4o</strong> remains the best balance of performance and availability.
-                                <strong>Nano/Mini</strong> models are optimized for cost and speed.
+                                <strong>⭐ Recommended:</strong> gpt-4.1-mini for best balance of accuracy and cost, or gpt-4o-mini for proven reliability.<br>
+                                <strong>GPT-5 Series:</strong> Latest models with cutting-edge capabilities (August 2025).<br>
+                                <strong>GPT-4.1 Series:</strong> Coding-focused with enhanced chemistry knowledge (June 2024).<br>
+                                <strong>GPT-4o Series:</strong> Optimized for chat and multimodal tasks with excellent cost efficiency.<br>
+                                <strong>GPT-4 Series:</strong> Original reliable models for complex formulations.
                             </div>
                         </div>
                         <div class="mb-3">

@@ -6,3 +6,7 @@
 [x] 6. Add auto-generated PDF preview feature with ingredients & descriptions
 [x] 7. Verify the project is working using the feedback tool
 [x] 8. Inform user the import is completed and they can start building, mark the import as completed using the complete_project_import tool
+[x] 9. Restore original complex multi-step form frontend
+[x] 10. Remove AI integration, PDF generation, and admin panel functionality
+[x] 11. Keep only database storage and admin email notification features
+[x] 12. Restore admin panel files that were accidentally removed
