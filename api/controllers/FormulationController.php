@@ -7,9 +7,7 @@
 require_once __DIR__ . '/../models/FormulationModel.php';
 require_once __DIR__ . '/../services/EmailService.php';
 require_once __DIR__ . '/../services/PDFService.php';
-require_once __DIR__ . '/../services/FormulationTemplateService.php';
 require_once __DIR__ . '/../services/OpenAIService.php';
-require_once __DIR__ . '/../services/DatabaseMCPOpenAIService.php';
 
 class FormulationController {
     private $model;
@@ -154,24 +152,22 @@ class FormulationController {
             $emailService = new EmailService();
             $emailSent = $emailService->sendFormulationNotification($data);
             
-            // Generate formulation suggestions
-            $templateService = new FormulationTemplateService();
-            $suggestions = $templateService->generateFormulationSuggestions($data);
-            
-            // Generate AI-powered formulation with real-time MySQL database enhancement
-            $aiSuggestions = null;
+            // Generate AI-powered formulation using OpenAI
+            $suggestions = null;
             try {
-                $databaseMcpService = new DatabaseMCPOpenAIService();
-                $aiSuggestions = $databaseMcpService->generateFormulation($data);
+                $openAIService = new OpenAIService();
+                $suggestions = $openAIService->generateFormulation($data);
                 
-                // Merge AI suggestions with template suggestions
-                if ($aiSuggestions) {
-                    $suggestions['ai_formulation'] = $aiSuggestions;
-                    $suggestions['product_description'] = $databaseMcpService->generateProductDescription($data, $aiSuggestions);
+                // Generate product description as well
+                if ($suggestions) {
+                    $suggestions['product_description'] = $openAIService->generateProductDescription($data, $suggestions);
                 }
             } catch (Exception $e) {
                 error_log('AI formulation failed: ' . $e->getMessage());
-                // Continue without AI - template suggestions will still work
+                return [
+                    'success' => false,
+                    'message' => 'Failed to generate AI formulation: ' . $e->getMessage()
+                ];
             }
             
             // Generate PDF report

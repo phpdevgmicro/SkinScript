@@ -8,10 +8,17 @@ class OpenAIService {
     private $baseUrl = 'https://api.openai.com/v1';
     
     public function __construct() {
-        $this->apiKey = $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
+        // Load configuration from config file
+        $configFile = __DIR__ . '/../config/openai.php';
+        if (!file_exists($configFile)) {
+            throw new Exception('OpenAI configuration file not found');
+        }
         
-        if (!$this->apiKey) {
-            throw new Exception('OpenAI API key not found');
+        $config = require $configFile;
+        $this->apiKey = $config['api_key'] ?? null;
+        
+        if (!$this->apiKey || $this->apiKey === 'your_openai_api_key_here') {
+            throw new Exception('OpenAI API key not configured. Please update api/config/openai.php');
         }
     }
     

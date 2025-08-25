@@ -141,18 +141,16 @@ class PDFService {
             $html .= '</div>';
         }
 
-        // Add AI-generated formulation content if available
-        if (!empty($suggestions['ai_formulation'])) {
-            $aiFormulation = $suggestions['ai_formulation'];
-            
+        // Add AI-generated formulation content
+        if (!empty($suggestions)) {
             $html .= '<div class="section">';
             $html .= '<h3>🤖 AI-Generated Formulation Analysis</h3>';
             $html .= '<div class="summary">';
-            $html .= '<h4>' . htmlspecialchars($aiFormulation['formulation_name'] ?? 'Custom AI Formulation') . '</h4>';
+            $html .= '<h4>' . htmlspecialchars($suggestions['formulation_name'] ?? 'Custom AI Formulation') . '</h4>';
             
-            if (!empty($aiFormulation['recommended_percentages'])) {
+            if (!empty($suggestions['recommended_percentages'])) {
                 $html .= '<div class="ingredient-list">';
-                foreach ($aiFormulation['recommended_percentages'] as $ingredient => $range) {
+                foreach ($suggestions['recommended_percentages'] as $ingredient => $range) {
                     $html .= '<div class="ingredient-item">';
                     $html .= '<strong>' . ucfirst($ingredient) . ':</strong> ';
                     $html .= ($range['recommended'] ?? 1.0) . '% (Safe range: ' . ($range['min'] ?? 0.1) . '% - ' . ($range['max'] ?? 5.0) . '%)';
@@ -161,20 +159,20 @@ class PDFService {
                 $html .= '</div>';
             }
             
-            if (!empty($aiFormulation['expected_benefits'])) {
-                $html .= '<p><strong>Expected Benefits:</strong> ' . implode(', ', $aiFormulation['expected_benefits']) . '</p>';
+            if (!empty($suggestions['expected_benefits'])) {
+                $html .= '<p><strong>Expected Benefits:</strong> ' . implode(', ', $suggestions['expected_benefits']) . '</p>';
             }
             
-            if (!empty($aiFormulation['application_instructions'])) {
-                $html .= '<p><strong>Application Instructions:</strong> ' . htmlspecialchars($aiFormulation['application_instructions']) . '</p>';
+            if (!empty($suggestions['application_instructions'])) {
+                $html .= '<p><strong>Application Instructions:</strong> ' . htmlspecialchars($suggestions['application_instructions']) . '</p>';
             }
             
-            if (!empty($aiFormulation['ingredient_synergies'])) {
-                $html .= '<p><strong>Ingredient Synergies:</strong> ' . htmlspecialchars($aiFormulation['ingredient_synergies']) . '</p>';
+            if (!empty($suggestions['ingredient_synergies'])) {
+                $html .= '<p><strong>Ingredient Synergies:</strong> ' . htmlspecialchars($suggestions['ingredient_synergies']) . '</p>';
             }
             
-            if (!empty($aiFormulation['warnings']) && is_array($aiFormulation['warnings'])) {
-                $html .= '<p><strong>Warnings:</strong> ' . implode(', ', $aiFormulation['warnings']) . '</p>';
+            if (!empty($suggestions['warnings']) && is_array($suggestions['warnings'])) {
+                $html .= '<p><strong>Warnings:</strong> ' . implode(', ', $suggestions['warnings']) . '</p>';
             }
             
             $html .= '</div>';
@@ -189,56 +187,6 @@ class PDFService {
             $html .= '</div>';
         }
 
-        // Add template-based formulation suggestions if available
-        if (!empty($suggestions)) {
-            if (!empty($suggestions['recommended_percentages'])) {
-                $html .= '<div class="section">';
-                $html .= '<h3>Recommended Concentrations</h3>';
-                $html .= '<div class="ingredient-list">';
-                foreach ($suggestions['recommended_percentages'] as $ingredient => $range) {
-                    $html .= '<div class="ingredient-item">';
-                    $html .= '<strong>' . ucfirst($ingredient) . ':</strong> ';
-                    $html .= $range['recommended'] . '% (Safe range: ' . $range['min'] . '% - ' . $range['max'] . '%)';
-                    $html .= '</div>';
-                }
-                $html .= '</div>';
-                $html .= '</div>';
-            }
-            
-            if (!empty($suggestions['formulation_benefits'])) {
-                $html .= '<div class="section">';
-                $html .= '<h3>Expected Benefits</h3>';
-                $html .= '<div class="ingredient-list">';
-                foreach ($suggestions['formulation_benefits'] as $benefit) {
-                    $html .= '<div class="ingredient-item">• ' . $benefit . '</div>';
-                }
-                $html .= '</div>';
-                $html .= '</div>';
-            }
-            
-            if (!empty($suggestions['application_instructions'])) {
-                $html .= '<div class="section">';
-                $html .= '<h3>Usage Instructions</h3>';
-                $html .= '<p>' . $suggestions['application_instructions'] . '</p>';
-                $html .= '</div>';
-            }
-            
-            if (!empty($suggestions['ingredient_synergies'])) {
-                $html .= '<div class="section">';
-                $html .= '<h3>Ingredient Synergies</h3>';
-                $html .= '<div class="ingredient-list">';
-                foreach ($suggestions['ingredient_synergies'] as $synergy) {
-                    $html .= '<div class="ingredient-item">• ' . $synergy . '</div>';
-                }
-                $html .= '</div>';
-                $html .= '</div>';
-            }
-        } else {
-            $html .= '<div class="section">';
-            $html .= '<h3>Usage Instructions</h3>';
-            $html .= '<p>Apply as directed. Start with a patch test. Use consistently for best results.</p>';
-            $html .= '</div>';
-        }
 
         $html .= '<div class="footer">';
         $html .= '<p>This formulation was created based on your specific skin needs and preferences.</p>';
