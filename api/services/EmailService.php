@@ -30,6 +30,22 @@ class EmailService {
 
     
     /**
+     * Send admin-only formulation notification email
+     * @param array $formulation
+     * @return bool
+     */
+    public function sendAdminFormulationNotification($formulation) {
+        $customerName = $formulation['contact']['name'] ?? $formulation['contact']['fullName'] ?? 'Customer';
+        
+        // Get admin email from settings
+        $adminEmail = $this->getAdminEmail();
+        $adminSubject = "New Skincare Formulation Request from " . $customerName;
+        $adminMessage = $this->generateAdminEmail($formulation);
+        
+        return $this->sendEmail($adminEmail, $adminSubject, $adminMessage);
+    }
+
+    /**
      * Send formulation notification email
      * @param array $formulation
      * @return bool
@@ -43,13 +59,29 @@ class EmailService {
         $customerMessage = $this->generateCustomerEmail($formulation);
         $customerSent = $this->sendEmail($customerEmail, $customerSubject, $customerMessage);
         
-        // Email to admin (you)
-        $adminEmail = 'admin@yoursite.com'; // Replace with your email
+        // Get admin email from settings
+        $adminEmail = $this->getAdminEmail();
         $adminSubject = "New Skincare Formulation Request from " . $customerName;
         $adminMessage = $this->generateAdminEmail($formulation);
         $adminSent = $this->sendEmail($adminEmail, $adminSubject, $adminMessage);
         
         return $customerSent && $adminSent;
+    }
+    
+    /**
+     * Get admin email from settings
+     * @return string
+     */
+    private function getAdminEmail() {
+        try {
+            require_once __DIR__ . '/../models/AdminUserModel.php';
+            $adminModel = new AdminUserModel();
+            $adminEmail = $adminModel->getSetting('admin_notification_email');
+            return $adminEmail ?: 'admin@skincraft.com'; // fallback
+        } catch (Exception $e) {
+            error_log("Failed to get admin email: " . $e->getMessage());
+            return 'admin@skincraft.com'; // fallback
+        }
     }
     
     private function generateCustomerEmail($formulation) {

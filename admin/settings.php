@@ -20,247 +20,339 @@ if (isset($_SESSION['login_time']) && (time() - $_SESSION['login_time']) > 86400
 // Update last activity time
 $_SESSION['last_activity'] = time();
 
-$pageTitle = 'Settings';
+$pageTitle = 'Settings Management';
 $currentPage = 'settings';
 
-// Handle form submissions
+// Include required files
+require_once '../api/models/AdminUserModel.php';
+
+$adminModel = new AdminUserModel();
 $message = '';
 $messageType = '';
 
-// Get current admin info from session or default values
-$adminName = $_SESSION['admin_username'] ?? 'Admin';
-
+// Handle form submissions
 if ($_POST) {
-    if (isset($_POST['action']) && $_POST['action'] === 'update_profile') {
-        $newName = trim($_POST['admin_name'] ?? '');
-        $newPassword = trim($_POST['new_password'] ?? '');
-        $confirmPassword = trim($_POST['confirm_password'] ?? '');
+    if (isset($_POST['action'])) {
+        switch ($_POST['action']) {
+            case 'update_ai_prompt':
+                $newPrompt = trim($_POST['ai_prompt'] ?? '');
+                if (!empty($newPrompt)) {
+                    if ($adminModel->updateSetting('ai_formulation_prompt', $newPrompt, $_SESSION['admin_user_id'])) {
+                        $message = 'AI prompt updated successfully';
+                        $messageType = 'success';
+                    } else {
+                        $message = 'Failed to update AI prompt';
+                        $messageType = 'danger';
+                    }
+                } else {
+                    $message = 'AI prompt cannot be empty';
+                    $messageType = 'danger';
+                }
+                break;
 
-        // Validate inputs
-        if (empty($newName)) {
-            $message = 'Admin name is required.';
-            $messageType = 'danger';
-        } elseif (!empty($newPassword) && strlen($newPassword) < 6) {
-            $message = 'Password must be at least 6 characters long.';
-            $messageType = 'danger';
-        } elseif (!empty($newPassword) && $newPassword !== $confirmPassword) {
-            $message = 'New passwords do not match.';
-            $messageType = 'danger';
-        } else {
-            // Update session username
-            $_SESSION['admin_username'] = $newName;
-            $adminName = $newName;
+            case 'update_ai_parameters':
+                $aiModel = trim($_POST['ai_model']);
+                $aiTemperature = floatval($_POST['ai_temperature']);
+                $aiMaxTokens = intval($_POST['ai_max_tokens']);
 
-            // If password change is requested, update the login file
-            if (!empty($newPassword)) {
-                $loginFile = 'auth/login.php';
-                $loginContent = file_get_contents($loginFile);
-                
-                // Update the password in the login file
-                $loginContent = preg_replace(
-                    '/\$admin_password = \'[^\']*\';/',
-                    '$admin_password = \'' . addslashes($newPassword) . '\';',
-                    $loginContent
-                );
+                $success = true;
+                $success &= $adminModel->updateSetting('ai_model', $aiModel, $_SESSION['admin_user_id']);
+                $success &= $adminModel->updateSetting('ai_temperature', $aiTemperature, $_SESSION['admin_user_id']);
+                $success &= $adminModel->updateSetting('ai_max_tokens', $aiMaxTokens, $_SESSION['admin_user_id']);
 
-                file_put_contents($loginFile, $loginContent);
-                $message = 'Profile and password updated successfully!';
-            } else {
-                $message = 'Profile updated successfully!';
-            }
-            $messageType = 'success';
+                if ($success) {
+                    $message = 'AI parameters updated successfully';
+                    $messageType = 'success';
+                } else {
+                    $message = 'Failed to update AI parameters';
+                    $messageType = 'danger';
+                }
+                break;
+
+            case 'update_admin_email':
+                $newEmail = trim($_POST['admin_email'] ?? '');
+                if (!empty($newEmail) && filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+                    if ($adminModel->updateSetting('admin_notification_email', $newEmail, $_SESSION['admin_user_id'])) {
+                        $message = 'Admin notification email updated successfully';
+                        $messageType = 'success';
+                    } else {
+                        $message = 'Failed to update admin email';
+                        $messageType = 'danger';
+                    }
+                } else {
+                    $message = 'Please enter a valid email address';
+                    $messageType = 'danger';
+                }
+                break;
+
+            case 'change_password':
+                $currentPassword = $_POST['current_password'] ?? '';
+                $newPassword = $_POST['new_password'] ?? '';
+                $confirmPassword = $_POST['confirm_password'] ?? '';
+
+                if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+                    $message = 'All password fields are required';
+                    $messageType = 'danger';
+                } elseif ($newPassword !== $confirmPassword) {
+                    $message = 'New passwords do not match';
+                    $messageType = 'danger';
+                } elseif (strlen($newPassword) < 8) {
+                    $message = 'New password must be at least 8 characters long';
+                    $messageType = 'danger';
+                } else {
+                    // Verify current password
+                    $user = $adminModel->authenticateUser($_SESSION['admin_username'], $currentPassword);
+                    if ($user) {
+                        if ($adminModel->updatePassword($_SESSION['admin_user_id'], $newPassword)) {
+                            $message = 'Password changed successfully';
+                            $messageType = 'success';
+                        } else {
+                            $message = 'Failed to change password';
+                            $messageType = 'danger';
+                        }
+                    } else {
+                        $message = 'Current password is incorrect';
+                        $messageType = 'danger';
+                    }
+                }
+                break;
         }
     }
+}
+
+// Get current settings
+$settings = $adminModel->getAllSettings();
+$settingsArray = [];
+foreach ($settings as $setting) {
+    $settingsArray[$setting['setting_key']] = $setting['setting_value'];
 }
 
 include 'includes/header.php';
 ?>
 
-<?php if ($message): ?>
-    <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show">
-        <i class="bi bi-<?php echo $messageType === 'success' ? 'check-circle' : 'exclamation-triangle'; ?>"></i>
-        <?php echo htmlspecialchars($message); ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-<?php endif; ?>
+<!-- Settings Management -->
+<div class="container-fluid">
+    <?php if ($message): ?>
+        <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show" role="alert">
+            <i class="bi bi-<?php echo $messageType === 'success' ? 'check-circle' : 'exclamation-triangle'; ?>"></i>
+            <?php echo htmlspecialchars($message); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
 
-<div class="row">
-    <div class="col-12">
-        <!-- Admin Profile Management -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-person-gear text-primary me-2"></i>
-                    Admin Profile Settings
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="mb-4 text-center">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                        <i class="bi bi-person-fill" style="font-size: 2.5rem;"></i>
-                    </div>
-                    <h6 class="mt-2 mb-0">Administrator Account</h6>
-                    <small class="text-muted">Manage your admin profile</small>
+    <div class="row">
+        <!-- AI Prompt Settings -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-robot"></i>
+                        AI Formulation Prompt Settings
+                    </h5>
                 </div>
-
-                <form id="profileForm" method="POST">
-                    <input type="hidden" name="action" value="update_profile">
-                    
-                    <div class="mb-4">
-                        <label for="admin_name" class="form-label fw-semibold">
-                            <i class="bi bi-person text-primary"></i>
-                            Admin Name
-                        </label>
-                        <input type="text" class="form-control" id="admin_name" name="admin_name" 
-                               value="<?php echo htmlspecialchars($adminName); ?>" 
-                               required placeholder="Enter admin display name">
-                        <div class="form-text">This name will be displayed in the admin panel.</div>
-                    </div>
-                    
-                    <hr class="my-4">
-                    
-                    <h6 class="text-primary mb-3">
-                        <i class="bi bi-shield-lock"></i>
-                        Change Password
-                    </h6>
-                    
-                    <div class="mb-3">
-                        <label for="new_password" class="form-label fw-semibold">New Password</label>
-                        <input type="password" class="form-control" id="new_password" name="new_password"
-                               placeholder="Enter new password">
-                        <div class="form-text">Leave blank to keep current password. Minimum 6 characters required.</div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="confirm_password" class="form-label fw-semibold">Confirm New Password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                               placeholder="Confirm new password">
-                    </div>
-                    
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-between">
-                        <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
-                            <i class="bi bi-arrow-clockwise"></i>
-                            Reset
-                        </button>
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" name="action" value="update_ai_prompt">
+                        <div class="mb-3">
+                            <label for="ai_prompt" class="form-label">AI Prompt Template</label>
+                            <textarea class="form-control" id="ai_prompt" name="ai_prompt" rows="8" required
+                                placeholder="Enter the prompt that will be used to guide AI formulation generation..."><?php echo htmlspecialchars($settingsArray['ai_formulation_prompt'] ?? ''); ?></textarea>
+                            <div class="form-text">
+                                This prompt will be used to guide the AI when generating formulation suggestions. 
+                                Be specific about what you want the AI to include (percentages, INCI names, explanations, etc.).
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-lg"></i>
-                            Update Profile
+                            <i class="bi bi-save"></i>
+                            Update AI Prompt
                         </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Security Information -->
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-info-circle text-info me-2"></i>
-                    Security Information
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-center">
-                            <div class="text-success me-3">
-                                <i class="bi bi-shield-check" style="font-size: 1.5rem;"></i>
-                            </div>
-                            <div>
-                                <div class="fw-semibold">Session Active</div>
-                                <small class="text-muted">Logged in as <?php echo htmlspecialchars($adminName); ?></small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-center">
-                            <div class="text-primary me-3">
-                                <i class="bi bi-clock" style="font-size: 1.5rem;"></i>
-                            </div>
-                            <div>
-                                <div class="fw-semibold">Session Timeout</div>
-                                <small class="text-muted">24 hours from login</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <hr class="my-3">
-                
-                <div class="alert alert-info mb-0">
-                    <i class="bi bi-lightbulb"></i>
-                    <strong>Security Tips:</strong>
-                    <ul class="mb-0 mt-2">
-                        <li>Use a strong password with at least 6 characters</li>
-                        <li>Log out when accessing from shared computers</li>
-                        <li>Keep your admin credentials secure</li>
-                    </ul>
+                    </form>
                 </div>
             </div>
         </div>
 
-        
+        <!-- AI Parameters and Settings -->
+        <div class="col-lg-4 mb-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-gear"></i>
+                        AI Parameters
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" name="action" value="update_ai_parameters">
+                        <div class="mb-3">
+                            <label for="ai_model" class="form-label">AI Model</label>
+                            <select class="form-select" id="ai_model" name="ai_model">
+                                <optgroup label="GPT-5 Models (Cutting Edge)">
+                                    <option value="gpt-5" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5' ? 'selected' : ''; ?>>GPT-5 (Next Generation)</option>
+                                    <option value="gpt-5-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5-turbo' ? 'selected' : ''; ?>>GPT-5 Turbo</option>
+                                    <option value="gpt-5-mini" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5-mini' ? 'selected' : ''; ?>>GPT-5 Mini (Cost-Efficient)</option>
+                                    <option value="gpt-5-nano" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-5-nano' ? 'selected' : ''; ?>>GPT-5 Nano (Ultra Fast)</option>
+                                </optgroup>
+                                <optgroup label="GPT-4.1 Models (Enhanced)">
+                                    <option value="gpt-4.1" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1' ? 'selected' : ''; ?>>GPT-4.1 (Latest Update)</option>
+                                    <option value="gpt-4.1-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1-turbo' ? 'selected' : ''; ?>>GPT-4.1 Turbo</option>
+                                    <option value="gpt-4.1-mini" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1-mini' ? 'selected' : ''; ?>>GPT-4.1 Mini (Faster)</option>
+                                    <option value="gpt-4.1-nano" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4.1-nano' ? 'selected' : ''; ?>>GPT-4.1 Nano (Most Efficient)</option>
+                                </optgroup>
+                                <optgroup label="GPT-4 Models (Recommended)">
+                                    <option value="gpt-4o" <?php echo ($settingsArray['ai_model'] ?? 'gpt-4o') === 'gpt-4o' ? 'selected' : ''; ?>>GPT-4o (Latest, Fastest)</option>
+                                    <option value="gpt-4o-mini" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4o-mini' ? 'selected' : ''; ?>>GPT-4o Mini (Cost-effective)</option>
+                                    <option value="gpt-4o-nano" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4o-nano' ? 'selected' : ''; ?>>GPT-4o Nano (Ultra Lightweight)</option>
+                                    <option value="gpt-4-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4-turbo' ? 'selected' : ''; ?>>GPT-4 Turbo</option>
+                                    <option value="gpt-4-turbo-preview" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4-turbo-preview' ? 'selected' : ''; ?>>GPT-4 Turbo Preview</option>
+                                    <option value="gpt-4" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4' ? 'selected' : ''; ?>>GPT-4 (Classic)</option>
+                                    <option value="gpt-4-32k" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-4-32k' ? 'selected' : ''; ?>>GPT-4 32K Context</option>
+                                </optgroup>
+                                <optgroup label="GPT-3.5 Models (Legacy)">
+                                    <option value="gpt-3.5-turbo" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-3.5-turbo' ? 'selected' : ''; ?>>GPT-3.5 Turbo</option>
+                                    <option value="gpt-3.5-turbo-16k" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-3.5-turbo-16k' ? 'selected' : ''; ?>>GPT-3.5 Turbo 16K</option>
+                                    <option value="gpt-3.5-turbo-instruct" <?php echo ($settingsArray['ai_model'] ?? '') === 'gpt-3.5-turbo-instruct' ? 'selected' : ''; ?>>GPT-3.5 Turbo Instruct</option>
+                                </optgroup>
+                            </select>
+                            <div class="form-text">
+                                <strong>GPT-5</strong> offers the most advanced capabilities. 
+                                <strong>GPT-4.1</strong> provides enhanced performance over GPT-4. 
+                                <strong>GPT-4o</strong> remains the best balance of performance and availability.
+                                <strong>Nano/Mini</strong> models are optimized for cost and speed.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ai_temperature" class="form-label">Temperature (<?php echo $settingsArray['ai_temperature'] ?? '0.7'; ?>)</label>
+                            <input type="range" class="form-range" id="ai_temperature" name="ai_temperature" 
+                                   min="0" max="2" step="0.1" value="<?php echo $settingsArray['ai_temperature'] ?? '0.7'; ?>"
+                                   oninput="this.previousElementSibling.textContent = 'Temperature (' + this.value + ')'">
+                            <div class="form-text">Higher values make output more creative</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ai_max_tokens" class="form-label">Max Tokens</label>
+                            <input type="number" class="form-control" id="ai_max_tokens" name="ai_max_tokens" 
+                                   value="<?php echo $settingsArray['ai_max_tokens'] ?? '1500'; ?>" min="100" max="4000">
+                            <div class="form-text">Maximum response length</div>
+                        </div>
+                        <button type="submit" class="btn btn-success mb-3">
+                            <i class="bi bi-save"></i>
+                            Update AI Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            </div>
+    </div>
+
+    <!-- AI Prompt Examples -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightbulb"></i>
+                        AI Prompt Examples & Tips
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Example Prompts:</h6>
+                            <div class="bg-light p-3 rounded mb-3">
+                                <strong>Detailed Formulation:</strong><br>
+                                <small class="text-muted">
+                                    "You are a professional cosmetic chemist with 15+ years of experience. Create a detailed skincare formulation based on the customer's profile. Include exact percentages for each ingredient, INCI names, and brief explanations for ingredient choices. Ensure the formulation is stable, safe, and effective for the specified skin type."
+                                </small>
+                            </div>
+                            <div class="bg-light p-3 rounded">
+                                <strong>Simple Suggestions:</strong><br>
+                                <small class="text-muted">
+                                    "Based on the customer's skin type and concerns, suggest key ingredients and basic formulation structure. Focus on ingredient benefits and compatibility."
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Tips for Better Results:</h6>
+                            <ul class="small">
+                                <li>Be specific about what information to include</li>
+                                <li>Mention safety and stability requirements</li>
+                                <li>Request INCI names for professional accuracy</li>
+                                <li>Ask for ingredient percentages if needed</li>
+                                <li>Include pH and compatibility considerations</li>
+                                <li>Specify the level of detail required</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Settings -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-envelope"></i>
+                        Notification Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" name="action" value="update_admin_email">
+                        <div class="mb-3">
+                            <label for="admin_email" class="form-label">Admin Email</label>
+                            <input type="email" class="form-control" id="admin_email" name="admin_email" 
+                                   value="<?php echo htmlspecialchars($settingsArray['admin_notification_email'] ?? ''); ?>" 
+                                   placeholder="admin@example.com" required>
+                            <div class="form-text">Email address to receive new formulation notifications</div>
+                        </div>
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="bi bi-save"></i>
+                            Update Email
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-key"></i>
+                        Change Password
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" name="action" value="change_password">
+                        <div class="mb-3">
+                            <label for="current_password" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="current_password" name="current_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new_password" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="new_password" name="new_password" 
+                                   minlength="8" required>
+                            <div class="form-text">Minimum 8 characters</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" 
+                                   minlength="8" required>
+                        </div>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-key"></i>
+                            Change Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<script>
-// Profile form validation
-document.getElementById('profileForm').addEventListener('submit', function(e) {
-    const adminName = document.getElementById('admin_name').value.trim();
-    const newPassword = document.getElementById('new_password').value;
-    const confirmPassword = document.getElementById('confirm_password').value;
-
-    if (!adminName) {
-        e.preventDefault();
-        showAlert('Admin name is required!', 'danger');
-        return false;
-    }
-
-    if (newPassword && newPassword !== confirmPassword) {
-        e.preventDefault();
-        showAlert('New passwords do not match!', 'danger');
-        return false;
-    }
-
-    if (newPassword && newPassword.length < 6) {
-        e.preventDefault();
-        showAlert('New password must be at least 6 characters long!', 'danger');
-        return false;
-    }
-});
-
-// Clear confirm password when new password changes
-document.getElementById('new_password').addEventListener('input', function() {
-    document.getElementById('confirm_password').value = '';
-});
-
-// Reset form function
-function resetForm() {
-    document.getElementById('new_password').value = '';
-    document.getElementById('confirm_password').value = '';
-    document.getElementById('admin_name').value = '<?php echo htmlspecialchars($adminName); ?>';
-}
-
-// Alert function
-function showAlert(message, type) {
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-    alertDiv.innerHTML = `
-        <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-    
-    const container = document.querySelector('.col-lg-8');
-    container.insertBefore(alertDiv, container.firstChild);
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.remove();
-        }
-    }, 5000);
-}
-</script>
 
 <?php include 'includes/footer.php'; ?>

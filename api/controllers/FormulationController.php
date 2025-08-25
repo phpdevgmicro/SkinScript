@@ -6,8 +6,6 @@
 
 require_once __DIR__ . '/../models/FormulationModel.php';
 require_once __DIR__ . '/../services/EmailService.php';
-require_once __DIR__ . '/../services/PDFService.php';
-require_once __DIR__ . '/../services/OpenAIService.php';
 
 class FormulationController {
     private $model;
@@ -135,9 +133,6 @@ class FormulationController {
         // Use cleaned data
         $data = $validation['data'];
 
-        // Check for incompatibilities
-        $warnings = $this->checkIncompatibilities($data['keyActives']);
-
         // Generate summary
         $summary = $this->generateFormulationSummary($data);
 
@@ -145,50 +140,24 @@ class FormulationController {
         $formulationId = $this->model->saveFormulation($data);
 
         if ($formulationId) {
-            // Add ID to data for email/PDF generation
+            // Add ID to data for email
             $data['id'] = $formulationId;
             
-            // Send email notifications
+            // Send email notification to admin only
             $emailService = new EmailService();
-            $emailSent = $emailService->sendFormulationNotification($data);
-            
-            // Generate AI-powered formulation using OpenAI
-            $suggestions = null;
-            try {
-                $openAIService = new OpenAIService();
-                $suggestions = $openAIService->generateFormulation($data);
-                
-                // Generate product description as well
-                if ($suggestions) {
-                    $suggestions['product_description'] = $openAIService->generateProductDescription($data, $suggestions);
-                }
-            } catch (Exception $e) {
-                error_log('AI formulation failed: ' . $e->getMessage());
-                return [
-                    'success' => false,
-                    'message' => 'Failed to generate AI formulation: ' . $e->getMessage()
-                ];
-            }
-            
-            // Generate PDF report
-            $pdfService = new PDFService();
-            $pdfResult = $pdfService->generateFormulationPDF($data, $suggestions);
+            $emailSent = $emailService->sendAdminFormulationNotification($data);
             
             return [
                 'success' => true,
-                'message' => 'Formulation saved successfully',
+                'message' => 'Formulation request submitted successfully',
                 'formulation_id' => $formulationId,
                 'summary' => $summary,
-                'warnings' => $warnings,
-                'suggestions' => $suggestions,
-                'email_sent' => $emailSent,
-                'pdf_generated' => ($pdfResult && isset($pdfResult['success']) ? $pdfResult['success'] : $pdfResult !== false),
-                'pdf_info' => $pdfResult
+                'email_sent' => $emailSent
             ];
         } else {
             return [
                 'success' => false,
-                'message' => 'Failed to save formulation'
+                'message' => 'Failed to save formulation request'
             ];
         }
     }

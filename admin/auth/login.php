@@ -1,10 +1,8 @@
 <?php
 session_start();
 
-// Simple admin credentials (in production, use database with hashed passwords)
-// IMPORTANT: Update these credentials when changed through admin settings
-$admin_username = 'admin';
-$admin_password = 'skincraft2025'; // Change this to a secure password
+// Include required files
+require_once '../../api/models/AdminUserModel.php';
 
 $error = '';
 
@@ -12,16 +10,25 @@ if ($_POST) {
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
     
-    if ($username === $admin_username && $password === $admin_password) {
-        $_SESSION['admin_logged_in'] = true;
-        $_SESSION['admin_username'] = $username;
-        $_SESSION['login_time'] = time();
+    if (!empty($username) && !empty($password)) {
+        $adminModel = new AdminUserModel();
+        $user = $adminModel->authenticateUser($username, $password);
         
-        // Redirect to admin dashboard
-        header('Location: ../index.php');
-        exit;
+        if ($user) {
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['admin_user_id'] = $user['id'];
+            $_SESSION['admin_username'] = $user['username'];
+            $_SESSION['admin_full_name'] = $user['full_name'];
+            $_SESSION['login_time'] = time();
+            
+            // Redirect to admin dashboard
+            header('Location: ../index.php');
+            exit;
+        } else {
+            $error = 'Invalid username or password';
+        }
     } else {
-        $error = 'Invalid username or password';
+        $error = 'Please enter both username and password';
     }
 }
 ?>

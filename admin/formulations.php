@@ -206,6 +206,11 @@ include 'includes/header.php';
                                                 data-bs-toggle="tooltip" title="View Details">
                                             <i class="bi bi-eye"></i>
                                         </button>
+                                        <button type="button" class="btn btn-sm btn-outline-warning" 
+                                                onclick="generateAIFormulation(<?php echo $formulation['id']; ?>)"
+                                                data-bs-toggle="tooltip" title="Generate AI Formulation">
+                                            <i class="bi bi-robot"></i>
+                                        </button>
                                         <a href="../api/preview_pdf.php?id=<?php echo $formulation['id']; ?>" 
                                            target="_blank" class="btn btn-sm btn-outline-success"
                                            data-bs-toggle="tooltip" title="View PDF">
@@ -287,6 +292,43 @@ include 'includes/header.php';
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AI Formulation Generation Modal -->
+<div class="modal fade" id="aiFormulationModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-robot"></i>
+                    Generate AI Formulation Suggestion
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <h6>Custom AI Prompt (Optional)</h6>
+                        <textarea class="form-control" id="customPrompt" rows="4" 
+                            placeholder="Enter a custom prompt for AI generation, or leave empty to use default..."></textarea>
+                        <div class="form-text">
+                            Leave empty to use the default prompt from settings, or provide a custom prompt for specific requirements.
+                        </div>
+                    </div>
+                </div>
+                <div id="aiResults">
+                    <!-- AI results will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="generateAIBtn">
+                    <i class="bi bi-robot"></i>
+                    Generate AI Suggestion
+                </button>
             </div>
         </div>
     </div>
@@ -386,6 +428,134 @@ function viewFormulation(id) {
                 </div>
             `;
         });
+}
+
+// AI Formulation Generation
+let currentFormulationId = null;
+
+function generateAIFormulation(formulationId) {
+    currentFormulationId = formulationId;
+    const modal = new bootstrap.Modal(document.getElementById('aiFormulationModal'));
+    
+    // Reset modal content
+    document.getElementById('customPrompt').value = '';
+    document.getElementById('aiResults').innerHTML = '';
+    
+    modal.show();
+}
+
+// Handle AI generation button click
+document.getElementById('generateAIBtn').addEventListener('click', function() {
+    if (!currentFormulationId) return;
+    
+    const customPrompt = document.getElementById('customPrompt').value.trim();
+    const resultsDiv = document.getElementById('aiResults');
+    const generateBtn = document.getElementById('generateAIBtn');
+    
+    // Show loading state
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Generating...';
+    
+    resultsDiv.innerHTML = `
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Generating AI formulation...</span>
+            </div>
+            <p class="mt-2 text-muted">AI is analyzing the customer request and generating suggestions...</p>
+        </div>
+    `;
+    
+    // Prepare data for API call
+    const requestData = {
+        formulation_id: currentFormulationId,
+        custom_prompt: customPrompt || null
+    };
+    
+    // Call AI generation API
+    fetch('api/generate_ai_formulation.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<i class="bi bi-robot"></i> Generate AI Suggestion';
+        
+        if (data.success && data.suggestions) {
+            displayAISuggestions(data.suggestions);
+        } else {
+            resultsDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Error:</strong> ${data.message || 'Failed to generate AI formulation'}
+                </div>
+            `;
+        }
+    })
+    .catch(error => {
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<i class="bi bi-robot"></i> Generate AI Suggestion';
+        
+        resultsDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle"></i>
+                <strong>Error:</strong> Network error occurred. Please try again.
+            </div>
+        `;
+    });
+});
+
+function displayAISuggestions(suggestions) {
+    const resultsDiv = document.getElementById('aiResults');
+    let html = '<div class="ai-suggestions">';
+    
+    // Main formulation content
+    if (suggestions.formulation) {
+        html += `
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0"><i class="bi bi-magic"></i> AI Generated Formulation</h6>
+                </div>
+                <div class="card-body">
+                    <pre class="bg-light p-3 rounded" style="white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${suggestions.formulation}</pre>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Product description
+    if (suggestions.product_description) {
+        html += `
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0"><i class="bi bi-file-text"></i> Product Description</h6>
+                </div>
+                <div class="card-body">
+                    <p>${suggestions.product_description}</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Additional suggestions
+    if (suggestions.usage_instructions) {
+        html += `
+            <div class="card mb-3">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0"><i class="bi bi-info-circle"></i> Usage Instructions</h6>
+                </div>
+                <div class="card-body">
+                    <p>${suggestions.usage_instructions}</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += '</div>';
+    resultsDiv.innerHTML = html;
 }
 </script>
 

@@ -6,6 +6,10 @@
 class OpenAIService {
     private $apiKey;
     private $baseUrl = 'https://api.openai.com/v1';
+    private $customPrompt = null;
+    private $model = 'gpt-4';
+    private $temperature = 0.7;
+    private $maxTokens = 1500;
     
     public function __construct() {
         // Load configuration from config file
@@ -20,6 +24,36 @@ class OpenAIService {
         if (!$this->apiKey || $this->apiKey === 'your_openai_api_key_here') {
             throw new Exception('OpenAI API key not configured. Please update api/config/openai.php');
         }
+        
+        // Load AI parameters from database settings
+        $this->loadAIParameters();
+    }
+    
+    /**
+     * Load AI parameters from database settings
+     */
+    private function loadAIParameters() {
+        try {
+            require_once __DIR__ . '/../models/AdminUserModel.php';
+            $adminModel = new AdminUserModel();
+            
+            $this->model = $adminModel->getSetting('ai_model') ?: 'gpt-4';
+            $this->temperature = floatval($adminModel->getSetting('ai_temperature') ?: 0.7);
+            $this->maxTokens = intval($adminModel->getSetting('ai_max_tokens') ?: 1500);
+        } catch (Exception $e) {
+            // Use defaults if database settings not available
+            $this->model = 'gpt-4';
+            $this->temperature = 0.7;
+            $this->maxTokens = 1500;
+        }
+    }
+    
+    /**
+     * Set custom prompt for AI generation
+     * @param string $prompt
+     */
+    public function setCustomPrompt($prompt) {
+        $this->customPrompt = $prompt;
     }
     
     /**
@@ -28,11 +62,39 @@ class OpenAIService {
      * @return array AI-generated suggestions
      */
     public function generateFormulation($formulation) {
-        $prompt = $this->buildFormulationPrompt($formulation);
+        if ($this->customPrompt) {
+            $prompt = $this->buildCustomPrompt($formulation);
+        } else {
+            $prompt = $this->buildFormulationPrompt($formulation);
+        }
         
         $response = $this->callOpenAI($prompt);
         
         return $this->parseFormulationResponse($response);
+    }
+    
+    /**
+     * Build custom prompt with formulation data
+     * @param array $formulation
+     * @return string
+     */
+    private function buildCustomPrompt($formulation) {
+        $skinTypes = implode(', ', $formulation['skinType']);
+        $keyActives = implode(', ', $formulation['keyActives']);
+        $extracts = implode(', ', $formulation['extracts']);
+        $boosters = implode(', ', $formulation['boosters']);
+        $format = $formulation['baseFormat'];
+        $concerns = $formulation['contact']['concerns'] ?? 'general skin health';
+        
+        $contextInfo = "\n\n**Customer Information:**\n";
+        $contextInfo .= "- Skin Types: {$skinTypes}\n";
+        $contextInfo .= "- Skin Concerns: {$concerns}\n";
+        $contextInfo .= "- Preferred Format: {$format}\n";
+        $contextInfo .= "- Key Actives: {$keyActives}\n";
+        $contextInfo .= "- Botanical Extracts: {$extracts}\n";
+        $contextInfo .= "- Boosters/Hydrators: {$boosters}\n";
+        
+        return $this->customPrompt . $contextInfo;
     }
     
     /**
@@ -94,7 +156,7 @@ Focus on safety, efficacy, and professional cosmetic chemistry principles. Ensur
      */
     protected function callOpenAI($prompt) {
         $data = [
-            'model' => 'gpt-4o', // Using GPT-4o for better performance and availability
+            'model' => $this->model,
             'messages' => [
                 [
                     'role' => 'system',
@@ -105,8 +167,8 @@ Focus on safety, efficacy, and professional cosmetic chemistry principles. Ensur
                     'content' => $prompt
                 ]
             ],
-            'temperature' => 0.7,
-            'max_tokens' => 1500,
+            'temperature' => $this->temperature,
+            'max_tokens' => $this->maxTokens,
             'response_format' => ['type' => 'json_object']
         ];
         
@@ -167,7 +229,17 @@ Focus on safety, efficacy, and professional cosmetic chemistry principles. Ensur
             throw new Exception("Failed to parse AI formulation response");
         }
         
-        // Validate and clean the response
+        // For custom prompts, return the raw content as formulation text
+        if ($this->customPrompt) {
+            return [
+                'formulation' => $content,
+                'ai_generated' => true,
+                'generated_at' => date('Y-m-d H:i:s'),
+                'custom_prompt_used' => true
+            ];
+        }
+        
+        // Validate and clean the response for structured prompts
         return [
             'formulation_name' => $formulation['formulation_name'] ?? 'Custom Skincare Formula',
             'recommended_percentages' => $formulation['recommended_percentages'] ?? [],
